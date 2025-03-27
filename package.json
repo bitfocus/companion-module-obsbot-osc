@@ -1,0 +1,41 @@
+{
+	"name": "obsbot-osc",
+	"version": "1.0.0",
+	"main": "dist/main.js",
+	"type": "module",
+	"scripts": {
+		"postinstall": "husky",
+		"format": "prettier -w .",
+		"package": "run build && companion-module-build",
+		"build": "rimraf dist && run build:main",
+		"build:main": "tsc -p tsconfig.build.json",
+		"dev": "tsc -p tsconfig.build.json --watch"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bitfocus/companion-module-obsbot-osc.git"
+	},
+	"dependencies": {
+		"@companion-module/base": "~1.11.2"
+	},
+	"devDependencies": {
+		"@companion-module/tools": "^2.1.1",
+		"@types/node": "^22.10.2",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.2.11",
+		"prettier": "^3.4.2",
+		"rimraf": "^6.0.1",
+		"typescript": "~5.5.4"
+	},
+	"prettier": "@companion-module/tools/.prettierrc.json",
+	"lint-staged": {
+		"*.{css,json,md,scss}": [
+			"prettier --write"
+		],
+		"*.{ts,tsx,js,jsx}": [
+			"yarn lint:raw --fix"
+		]
+	},
+	"packageManager": "yarn@4.5.3"
+}

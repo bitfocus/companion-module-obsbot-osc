@@ -1,0 +1,14 @@
+{
+	"editor.formatOnSave": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"githubIssues.issueBranchTitle": "issue/${issueNumber}",
+	"explorer.excludeGitIgnore": false
+}
