@@ -3,136 +3,111 @@ import type { OBSBOTInstance } from './main.js'
 import osc from 'osc'
 
 export async function InitConnection(self: OBSBOTInstance): Promise<void> {
-	// Initialize Socket.IO connection
-	const ip = self.config.ip
-	const port = self.config.port
+	const { ip, port, transport, verbose } = self.config
 
-	if (self.config.verbose) {
-		self.log('debug', `Connecting to OBSBOT at ${ip}:${port}`)
+	if (verbose) {
+		self.log('debug', `Connecting to OBSBOT at ${ip}:${port} via ${transport.toUpperCase()}`)
 	}
 
 	self.updateStatus(InstanceStatus.Connecting)
 
-	// Close out the OSC socket if it already exists
+	// Close existing socket if needed
 	if (self.oscPort) {
-		self.oscPort.close()
+		try {
+			self.oscPort.close()
+		} catch (e) {
+			self.log('warn', `Failed to close previous OSC port: ${e}`)
+		}
 	}
 
-	// Create the OSC socket based on the selected transport protocol
-	if (self.config.transport === 'udp') {
-		self.log('debug', 'Using UDP transport.')
+	// Create a new OSC port
+	if (transport === 'udp') {
 		self.oscPort = new osc.UDPPort({
-			address: ip,
-			port: port,
+			localAddress: '0.0.0.0',  // listen on all interfaces
+			localPort: 57110,         // bind to 57110, matching what OBSBOT expects
 		})
 	} else {
-		self.log('debug', 'Using TCP transport.')
 		self.oscPort = new osc.TCPSocketPort({
 			address: ip,
 			port: port,
 		})
 	}
 
-	self.oscPort.on('ready', function() {
-		self.log('debug', `Listening on Port ${port}`)
-		//self.updateStatus(InstanceStatus.Ok)
+	// Common event handlers
+	self.oscPort.on('ready', () => {
+		self.log('debug', `OSC Port ready on ${transport.toUpperCase()} (port ${port})`)
 
-		// Connect to the OBSBOT device by sending /OBSBOT/WebCam/General/Connected
+		// Send initial handshake command
 		self.sendCommand('/OBSBOT/WebCam/General/Connected', [{ type: 'i', value: 0 }])
 	})
 
-	self.oscPort.on('error', function (err: any) {
-		if (err && err.code && err.code === 'EADDRNOTAVAIL') {
-			self.log('error', `Error: Address not available. Please check the IP address: ${self.config.ip}`)
-			self.updateStatus(InstanceStatus.ConnectionFailure)
+	self.oscPort.on('error', (err: any) => {
+		if (!err || !err.code) {
+			self.log('error', `Unknown error: ${JSON.stringify(err)}`)
 			return
 		}
-		else if (err && err.code && err.code === 'ECONNREFUSED') {
-			self.log('error', `Error: Connection refused. Please check the IP address and port: ${self.config.ip}:${self.config.port}`)
-			self.updateStatus(InstanceStatus.ConnectionFailure)
-			return
+
+		const messages: Record<string, string> = {
+			EADDRNOTAVAIL: `Address not available: ${ip}`,
+			ECONNREFUSED: `Connection refused: ${ip}:${port}`,
+			EADDRINUSE:   `Address in use: ${ip}:${port}`,
+			ETIMEDOUT:    `Connection timed out: ${ip}:${port}`,
+			ECONNRESET:   `Connection reset: ${ip}:${port}`,
+			EHOSTUNREACH: `Host unreachable: ${ip}:${port}`,
+			ENETUNREACH:  `Network unreachable: ${ip}:${port}`,
 		}
-		else if (err && err.code && err.code === 'EADDRINUSE') {
-			self.log('error', `Error: Address in use. Please check the IP address and port: ${self.config.ip}:${self.config.port}`)
-			self.updateStatus(InstanceStatus.ConnectionFailure)
-			return
-		}
-		else if (err && err.code && err.code === 'ETIMEDOUT') {
-			self.log('error', `Error: Connection timed out. Please check the IP address and port: ${self.config.ip}:${self.config.port}`)
-			self.updateStatus(InstanceStatus.ConnectionFailure)
-			return
-		}
-		else if (err && err.code && err.code === 'ECONNRESET') {
-			self.log('error', `Error: Connection reset. Please check the IP address and port: ${self.config.ip}:${self.config.port}`)
-			self.updateStatus(InstanceStatus.ConnectionFailure)
-			return
-		}
-		else if (err && err.code && err.code === 'EHOSTUNREACH') {
-			self.log('error', `Error: Host unreachable. Please check the IP address and port: ${self.config.ip}:${self.config.port}`)
-			self.updateStatus(InstanceStatus.ConnectionFailure)
-			return
-		}
-		else if (err && err.code && err.code === 'ENETUNREACH') {
-			self.log('error', `Error: Network unreachable. Please check the IP address and port: ${self.config.ip}:${self.config.port}`)
-			self.updateStatus(InstanceStatus.ConnectionFailure)
-			return
-		}
-		else {
-			self.log('error', JSON.stringify(err));
-		}		
+
+		self.log('error', messages[err.code] || `Error: ${err.code}`)
+		self.updateStatus(InstanceStatus.ConnectionFailure)
 	})
 
-	self.oscPort.on('message', function (msg: any) {
-		self.log('debug', `Message: ${msg.address} ${msg.args}`)
+	self.oscPort.on('message', (msg: any) => {
+		self.log('debug', `Received: ${msg.address} ${JSON.stringify(msg.args)}`)
 		processData(self, msg.address, msg.args)
 	})
 
-	self.oscPort.open()	
+	self.oscPort.open()
 }
 
 function processData(self: OBSBOTInstance, address: string, args: OSCMetaArgument[]): void {
-	// Handle incoming messages from the OBSBOT device
 	if (self.config.verbose) {
-		self.log('debug', `Received message from OBSBOT: ${address} ${args}`)
+		self.log('debug', `Processing message: ${address} ${JSON.stringify(args)}`)
 	}
 
 	if (address === '/OBSBOT/WebCam/General/ConnectedResp') {
 		self.updateStatus(InstanceStatus.Ok)
 		self.log('info', 'Connected to OBSBOT device successfully.')
 
-		// get device info
 		self.sendCommand('/OBSBOT/WebCam/General/GetDeviceInfo', [{ type: 'i', value: 0 }])
-		return
 	}
 }
 
 export function SendCommand(self: OBSBOTInstance, address: string, args: OSCMetaArgument[]): void {
-	if (self.config.verbose) {
-		self.log('debug', `Sending command to OBSBOT: ${address} ${args} via ${self.config.transport} to ${self.config.ip}:${self.config.port}`)
+	if (!self.oscPort) {
+		self.log('error', `OSC Port is not open. Cannot send command: ${address}`)
+		return
 	}
 
-	//if the model is the Center App, we need to add the Device choice to the args
-	if (self.config.model.toString().indexOf('OBSBOT_CENTER') !== -1) {
-		// Add the device ID to the arguments at the beginning
-		const deviceId = self.config.device
-		const deviceArg: OSCMetaArgument = {
-			type: 'i',
-			value: deviceId,
-		}
-		args = [deviceArg, ...args] as OSCMetaArgument[]
+	const { verbose, transport, ip, port, model, device } = self.config
+
+	if (verbose) {
+		self.log('debug', `Sending command: ${address} ${JSON.stringify(args)} via ${transport.toUpperCase()} to ${ip}:${port}`)
 	}
 
-	// Send the command to the OBSBOT device
-	if (self.config.transport === 'udp') {
-		self.oscPort.send({
-			address: address,
-			args: args,
-		}, self.config.ip, self.config.port)
+	// Prepend device ID if needed
+	if (model.toString().includes('OBSBOT_CENTER')) {
+		const deviceArg: OSCMetaArgument = { type: 'i', value: device }
+		args = [deviceArg, ...args]
 	}
-	else {
-		self.oscPort.send({
-			address: address,
-			args: args,
-		})
+
+	const message = {
+		address: address,
+		args: args,
+	}
+
+	if (transport === 'udp') {
+		self.oscPort.send(message, ip, port)
+	} else {
+		self.oscPort.send(message)
 	}
 }
