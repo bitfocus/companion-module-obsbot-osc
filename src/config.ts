@@ -57,7 +57,8 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			min: 1,
 			max: 65535,
 			tooltip:
-				'Port for receiving OSC messages. 57120 is the default for OBSBOT devices, however the CENTER app may differ.',
+				'Port for receiving OSC messages over UDP. 57120 is the default for OBSBOT devices, however the CENTER app may differ.',
+			isVisible: (config) => config.transport === 'udp',
 		},
 		{
 			type: 'static-text',
