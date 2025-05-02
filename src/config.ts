@@ -5,6 +5,7 @@ export interface ModuleConfig {
 	ip: string
 	port: number
 	transport: string
+	listenport: number
 	model: string
 	device: number
 	verbose: boolean
@@ -46,6 +47,17 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 				{ id: 'tcp', label: 'TCP' },
 			],
 			width: 4,
+		},
+		{
+			type: 'number',
+			id: 'listenport',
+			width: 4,
+			label: 'Listen Port',
+			default: 57120,
+			min: 1,
+			max: 65535,
+			tooltip:
+				'Port for receiving OSC messages. 57120 is the default for OBSBOT devices, however the CENTER app may differ.',
 		},
 		{
 			type: 'static-text',

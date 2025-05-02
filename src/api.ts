@@ -1,4 +1,5 @@
-import { InstanceStatus, OSCMetaArgument } from '@companion-module/base'
+import { InstanceStatus } from '@companion-module/base'
+
 import type { OBSBOTInstance } from './main.js'
 import osc from 'osc'
 
@@ -11,103 +12,249 @@ export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 
 	self.updateStatus(InstanceStatus.Connecting)
 
-	// Close existing socket if needed
-	if (self.oscPort) {
+	// Cleanup previous socket
+	if (self._socket?.close) {
 		try {
-			self.oscPort.close()
+			self._socket.close()
 		} catch (e) {
-			self.log('warn', `Failed to close previous OSC port: ${e}`)
+			self.log('warn', `Failed to close previous socket: ${e}`)
 		}
 	}
 
-	// Create a new OSC port
 	if (transport === 'udp') {
-		self.oscPort = new osc.UDPPort({
-			localAddress: '0.0.0.0',  // listen on all interfaces
-			localPort: 57110,         // bind to 57110, matching what OBSBOT expects
+		// Shared UDP socket on fixed OBSBOT response port 57120
+		self._socket = self.createSharedUdpSocket('udp4', (msg, rinfo) => CheckMessage(self, msg, rinfo))
+
+		self._socket.bind(self.config.listenport, self.config.ip, () => {
+			self.log('info', `Shared UDP socket listening on port ${self.config.listenport}`)
+			SendCommand(self, '/OBSBOT/WebCam/General/Connected', [{ type: 'i', value: 0 }])
+		})
+
+		self._socket.on('error', (err: any) => {
+			self.log('error', `UDP socket error: ${err.message}`)
+			self.updateStatus(InstanceStatus.ConnectionFailure)
 		})
 	} else {
-		self.oscPort = new osc.TCPSocketPort({
+		// TCP connection
+		self._socket = new osc.TCPSocketPort({
 			address: ip,
 			port: port,
 		})
+
+		self._socket.on('ready', () => {
+			self.log('info', `TCP connection established to ${ip}:${port}`)
+			self.updateStatus(InstanceStatus.Ok)
+			SendCommand(self, '/OBSBOT/WebCam/General/Connected', [{ type: 'i', value: 0 }])
+		})
+
+		self._socket.on('message', (msg: any) => {
+			if (msg.address) {
+				self.log('debug', `Received: ${msg.address} ${JSON.stringify(msg.args)}`)
+				processData(self, msg.address, msg.args)
+			}
+		})
+
+		self._socket.on('error', (err: any) => {
+			self.log('error', `TCP error: ${err.message}`)
+			self.updateStatus(InstanceStatus.ConnectionFailure)
+		})
+
+		self._socket.open()
 	}
-
-	// Common event handlers
-	self.oscPort.on('ready', () => {
-		self.log('debug', `OSC Port ready on ${transport.toUpperCase()} (port ${port})`)
-
-		// Send initial handshake command
-		self.sendCommand('/OBSBOT/WebCam/General/Connected', [{ type: 'i', value: 0 }])
-	})
-
-	self.oscPort.on('error', (err: any) => {
-		if (!err || !err.code) {
-			self.log('error', `Unknown error: ${JSON.stringify(err)}`)
-			return
-		}
-
-		const messages: Record<string, string> = {
-			EADDRNOTAVAIL: `Address not available: ${ip}`,
-			ECONNREFUSED: `Connection refused: ${ip}:${port}`,
-			EADDRINUSE:   `Address in use: ${ip}:${port}`,
-			ETIMEDOUT:    `Connection timed out: ${ip}:${port}`,
-			ECONNRESET:   `Connection reset: ${ip}:${port}`,
-			EHOSTUNREACH: `Host unreachable: ${ip}:${port}`,
-			ENETUNREACH:  `Network unreachable: ${ip}:${port}`,
-		}
-
-		self.log('error', messages[err.code] || `Error: ${err.code}`)
-		self.updateStatus(InstanceStatus.ConnectionFailure)
-	})
-
-	self.oscPort.on('message', (msg: any) => {
-		self.log('debug', `Received: ${msg.address} ${JSON.stringify(msg.args)}`)
-		processData(self, msg.address, msg.args)
-	})
-
-	self.oscPort.open()
 }
 
-function processData(self: OBSBOTInstance, address: string, args: OSCMetaArgument[]): void {
+function CheckMessage(self: OBSBOTInstance, msg: Buffer, rinfo: any): void {
+	try {
+		if (rinfo.address == self.config.ip && rinfo.port == self.config.port) {
+			const packet = osc.readPacket(msg, {})
+			const messages = packet.packets || [packet]
+
+			for (const message of messages) {
+				if (message.address) {
+					processData(self, message.address, message.args)
+				}
+			}
+		}
+	} catch (err: any) {
+		//self.log('error', `OSC decode error: ${err.message}`)
+	}
+}
+
+function processData(self: OBSBOTInstance, address: string, args: OSCArgument[]): void {
 	if (self.config.verbose) {
 		self.log('debug', `Processing message: ${address} ${JSON.stringify(args)}`)
 	}
 
-	if (address === '/OBSBOT/WebCam/General/ConnectedResp') {
-		self.updateStatus(InstanceStatus.Ok)
-		self.log('info', 'Connected to OBSBOT device successfully.')
+	//if we got any data, let's say the module status is ok
+	self.updateStatus(InstanceStatus.Ok)
 
-		self.sendCommand('/OBSBOT/WebCam/General/GetDeviceInfo', [{ type: 'i', value: 0 }])
+	const variableObj: any = {}
+
+	switch (address) {
+		case '/OBSBOT/WebCam/General/DeviceInfo': {
+			const info = parseDeviceInfo(self, args)
+
+			self.DEVICES = info.devices
+			self.updateVariableDefinitions()
+
+			if (self.DEVICES.length > 1) {
+				let i = 1
+
+				for (const device in info.devices) {
+					variableObj[`device${i}_connected`] = info.devices[device].connected ? 'Connected' : 'Disconnected'
+					variableObj[`device${i}_name`] = info.devices[device].name
+					i++
+				}
+
+				variableObj['selected_index'] = info.selectedDeviceIndex
+				variableObj['selected_state'] = info.selectedDeviceRunState
+				variableObj['selected_type'] = info.selectedDeviceType
+				variableObj['selected_name'] = info.devices[info.selectedDeviceIndex].name
+				variableObj['selected_connected'] = info.devices[info.selectedDeviceIndex].connected
+					? 'Connected'
+					: 'Disconnected'
+			} else if ((self.DEVICES.length as number) === 1) {
+				variableObj.device_name = info.devices[0].name
+			}
+
+			break
+		}
+		case '/OBSBOT/WebCam/General/ZoomInfo': {
+			const zoom = parseZoomInfo(args)
+			variableObj['zoom'] = zoom.zoom
+			variableObj['fov'] = zoom.fov
+			break
+		}
+		case '/OBSBOT/WebCam/General/GetGimbalPosInfoResp': {
+			const pos = parseGimbalPosInfo(args)
+			variableObj['gimbal_pitch'] = pos.pitch
+			variableObj['gimbal_yaw'] = pos.yaw
+			break
+		}
+		case '/OBSBOT/WebCam/General/ConnectedResp': {
+			self.updateStatus(InstanceStatus.Ok)
+			self.log('info', 'Connected to OBSBOT device successfully.')
+			self.sendCommand('/OBSBOT/WebCam/General/GetDeviceInfo', [{ type: 'i', value: 0 }])
+			break
+		}
+	}
+
+	self.setVariableValues(variableObj)
+}
+
+function parseDeviceInfo(self: OBSBOTInstance, args: any[]) {
+	const deviceInfo: any = {}
+
+	try {
+		deviceInfo.devices = [
+			{ connected: args[0] === 1, name: args[1] },
+			{ connected: args[2] === 1, name: args[3] },
+			{ connected: args[4] === 1, name: args[5] },
+			{ connected: args[6] === 1, name: args[7] },
+		]
+
+		//if not OBS_CENTER_APP, strip off all but first entry
+		if (!self.config.model?.toString().includes('OBSBOT_CENTER')) {
+			deviceInfo.devices = [deviceInfo.devices[0]]
+		}
+
+		deviceInfo.selectedDeviceIndex = args[8]
+		;(deviceInfo.selectedDeviceRunState = args[9] === 1 ? 'Run' : 'Sleep'),
+			(deviceInfo.selectedDeviceType = getDeviceTypeLabel(args[10]))
+	} catch (err: any) {
+	} finally {
+		return deviceInfo
 	}
 }
 
-export function SendCommand(self: OBSBOTInstance, address: string, args: OSCMetaArgument[]): void {
-	if (!self.oscPort) {
-		self.log('error', `OSC Port is not open. Cannot send command: ${address}`)
+function getDeviceTypeLabel(type: number): string {
+	switch (type) {
+		case 0:
+			return 'Tiny'
+		case 1:
+			return 'Tiny 4K'
+		case 2:
+			return 'Meet'
+		case 3:
+			return 'Meet 4K'
+		case 5:
+			return 'Tail2'
+		default:
+			return `Unknown (${type})`
+	}
+}
+
+function parseZoomInfo(args: any[]) {
+	return {
+		zoom: args[0],
+		fov: getFovLabel(args[1]),
+	}
+}
+
+function getFovLabel(value: number): string {
+	switch (value) {
+		case 0:
+			return '86°'
+		case 1:
+			return '78°'
+		case 2:
+			return '65°'
+		default:
+			return `Unknown (${value})`
+	}
+}
+
+function parseGimbalPosInfo(args: any[]) {
+	return {
+		roll: undefined, // Currently unused
+		pitch: args[0],
+		yaw: args[1],
+	}
+}
+
+export function SendCommand(
+	self: OBSBOTInstance,
+	address: string,
+	args: OSCArgument[],
+	targetIp?: string, // for multi-camera UDP control
+): void {
+	const { verbose, transport, model, device } = self.config
+
+	if (!self._socket) {
+		self.log('error', `OSC socket is not open. Cannot send command: ${address}`)
 		return
 	}
 
-	const { verbose, transport, ip, port, model, device } = self.config
-
-	if (verbose) {
-		self.log('debug', `Sending command: ${address} ${JSON.stringify(args)} via ${transport.toUpperCase()} to ${ip}:${port}`)
-	}
+	const destinationIp = targetIp || self.config.ip
 
 	// Prepend device ID if needed
-	if (model.toString().includes('OBSBOT_CENTER')) {
-		const deviceArg: OSCMetaArgument = { type: 'i', value: device }
-		args = [deviceArg, ...args]
+	if (model?.toString().includes('OBSBOT_CENTER')) {
+		args = [{ type: 'i', value: device }, ...args]
 	}
 
 	const message = {
-		address: address,
-		args: args,
+		address,
+		args: args.map((arg) => ({
+			type: arg.type,
+			value: arg.value,
+		})),
 	}
 
-	if (transport === 'udp') {
-		self.oscPort.send(message, ip, port)
-	} else {
-		self.oscPort.send(message)
+	try {
+		if (transport === 'udp') {
+			const binary = osc.writePacket(message)
+			self._socket.send(binary, 0, binary.length, self.config.port, destinationIp)
+		} else {
+			self._socket.send(message)
+		}
+
+		if (verbose) {
+			self.log(
+				'debug',
+				`Sent: ${address} ${JSON.stringify(args)} via ${transport.toUpperCase()} to ${destinationIp}:${self.config.port}`,
+			)
+		}
+	} catch (err: any) {
+		self.log('error', `Failed to send OSC: ${err.message}`)
 	}
 }

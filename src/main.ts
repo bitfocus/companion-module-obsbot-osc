@@ -1,10 +1,4 @@
-import {
-	InstanceBase,
-	InstanceStatus,
-	OSCMetaArgument,
-	runEntrypoint,
-	type SomeCompanionConfigField,
-} from '@companion-module/base'
+import { InstanceBase, InstanceStatus, runEntrypoint, type SomeCompanionConfigField } from '@companion-module/base'
 import { GetConfigFields, type ModuleConfig } from './config.js'
 import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions } from './actions.js'
@@ -13,7 +7,8 @@ import { InitConnection, SendCommand } from './api.js'
 
 export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 	config!: ModuleConfig // Setup in init()
-	oscPort?: any
+	_socket: any // Socket for communication, type can be more specific based on implementation
+	DEVICES: [] = [] // Device list, type can be more specific based on implementation
 
 	constructor(internal: unknown) {
 		super(internal)
@@ -56,7 +51,7 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 		await InitConnection(this)
 	}
 
-	sendCommand(address: string, args: OSCMetaArgument[]): void {
+	sendCommand(address: string, args: OSCArgument[]): void {
 		SendCommand(this, address, args)
 	}
 }
