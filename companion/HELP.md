@@ -13,12 +13,69 @@ Additionally, the OSC can be independently applied to OBSBOT Tail 2, OBSBOT Tail
 
 ## Actions
 
--
+- Center App | Meet Series | Set Auto Framing
+- Center App | Meet Series | Set to Standard Mode
+- Center App | Meet Series | Set Virtual Background
+- Center App | Set Focus Mode
+- Center App | Set View
+- Center App | Start PC Recording
+- Center App | Stop PC Recording
+- Center App | Take PC Snapshot
+- Center App | Tail 2 | Set Pan Axis Lock
+- Center App | Tail 2 | Set Pan Tracking Speed
+- Center App | Tail 2 | Set Tilt Axis Lock
+- Center App | Tail 2 | Set Tilt Tracking Speed
+- Center App | Tail Series | AI Mode
+- Center App | Tail Series | Set Tracking Speed
+- Center App | Tail Series | Start Recording
+- Center App | Tail Series | Stop Recording
+- Center App | Tail Series | Take Snapshot
+- Center App | Tail Series | Trigger Preset
+- Center App | Tiny Series | AI Lock On/Off
+- Center App | Tiny Series | AI Mode
+- Center App | Tiny Series | Set Tracking Mode
+- Center App | Tiny Series | Trigger Preset
+- Gimbal | Move Down
+- Gimbal | Move Left
+- Gimbal | Move Right
+- Gimbal | Move Up
+- Gimbal | Reset Position
+- Gimbal | Set Motor Degree
+- Gimbal | Stop Moving Down
+- Gimbal | Stop Moving Left
+- Gimbal | Stop Moving Right
+- Gimbal | Stop Moving Up
+- Image | Set Auto Exposure On/Off
+- Image | Set Auto Focus On/Off
+- Image | Set Auto White Balance On/Off
+- Image | Set Color Temperature
+- Image | Set Exposure Compensate Value
+- Image | Set ISO
+- Image | Set Manual Focus Value
+- Image | Set Shutter Speed
+- Other | Set Mirror Mode
+- Tail 2 | Set AI Mode and Auto Zoom Mode
+- Tail 2 | Set Only Me On/Off
+- Tail 2 | Set Tracking Speed
+- Tail 2 | Start Recording
+- Tail 2 | Stop Recording
+- Tail 2 | Take Snapshot
+- Tail 2 | Trigger Preset
+- Tail Air | Set AI Mode
+- Tail Air | Set Tracking Speed
+- Tail Air | Start Recording
+- Tail Air | Stop Recording
+- Tail Air | Take Snapshot
+- Tail Air | Trigger Preset
+- Zoom | Set Zoom Level
+- Zoom | Set Zoom Max
+- Zoom | Set Zoom Min
+- Zoom | Set Zoom Speed
 
 ## Feedbacks
 
 ## Variables
 
--
+- Device Name
 
 ## Presets
