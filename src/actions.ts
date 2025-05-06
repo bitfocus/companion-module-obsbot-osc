@@ -24,7 +24,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		'OBSBOT_CENTER_MEET',
 	]
 
-	if (self.config.model in CommonActions) {
+	if (CommonActions.includes(self.config.model)) {
 		//ZOOM
 		actions.setZoom = {
 			name: 'Zoom | Set Zoom Level',
