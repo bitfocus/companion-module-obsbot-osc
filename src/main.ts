@@ -4,6 +4,7 @@ import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions } from './actions.js'
 import { UpdateVariableDefinitions } from './variables.js'
 import { InitConnection, SendCommand } from './api.js'
+import { UpdatePresets } from './presets.js'
 
 export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 	config!: ModuleConfig // Setup in init()
@@ -18,6 +19,7 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 		this.config = config
 		this.updateActions() // export actions
 		this.updateVariableDefinitions() // export variable definitions
+		this.updatePresets() // export presets
 		this.updateStatus(InstanceStatus.Connecting)
 		await this.initConnection()
 	}
@@ -30,6 +32,7 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 		this.config = config
 		this.updateActions()
 		this.updateVariableDefinitions()
+		this.updatePresets()
 		this.updateStatus(InstanceStatus.Connecting)
 		await this.initConnection()
 	}
@@ -45,6 +48,10 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 
 	updateVariableDefinitions(): void {
 		UpdateVariableDefinitions(this)
+	}
+
+	updatePresets(): void {
+		UpdatePresets(this)
 	}
 
 	async initConnection(): Promise<void> {

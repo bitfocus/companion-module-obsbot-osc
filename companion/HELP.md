@@ -79,3 +79,41 @@ Additionally, the OSC can be independently applied to OBSBOT Tail 2, OBSBOT Tail
 - Device Name
 
 ## Presets
+
+- Center App | Meet Series | Auto Framing Toggle
+- Center App | Meet Series | Standard Mode
+- Center App | Set Focus Mode
+- Center App | Set View
+- Center App | Recording Controls
+- Center App | Take Snapshot
+- Center App | Tail Series | AI Mode Controls
+- Center App | Tail Series | Tracking Speed Controls
+- Center App | Tail Series | Recording Controls
+- Center App | Tail Series | Preset Positions
+- Center App | Tiny Series | AI Controls
+- Center App | Tiny Series | Tracking Mode
+- Center App | Tiny Series | Preset Positions
+- Gimbal | Movement Controls
+- Gimbal | Position Reset
+- Gimbal | Motor Position
+- Image | Auto Exposure Toggle
+- Image | Auto Focus Toggle
+- Image | Auto White Balance Toggle
+- Image | Color Temperature
+- Image | Exposure Controls
+- Image | Focus Control
+- Tail 2 | AI Mode Controls
+- Tail 2 | Tracking Controls
+- Tail 2 | Recording Controls
+- Tail 2 | Preset Position 1
+- Tail 2 | Preset Position 2
+- Tail 2 | Preset Position 3
+- Tail Air | AI Mode Controls
+- Tail Air | Tracking Controls
+- Tail Air | Recording Controls
+- Tail Air | Preset Position 1
+- Tail Air | Preset Position 2
+- Tail Air | Preset Position 3
+- Zoom | Level Control
+- Zoom | Min/Max Settings
+- Zoom | Speed Control
