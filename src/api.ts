@@ -228,8 +228,9 @@ export function SendCommand(
 	const destinationIp = targetIp || self.config.ip
 
 	// Prepend device ID if needed
-	if (model?.toString().includes('OBSBOT_CENTER')) {
-		args = [{ type: 'i', value: device }, ...args]
+	if (model?.toString().includes('OBSBOT_CENTER') && address !== '/OBSBOT/WebCam/General/Connected') {
+		// Minus 1 because device ID is 1-based in OBSBOT Center and 0-based with OSC
+		args = [{ type: 'i', value: device - 1 }, ...args]
 	}
 
 	const message = {
