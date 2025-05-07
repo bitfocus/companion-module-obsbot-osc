@@ -868,7 +868,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					type: 'i',
 					value: parseInt(action.options.aiMode?.toString() || '0'),
 				})
-				self.sendCommand('/OBSBOT/Camera/Tail2/SetAIMode', args)
+				self.sendCommand('/OBSBOT/Camera/Tail2/SetAiMode', args)
 
 				if (action.options.aiMode === '0') {
 					args.push({
@@ -1109,7 +1109,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					type: 'i',
 					value: parseInt(action.options.aiMode?.toString() || '0'),
 				})
-				self.sendCommand('/OBSBOT/Camera/TailAir/SetAIMode', args)
+				self.sendCommand('/OBSBOT/Camera/TailAir/SetAiMode', args)
 			},
 		}
 
