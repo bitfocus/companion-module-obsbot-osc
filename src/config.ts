@@ -33,7 +33,8 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			id: 'port',
 			width: 4,
 			label: 'Port',
-			tooltip: '57110 is the default for OBSBOT devices. When using the OBSBOT Center App, this port must match the port set in the app.',
+			tooltip:
+				'57110 is the default for OBSBOT devices. When using the OBSBOT Center App, this port must match the port set in the app.',
 			min: 1,
 			max: 65535,
 			default: 57110,
@@ -57,8 +58,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			default: 57120,
 			min: 1,
 			max: 65535,
-			tooltip:
-				'Port for receiving OSC messages over UDP. 57120 is the default for OBSBOT devices and Center App',
+			tooltip: 'Port for receiving OSC messages over UDP. 57120 is the default for OBSBOT devices and Center App',
 			isVisible: (config) => config.transport === 'udp',
 		},
 		{
