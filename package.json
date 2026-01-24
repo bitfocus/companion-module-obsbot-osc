@@ -9,7 +9,9 @@
 		"package": "run build && companion-module-build",
 		"build": "rimraf dist && run build:main",
 		"build:main": "tsc -p tsconfig.build.json",
-		"dev": "tsc -p tsconfig.build.json --watch"
+		"dev": "tsc -p tsconfig.build.json --watch",
+		"lint": "yarn lint:raw --fix",
+		"lint:raw": "eslint --ext .ts,.tsx,.js,.jsx . --fix"
 	},
 	"license": "MIT",
 	"repository": {
@@ -17,12 +19,13 @@
 		"url": "git+https://github.com/bitfocus/companion-module-obsbot-osc.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.11.2",
+		"@companion-module/base": "~1.13.0",
 		"osc": "^2.4.5"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.1.1",
-		"@types/node": "^22.10.2",
+		"@companion-module/tools": "^2.5.0",
+		"@types/node": "^22.19.7",
+		"eslint": "^9.39.2",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.2.11",
 		"prettier": "^3.4.2",
@@ -38,5 +41,5 @@
 			"yarn lint:raw --fix"
 		]
 	},
-	"packageManager": "yarn@4.5.3"
+	"packageManager": "yarn@4.12.0"
 }
