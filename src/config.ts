@@ -19,7 +19,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			width: 12,
 			label: 'Information',
 			value:
-				'This module will communicate with OBSBOT products over OSC. It can be applied to the OBSBOT Center App (software), OBSBOT Tail 2 (hardware), and OBSBOT Tail Air (hardware). The OSC application on OBSBOT Center is compatible with the OBSBOT Tiny series (Tiny, Tiny 4K, Tiny 2, Tiny 2 Lite, Tiny SE), OBSBOT Meet series (Meet, Meet 4K, Meet 2, Meet SE), and OBSBOT Tail series (Tail Air, Tail 2). However, when using the OSC protocol with OBSBOT Center, the software must be running and OSC activated.',
+				'This module will communicate with OBSBOT products over OSC. It can be applied to the OBSBOT Center App (software), OBSBOT Tail 2 (hardware), and OBSBOT Tail Air (hardware). The OSC application on OBSBOT Center is compatible with the OBSBOT Tiny series (Tiny, Tiny 4K, Tiny 2, Tiny 2 Lite, Tiny 3, Tiny 3 Lite, Tiny SE), OBSBOT Meet series (Meet, Meet 4K, Meet 2, Meet SE), and OBSBOT Tail series (Tail Air, Tail 2). However, when using the OSC protocol with OBSBOT Center, the software must be running and OSC activated.',
 		},
 		{
 			type: 'textinput',
@@ -33,7 +33,8 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			id: 'port',
 			width: 4,
 			label: 'Port',
-			tooltip: '57110 is the default for OBSBOT devices. When using the OBSBOT Center App, this port must match the port set in the app.',
+			tooltip:
+				'57110 is the default for OBSBOT devices. When using the OBSBOT Center App, this port must match the port set in the app.',
 			min: 1,
 			max: 65535,
 			default: 57110,
@@ -57,8 +58,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			default: 57120,
 			min: 1,
 			max: 65535,
-			tooltip:
-				'Port for receiving OSC messages over UDP. 57120 is the default for OBSBOT devices and Center App',
+			tooltip: 'Port for receiving OSC messages over UDP. 57120 is the default for OBSBOT devices and Center App',
 			isVisible: (config) => config.transport === 'udp',
 		},
 		{

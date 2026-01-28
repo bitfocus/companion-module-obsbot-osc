@@ -1,4 +1,4 @@
-import { CompanionActionDefinitions } from '@companion-module/base'
+import type { CompanionActionDefinitions } from '@companion-module/base'
 import type { OBSBOTInstance } from './main.js'
 import { Models } from './models.js'
 
@@ -44,7 +44,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting zoom to ${action.options.zoom}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.zoom?.toString() || '0'),
@@ -82,7 +82,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting zoom speed to ${action.options.zoomSpeed}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.zoomValue?.toString() || '0'),
@@ -113,7 +113,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting zoom max to ${action.options.zoomLevel}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.zoomLevel?.toString() || '0'),
@@ -140,7 +140,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting zoom min to ${action.options.zoomLevel}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.zoomLevel?.toString() || '0'),
@@ -156,7 +156,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Resetting gimbal.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 0,
@@ -183,7 +183,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Moving gimbal up at speed ${action.options.moveSpeed}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.moveSpeed?.toString() || '0'),
@@ -199,7 +199,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Stopping gimbal up.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 0,
@@ -226,7 +226,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Moving gimbal down at speed ${action.options.moveSpeed}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.moveSpeed?.toString() || '0'),
@@ -241,7 +241,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Stopping gimbal down.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 0,
@@ -268,7 +268,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Moving gimbal left at speed ${action.options.moveSpeed}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.moveSpeed?.toString() || '0'),
@@ -283,7 +283,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Stopping gimbal left.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 0,
@@ -310,7 +310,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Moving gimbal right at speed ${action.options.moveSpeed}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.moveSpeed?.toString() || '0'),
@@ -325,7 +325,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Stopping gimbal right.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 0,
@@ -385,7 +385,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting gimbal motor degree to ${action.options.pan} ${action.options.pitch}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.speed?.toString() || '0'),
@@ -419,7 +419,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting mirror mode to ${action.options.mirrorMode}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.mirrorMode?.toString() || '0'),
@@ -449,7 +449,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting view angle to ${action.options.viewAngle}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.viewAngle?.toString() || '0'),
@@ -464,7 +464,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Starting PC recording.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 1,
@@ -479,7 +479,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Stopping PC recording.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 0,
@@ -494,7 +494,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Taking PC snapshot.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 1,
@@ -522,7 +522,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		],
 		callback: (action) => {
 			self.log('info', `Setting auto focus to ${action.options.autoFocus}.`)
-			let args: OSCArgument[] = []
+			const args: OSCArgument[] = []
 			args.push({
 				type: 'i',
 				value: parseInt(action.options.autoFocus?.toString() || '0'),
@@ -549,7 +549,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		],
 		callback: (action) => {
 			self.log('info', `Setting manual focus value to ${action.options.focusValue}.`)
-			let args: OSCArgument[] = []
+			const args: OSCArgument[] = []
 			args.push({
 				type: 'i',
 				value: parseInt(action.options.focusValue?.toString() || '0'),
@@ -590,7 +590,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting focus mode to ${action.options.focusMode}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.focusMode?.toString() || '0'),
@@ -623,7 +623,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		],
 		callback: (action) => {
 			self.log('info', `Setting auto exposure to ${action.options.autoExposure}.`)
-			let args: OSCArgument[] = []
+			const args: OSCArgument[] = []
 			args.push({
 				type: 'i',
 				value: parseInt(action.options.autoExposure?.toString() || '0'),
@@ -666,7 +666,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		],
 		callback: (action) => {
 			self.log('info', `Setting exposure compensate value to ${action.options.exposureCompensateValue}.`)
-			let args: OSCArgument[] = []
+			const args: OSCArgument[] = []
 			args.push({
 				type: 'i',
 				value: parseInt(action.options.exposureCompensateValue?.toString() || '0'),
@@ -724,7 +724,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		],
 		callback: (action) => {
 			self.log('info', `Setting shutter speed to ${action.options.shutterSpeedValue}.`)
-			let args: OSCArgument[] = []
+			const args: OSCArgument[] = []
 			args.push({
 				type: 'i',
 				value: parseInt(action.options.shutterSpeedValue?.toString() || '0'),
@@ -755,7 +755,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		],
 		callback: (action) => {
 			self.log('info', `Setting ISO to ${action.options.isoValue}.`)
-			let args: OSCArgument[] = []
+			const args: OSCArgument[] = []
 			args.push({
 				type: 'i',
 				value: parseInt(action.options.isoValue?.toString() || '0'),
@@ -781,13 +781,106 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		],
 		callback: (action) => {
 			self.log('info', `Setting auto white balance to ${action.options.autoWhiteBalance}.`)
-			let args: OSCArgument[] = []
+			const args: OSCArgument[] = []
 			args.push({
 				type: 'i',
 				value: parseInt(action.options.autoWhiteBalance?.toString() || '0'),
 			})
 			self.sendCommand('/OBSBOT/WebCam/General/SetAutoWhiteBalance', args)
 		},
+	}
+
+	if (self.config.model === 'OBSBOT_CENTER_TINY') {
+		// At this time these image controls are only Tiny 3 / Tiny 3 Lite capable.
+		actions.setWhiteBalanceShift = {
+			name: 'Image | Set White Balance Shift',
+			description: 'Set the white balance shift of the camera. Only available for Tiny 3 and Tiny 3 Lite.',
+			options: [
+				{
+					type: 'number',
+					label: 'Blue - Amber',
+					id: 'blueAmber',
+					default: 0,
+					min: -7,
+					max: 7,
+					step: 0.25,
+					required: true,
+					range: true,
+				},
+				{
+					type: 'number',
+					label: 'Green - Magenta',
+					id: 'greenMagenta',
+					default: 0,
+					min: -7,
+					max: 7,
+					step: 0.25,
+					required: true,
+					range: true,
+				},
+			],
+			callback: (action) => {
+				self.log(
+					'info',
+					`Setting white balance shift to B-A ${action.options.blueAmber} G-M ${action.options.greenMagenta}.`,
+				)
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'f',
+					value: parseFloat(action.options.blueAmber?.toString() || '0'),
+				})
+				args.push({
+					type: 'f',
+					value: parseFloat(action.options.greenMagenta?.toString() || '0'),
+				})
+				self.sendCommand('/OBSBOT/WebCam/General/SetWhiteBalanceShift', args)
+			},
+		}
+
+		actions.setRBGain = {
+			name: 'Image | Set Red/Blue Gain',
+			description: 'Set the Red and Blue gain of the camera. Only available for Tiny 3 and Tiny 3 Lite.',
+			options: [
+				{
+					type: 'number',
+					label: 'Red Gain',
+					id: 'redGain',
+					default: 127,
+					min: 0,
+					max: 255,
+					step: 1,
+					required: true,
+					range: true,
+				},
+				{
+					type: 'number',
+					label: 'Blue Gain',
+					id: 'blueGain',
+					default: 127,
+					min: 0,
+					max: 255,
+					step: 1,
+					required: true,
+					range: true,
+				},
+			],
+			callback: (action) => {
+				self.log(
+					'info',
+					`Setting red gain to ${action.options.redGain}. Setting blue gain to ${action.options.blueGain}.`,
+				)
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: parseInt(action.options.redGain?.toString() || '0'),
+				})
+				args.push({
+					type: 'i',
+					value: parseInt(action.options.blueGain?.toString() || '0'),
+				})
+				self.sendCommand('/OBSBOT/WebCam/General/SetRBGain', args)
+			},
+		}
 	}
 
 	actions.setColorTemperature = {
@@ -808,7 +901,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		],
 		callback: (action) => {
 			self.log('info', `Setting color temperature to ${action.options.colorTemperature}.`)
-			let args: OSCArgument[] = []
+			const args: OSCArgument[] = []
 			args.push({
 				type: 'i',
 				value: parseInt(action.options.colorTemperature?.toString() || '0'),
@@ -863,7 +956,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting AI mode to ${action.options.aiMode}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.aiMode?.toString() || '0'),
@@ -883,6 +976,32 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					})
 					self.sendCommand('/OBSBOT/Camera/Tail2/SetAutoZoom', args)
 				}
+			},
+		}
+
+		actions.OBSBOT_TAIL_2_aiModeEnable = {
+			name: 'Tail 2 | AI Mode On/Off',
+			description: 'Set the AI mode of the camera',
+			options: [
+				{
+					type: 'dropdown',
+					label: 'AI Mode',
+					id: 'aiMode',
+					default: '0',
+					choices: [
+						{ id: '0', label: 'Off' },
+						{ id: '1', label: 'On' },
+					],
+				},
+			],
+			callback: (action) => {
+				self.log('info', `Setting AI Mode to ${action.options.aiMode}.`)
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: parseInt(action.options.aiMode?.toString() || '0'),
+				})
+				self.sendCommand('/OBSBOT/Camera/Tail2/SetAiEnable', args)
 			},
 		}
 
@@ -953,7 +1072,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting tracking speed to ${action.options.mode}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.mode?.toString() || '0'),
@@ -997,7 +1116,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting Only Me to ${action.options.onlyMe}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.onlyMe?.toString() || '0'),
@@ -1012,7 +1131,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Starting recording.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 1,
@@ -1027,7 +1146,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Stopping recording.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 0,
@@ -1042,7 +1161,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Taking snapshot.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 1,
@@ -1069,7 +1188,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Triggering preset ${action.options.presetNumber}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 
 				//OBSBOT_TAIL_2 only supports 1-3 - 0 based
 				args.push({
@@ -1104,7 +1223,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting AI mode to ${action.options.aiMode}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.aiMode?.toString() || '0'),
@@ -1131,7 +1250,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting tracking speed to ${action.options.trackingSpeed}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.trackingSpeed?.toString() || '0'),
@@ -1146,7 +1265,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Starting recording.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 1,
@@ -1161,7 +1280,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Stopping recording.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 0,
@@ -1176,7 +1295,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Taking snapshot.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 1,
@@ -1203,7 +1322,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Triggering preset ${action.options.presetNumber}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 
 				//OBSBOT_TAIL_AIR only supports 1-3 - 0 based
 				args.push({
@@ -1234,7 +1353,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting AI lock to ${action.options.aiLock}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.aiLock?.toString() || '0'),
@@ -1261,7 +1380,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Triggering preset ${action.options.presetNumber}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 
 				args.push({
 					type: 'i',
@@ -1275,6 +1394,16 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			name: 'Center App | Tiny Series | AI Mode',
 			description: 'Set the AI Mode of the camera',
 			options: [
+				{
+					type: 'dropdown',
+					label: 'Camera',
+					id: 'camera',
+					default: 'tiny2',
+					choices: [
+						{ id: 'tiny2', label: 'Tiny 2' },
+						{ id: 'tiny3', label: 'Tiny 3 / Tiny 3 Lite' },
+					],
+				},
 				{
 					type: 'dropdown',
 					label: 'AI Mode',
@@ -1292,14 +1421,32 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						{ id: '8', label: 'Hand' },
 						{ id: '9', label: 'Group' },
 					],
+					isVisibleExpression: '$(options:camera) !== "tiny3"',
+				},
+				{
+					type: 'dropdown',
+					label: 'AI Mode (Tiny 3 / Tiny 3 Lite)',
+					id: 'aiModeTiny3',
+					default: '0',
+					choices: [
+						{ id: '0', label: 'Human Tracking (Single Mode)' },
+						{ id: '1', label: 'Human Tracking (Group Mode)' },
+						{ id: '2', label: 'Voice Tracking' },
+						{ id: '3', label: 'Desk Mode' },
+						{ id: '4', label: 'Hand' },
+						{ id: '5', label: 'Whiteboard' },
+					],
+					isVisibleExpression: '$(options:camera) === "tiny3"',
 				},
 			],
 			callback: (action) => {
 				self.log('info', `Setting AI mode to ${action.options.aiMode}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
+				const aiMode = action.options.camera === 'tiny3' ? action.options.aiModeTiny3 : action.options.aiMode
+
 				args.push({
 					type: 'i',
-					value: parseInt(action.options.aiMode?.toString() || '0'),
+					value: parseInt(aiMode?.toString() || '0'),
 				})
 				self.sendCommand('/OBSBOT/WebCam/Tiny/SetAiMode', args)
 			},
@@ -1323,12 +1470,39 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting tracking mode to ${action.options.trackingMode}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.trackingMode?.toString() || '0'),
 				})
 				self.sendCommand('/OBSBOT/WebCam/Tiny/SetTrackingMode', args)
+			},
+		}
+
+		actions.OBSBOT_CENTER_TINY_setTrackingSpeed = {
+			name: 'Center App | Tiny Series | Set Tracking Speed',
+			description: 'Set the tracking speed of the camera. Only available for Tiny 3 and Tiny 3 Lite.',
+			options: [
+				{
+					type: 'dropdown',
+					label: 'Tracking Speed',
+					id: 'trackingSpeed',
+					default: '1',
+					choices: [
+						{ id: '0', label: 'Slow' },
+						{ id: '1', label: 'Standard' },
+						{ id: '2', label: 'Fast' },
+					],
+				},
+			],
+			callback: (action) => {
+				self.log('info', `Setting tracking speed to ${action.options.trackingSpeed}.`)
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: parseInt(action.options.trackingSpeed?.toString() || '0'),
+				})
+				self.sendCommand('/OBSBOT/WebCam/Tiny/SetTrackingSpeed', args)
 			},
 		}
 	}
@@ -1368,7 +1542,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting AI mode to ${action.options.aiMode}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.aiMode?.toString() || '0'),
@@ -1408,7 +1582,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting tracking speed to ${action.options.trackingSpeed}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.trackingSpeed?.toString() || '0'),
@@ -1438,7 +1612,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 				],
 				callback: (action) => {
 					self.log('info', `Setting pan tracking speed to ${action.options.panTrackingSpeed}.`)
-					let args: OSCArgument[] = []
+					const args: OSCArgument[] = []
 					args.push({
 						type: 'i',
 						value: parseInt(action.options.panTrackingSpeed?.toString() || '0'),
@@ -1466,7 +1640,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 				],
 				callback: (action) => {
 					self.log('info', `Setting tilt tracking speed to ${action.options.tiltTrackingSpeed}.`)
-					let args: OSCArgument[] = []
+					const args: OSCArgument[] = []
 					args.push({
 						type: 'i',
 						value: parseInt(action.options.tiltTrackingSpeed?.toString() || '0'),
@@ -1493,7 +1667,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 				],
 				callback: (action) => {
 					self.log('info', `Setting pan axis lock to ${action.options.panAxisLock}.`)
-					let args: OSCArgument[] = []
+					const args: OSCArgument[] = []
 					args.push({
 						type: 'i',
 						value: parseInt(action.options.panAxisLock?.toString() || '0'),
@@ -1520,7 +1694,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 				],
 				callback: (action) => {
 					self.log('info', `Setting tilt axis lock to ${action.options.tiltAxisLock}.`)
-					let args: OSCArgument[] = []
+					const args: OSCArgument[] = []
 					args.push({
 						type: 'i',
 						value: parseInt(action.options.tiltAxisLock?.toString() || '0'),
@@ -1537,7 +1711,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Starting recording.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 1,
@@ -1552,7 +1726,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Stopping recording.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 0,
@@ -1568,7 +1742,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Taking snapshot.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: 1,
@@ -1596,7 +1770,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Triggering preset ${action.options.presetNumber}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 
 				//OBSBOT_CENTER_TAIL only supports 1-3 - 0 based
 				args.push({
@@ -1629,7 +1803,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting virtual background to ${action.options.virtualBackground}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.virtualBackground?.toString() || '0'),
@@ -1657,7 +1831,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			],
 			callback: (action) => {
 				self.log('info', `Setting auto framing to ${action.options.autoFraming}.`)
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				args.push({
 					type: 'i',
 					value: parseInt(action.options.autoFraming?.toString() || '0'),
@@ -1673,7 +1847,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			options: [],
 			callback: () => {
 				self.log('info', 'Setting standard mode.')
-				let args: OSCArgument[] = []
+				const args: OSCArgument[] = []
 				self.sendCommand('/OBSBOT/WebCam/Meet/SetStandardMode', args)
 			},
 		}

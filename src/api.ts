@@ -75,7 +75,7 @@ function CheckMessage(self: OBSBOTInstance, msg: Buffer, rinfo: any): void {
 				}
 			}
 		}
-	} catch (err: any) {
+	} catch (_err: any) {
 		//self.log('error', `OSC decode error: ${err.message}`)
 	}
 }
@@ -159,12 +159,13 @@ function parseDeviceInfo(self: OBSBOTInstance, args: any[]) {
 		}
 
 		deviceInfo.selectedDeviceIndex = args[8]
-		;(deviceInfo.selectedDeviceRunState = args[9] === 1 ? 'Run' : 'Sleep'),
-			(deviceInfo.selectedDeviceType = getDeviceTypeLabel(args[10]))
-	} catch (err: any) {
-	} finally {
-		return deviceInfo
+		deviceInfo.selectedDeviceRunState = args[9] === 1 ? 'Run' : 'Sleep'
+		deviceInfo.selectedDeviceType = getDeviceTypeLabel(args[10])
+	} catch (_err: any) {
+		self.log('debug', 'Failed to parse device info.')
 	}
+
+	return deviceInfo
 }
 
 function getDeviceTypeLabel(type: number): string {

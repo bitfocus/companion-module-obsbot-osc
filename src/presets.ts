@@ -1,7 +1,7 @@
 import { CompanionButtonPresetDefinition, combineRgb } from '@companion-module/base'
 import type { OBSBOTInstance } from './main.js'
 import { Models } from './models.js'
-import { ICONS } from './icons.js'
+import { OBSBOT_ICONS } from './icons.js'
 
 // Define colors for different categories
 const colors = {
@@ -49,10 +49,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Zoom',
 			name: 'Zoom 0%',
 			style: {
-				text: 'Zoom\n0%',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.ZOOM_0,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -75,10 +78,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Zoom',
 			name: 'Zoom 50%',
 			style: {
-				text: 'Zoom\n50%',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.ZOOM_50,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -101,10 +107,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Zoom',
 			name: 'Zoom 100%',
 			style: {
-				text: 'Zoom\n100%',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.ZOOM_100,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -127,10 +136,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Zoom',
 			name: 'Zoom Speed',
 			style: {
-				text: 'Zoom\nSpeed',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.ZOOM_SPEED,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -154,10 +166,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Zoom',
 			name: 'Zoom Max',
 			style: {
-				text: 'Zoom\nMax',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.ZOOM_MAX,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -180,10 +195,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Zoom',
 			name: 'Zoom Min',
 			style: {
-				text: 'Zoom\nMin',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.ZOOM_MIN,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -209,12 +227,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Gimbal',
 			name: 'Move Gimbal Up',
 			style: {
-                text: '',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
-                png64: ICONS.UP,
-                pngalignment: 'center:center',
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.GIMBAL_MOVE_UP,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -245,9 +264,10 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
-                png64: ICONS.DOWN,
-                pngalignment: 'center:center',
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.GIMBAL_MOVE_DOWN,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -278,9 +298,10 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
-                png64: ICONS.LEFT,
-                pngalignment: 'center:center',
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.GIMBAL_MOVE_LEFT,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -311,9 +332,10 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
-                png64: ICONS.RIGHT,
-                pngalignment: 'center:center',
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.GIMBAL_MOVE_RIGHT,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -335,188 +357,190 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 				},
 			],
 		}
-        // ! Uncomment when gimbal diagonal movement is supported by OBSBOT
-        // presets['gimbal_up_left'] = {
-        //     type: 'button',
-        //     category: 'Gimbal',
-        //     name: 'Move Gimbal Up-Left',
-        //     style: {
-        //         text: '',
-        //         size: '14',
-        //         color: colors.white,
-        //         bgcolor: colors.teal,
-        //         png64: ICONS.UP_LEFT,
-        //         pngalignment: 'center:center',
-        //     },
-        //     feedbacks: [],
-        //     steps: [
-        //         {
-        //             down: [
-        //                 {
-        //                     actionId: 'moveGimbalUp',
-        //                     options: {
-        //                         moveSpeed: 100,
-        //                     },
-        //                 },
-        //                 {
-        //                     actionId: 'moveGimbalLeft',
-        //                     options: {
-        //                         moveSpeed: 100,
-        //                     },
-        //                 },
-        //             ],
-        //             up: [
-        //                 {
-        //                     actionId: 'stopGimbalUp',
-        //                     options: {},
-        //                 },
-        //                 {
-        //                     actionId: 'stopGimbalLeft',
-        //                     options: {},
-        //                 },
-        //             ],
-        //         },
-        //     ],
-        // }
+		// ! Uncomment when gimbal diagonal movement is supported by OBSBOT
+		// presets['gimbal_up_left'] = {
+		//     type: 'button',
+		//     category: 'Gimbal',
+		//     name: 'Move Gimbal Up-Left',
+		//     style: {
+		//         text: '',
+		//         size: '14',
+		//         color: colors.white,
+		//         bgcolor: colors.black,
+		//         show_topbar: false,
+		//         pngalignment: 'center:center',
+		//     },
+		//     feedbacks: [],
+		//     steps: [
+		//         {
+		//             down: [
+		//                 {
+		//                     actionId: 'moveGimbalUp',
+		//                     options: {
+		//                         moveSpeed: 100,
+		//                     },
+		//                 },
+		//                 {
+		//                     actionId: 'moveGimbalLeft',
+		//                     options: {
+		//                         moveSpeed: 100,
+		//                     },
+		//                 },
+		//             ],
+		//             up: [
+		//                 {
+		//                     actionId: 'stopGimbalUp',
+		//                     options: {},
+		//                 },
+		//                 {
+		//                     actionId: 'stopGimbalLeft',
+		//                     options: {},
+		//                 },
+		//             ],
+		//         },
+		//     ],
+		// }
 
-        // presets['gimbal_up_right'] = {
-        //     type: 'button',
-        //     category: 'Gimbal',
-        //     name: 'Move Gimbal Up-Right',
-        //     style: {
-        //         text: '',
-        //         size: '14',
-        //         color: colors.white,
-        //         bgcolor: colors.teal,
-        //         png64: ICONS.UP_RIGHT,
-        //         pngalignment: 'center:center',
-        //     },
-        //     feedbacks: [],
-        //     steps: [
-        //         {
-        //             down: [
-        //                 {
-        //                     actionId: 'moveGimbalUp',
-        //                     options: {
-        //                         moveSpeed: 100,
-        //                     },
-        //                 },
-        //                 {
-        //                     actionId: 'moveGimbalRight',
-        //                     options: {
-        //                         moveSpeed: 100,
-        //                     },
-        //                 },
-        //             ],
-        //             up: [
-        //                 {
-        //                     actionId: 'stopGimbalUp',
-        //                     options: {},
-        //                 },
-        //                 {
-        //                     actionId: 'stopGimbalRight',
-        //                     options: {},
-        //                 },
-        //             ],
-        //         },
-        //     ],
-        // }
+		// presets['gimbal_up_right'] = {
+		//     type: 'button',
+		//     category: 'Gimbal',
+		//     name: 'Move Gimbal Up-Right',
+		//     style: {
+		//         text: '',
+		//         size: '14',
+		//         color: colors.white,
+		//         bgcolor: colors.black,
+		//         pngalignment: 'center:center',
+		//     },
+		//     feedbacks: [],
+		//     steps: [
+		//         {
+		//             down: [
+		//                 {
+		//                     actionId: 'moveGimbalUp',
+		//                     options: {
+		//                         moveSpeed: 100,
+		//                     },
+		//                 },
+		//                 {
+		//                     actionId: 'moveGimbalRight',
+		//                     options: {
+		//                         moveSpeed: 100,
+		//                     },
+		//                 },
+		//             ],
+		//             up: [
+		//                 {
+		//                     actionId: 'stopGimbalUp',
+		//                     options: {},
+		//                 },
+		//                 {
+		//                     actionId: 'stopGimbalRight',
+		//                     options: {},
+		//                 },
+		//             ],
+		//         },
+		//     ],
+		// }
 
-        // presets['gimbal_down_left'] = {
-        //     type: 'button',
-        //     category: 'Gimbal',
-        //     name: 'Move Gimbal Down-Left',
-        //     style: {
-        //         text: '',
-        //         size: '14',
-        //         color: colors.white,
-        //         bgcolor: colors.teal,
-        //         png64: ICONS.DOWN_LEFT,
-        //         pngalignment: 'center:center',
-        //     },
-        //     feedbacks: [],
-        //     steps: [
-        //         {
-        //             down: [
-        //                 {
-        //                     actionId: 'moveGimbalDown',
-        //                     options: {
-        //                         moveSpeed: 100,
-        //                     },
-        //                 },
-        //                 {
-        //                     actionId: 'moveGimbalLeft',
-        //                     options: {
-        //                         moveSpeed: 100,
-        //                     },
-        //                 },
-        //             ],
-        //             up: [
-        //                 {
-        //                     actionId: 'stopGimbalDown',
-        //                     options: {},
-        //                 },
-        //                 {
-        //                     actionId: 'stopGimbalLeft',
-        //                     options: {},
-        //                 },
-        //             ],
-        //         },
-        //     ],
-        // }
+		// presets['gimbal_down_left'] = {
+		//     type: 'button',
+		//     category: 'Gimbal',
+		//     name: 'Move Gimbal Down-Left',
+		//     style: {
+		//         text: '',
+		//         size: '14',
+		//         color: colors.white,
+		//         bgcolor: colors.black,
+		//         show_topbar: false,
+		//         pngalignment: 'center:center',
+		//     },
+		//     feedbacks: [],
+		//     steps: [
+		//         {
+		//             down: [
+		//                 {
+		//                     actionId: 'moveGimbalDown',
+		//                     options: {
+		//                         moveSpeed: 100,
+		//                     },
+		//                 },
+		//                 {
+		//                     actionId: 'moveGimbalLeft',
+		//                     options: {
+		//                         moveSpeed: 100,
+		//                     },
+		//                 },
+		//             ],
+		//             up: [
+		//                 {
+		//                     actionId: 'stopGimbalDown',
+		//                     options: {},
+		//                 },
+		//                 {
+		//                     actionId: 'stopGimbalLeft',
+		//                     options: {},
+		//                 },
+		//             ],
+		//         },
+		//     ],
+		// }
 
-        // presets['gimbal_down_right'] = {
-        //     type: 'button',
-        //     category: 'Gimbal',
-        //     name: 'Move Gimbal Down-Right',
-        //     style: {
-        //         text: '',
-        //         size: '14',
-        //         color: colors.white,
-        //         bgcolor: colors.teal,
-        //         png64: ICONS.DOWN_RIGHT,
-        //         pngalignment: 'center:center',
-        //     },
-        //     feedbacks: [],
-        //     steps: [
-        //         {
-        //             down: [
-        //                 {
-        //                     actionId: 'moveGimbalDown',
-        //                     options: {
-        //                         moveSpeed: 100,
-        //                     },
-        //                 },
-        //                 {
-        //                     actionId: 'moveGimbalRight',
-        //                     options: {
-        //                         moveSpeed: 100,
-        //                     },
-        //                 },
-        //             ],
-        //             up: [
-        //                 {
-        //                     actionId: 'stopGimbalDown',
-        //                     options: {},
-        //                 },
-        //                 {
-        //                     actionId: 'stopGimbalRight',
-        //                     options: {},
-        //                 },
-        //             ],
-        //         },
-        //     ],
-        // }
+		// presets['gimbal_down_right'] = {
+		//     type: 'button',
+		//     category: 'Gimbal',
+		//     name: 'Move Gimbal Down-Right',
+		//     style: {
+		//         text: '',
+		//         size: '14',
+		//         color: colors.white,
+		//         bgcolor: colors.black,
+		//         show_topbar: false,
+		//         pngalignment: 'center:center',
+		//     },
+		//     feedbacks: [],
+		//     steps: [
+		//         {
+		//             down: [
+		//                 {
+		//                     actionId: 'moveGimbalDown',
+		//                     options: {
+		//                         moveSpeed: 100,
+		//                     },
+		//                 },
+		//                 {
+		//                     actionId: 'moveGimbalRight',
+		//                     options: {
+		//                         moveSpeed: 100,
+		//                     },
+		//                 },
+		//             ],
+		//             up: [
+		//                 {
+		//                     actionId: 'stopGimbalDown',
+		//                     options: {},
+		//                 },
+		//                 {
+		//                     actionId: 'stopGimbalRight',
+		//                     options: {},
+		//                 },
+		//             ],
+		//         },
+		//     ],
+		// }
 
 		presets['gimbal_motor_degree'] = {
 			type: 'button',
 			category: 'Gimbal',
 			name: 'Set Gimbal Position',
 			style: {
-				text: 'Set\nPosition',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.purple,
+				bgcolor: colors.black,
+				png64: OBSBOT_ICONS.SET_POSITION,
+				show_topbar: false,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -536,15 +560,18 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			],
 		}
 
-        presets['gimbal_reset'] = {
+		presets['gimbal_reset'] = {
 			type: 'button',
 			category: 'Gimbal',
 			name: 'Reset Gimbal',
 			style: {
-				text: 'Reset\nGimbal',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.purple,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.RESET_GIMBAL,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -568,10 +595,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Other',
 			name: 'Mirror Mode On',
 			style: {
-				text: 'Mirror\nMode\nON',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.grey,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.MIRROR_MODE_ON,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -589,15 +619,18 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			],
 		}
 
-        presets['mirror_mode_off'] = {
+		presets['mirror_mode_off'] = {
 			type: 'button',
 			category: 'Other',
 			name: 'Mirror Mode Off',
 			style: {
-				text: 'Mirror\nMode\nOFF',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.grey,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.MIRROR_MODE_OFF,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -623,10 +656,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Image',
 			name: 'Auto Focus On',
 			style: {
-				text: 'Auto\nFocus\nON',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.green,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AUTO_FOCUS_ON,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -649,10 +685,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Image',
 			name: 'Auto Focus Off',
 			style: {
-				text: 'Auto\nFocus\nOFF',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AUTO_FOCUS_OFF,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -675,10 +714,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Image',
 			name: 'Auto Exposure On',
 			style: {
-				text: 'Auto\nExposure\nON',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.green,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AUTO_EXPOSURE_ON,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -701,10 +743,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Image',
 			name: 'Auto Exposure Off',
 			style: {
-				text: 'Auto\nExposure\nOFF',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AUTO_EXPOSURE_OFF,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -727,10 +772,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Image',
 			name: 'Auto White Balance On',
 			style: {
-				text: 'Auto\nWB\nON',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.green,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AUTO_WB_ON,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -753,10 +801,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Image',
 			name: 'Auto White Balance Off',
 			style: {
-				text: 'Auto\nWB\nOFF',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AUTO_WB_OFF,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -779,10 +830,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Image',
 			name: 'Manual Focus 50',
 			style: {
-				text: 'Manual\nFocus\n50',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.MANUAL_FOCUS_50,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -805,10 +859,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Image',
 			name: 'Color Temp 5000K',
 			style: {
-				text: 'Color\nTemp\n5000K',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.COLOR_TEMP_5000K,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -834,10 +891,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center App',
 			name: 'View 86°',
 			style: {
-				text: 'View\n86°',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.orange,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_VIEW_86,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -860,10 +920,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center App',
 			name: 'View 78°',
 			style: {
-				text: 'View\n78°',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.orange,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_VIEW_78,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -886,10 +949,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center App',
 			name: 'View 65°',
 			style: {
-				text: 'View\n65°',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.orange,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_VIEW_65,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -912,10 +978,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center App',
 			name: 'Focus Mode AF-S',
 			style: {
-				text: 'Focus\nAF-S',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_AF_S,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -938,10 +1007,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center App',
 			name: 'Focus Mode AF-C',
 			style: {
-				text: 'Focus\nAF-C',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_AF_C,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -964,10 +1036,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center App',
 			name: 'Focus Mode MF',
 			style: {
-				text: 'Focus\nMF',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_MF,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -991,10 +1066,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center App',
 			name: 'Start Recording',
 			style: {
-				text: 'Start\nRecording',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.START_RECORDING,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1015,10 +1093,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center App',
 			name: 'Stop Recording',
 			style: {
-				text: 'Stop\nRecording',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.STOP_RECORDING,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1039,10 +1120,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center App',
 			name: 'Take Snapshot',
 			style: {
-				text: 'Take\nSnapshot',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.TAKE_SNAPSHOT,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1066,10 +1150,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Meet Series',
 			name: 'Auto Framing Off',
 			style: {
-				text: 'Auto\nFraming\nOFF',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AUTO_FRAMING_OFF,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1092,10 +1179,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Meet Series',
 			name: 'Auto Framing Single',
 			style: {
-				text: 'Auto\nFraming\nSingle',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.green,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AUTO_FRAMING_SINGLE,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1118,10 +1208,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Meet Series',
 			name: 'Auto Framing Group',
 			style: {
-				text: 'Auto\nFraming\nGroup',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.green,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AUTO_FRAMING_GROUP,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1144,10 +1237,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Meet Series',
 			name: 'Virtual BG Disable',
 			style: {
-				text: 'VB\nDisable',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.VB_DISABLE,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1170,10 +1266,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Meet Series',
 			name: 'Virtual BG Blur',
 			style: {
-				text: 'VB\nBlur',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.VB_BLUR,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1196,10 +1295,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Meet Series',
 			name: 'Standard Mode',
 			style: {
-				text: 'Standard\nMode',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.STANDARD_MODE,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1223,10 +1325,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tiny Series',
 			name: 'AI Lock On',
 			style: {
-				text: 'AI Lock\nON',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.green,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AI_LOCK_ON,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1249,10 +1354,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tiny Series',
 			name: 'AI Lock Off',
 			style: {
-				text: 'AI Lock\nOFF',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AI_LOCK_OFF,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1275,10 +1383,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tiny Series',
 			name: 'AI Mode Normal',
 			style: {
-				text: 'AI Mode\nNormal',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AI_MODE_NORMAL,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1287,7 +1398,9 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 						{
 							actionId: 'OBSBOT_CENTER_TINY_aiMode',
 							options: {
+								camera: 'tiny2',
 								aiMode: '1',
+								aiModeTiny3: '0',
 							},
 						},
 					],
@@ -1301,10 +1414,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tiny Series',
 			name: 'Tracking Headroom',
 			style: {
-				text: 'Tracking\nHeadroom',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AI_TRACKING_HEADROOM,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1322,83 +1438,92 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			],
 		}
 
-        presets['tiny_preset_1'] = {
-            type: 'button',
-            category: 'Tiny Series',
-            name: 'Preset 1',
-            style: {
-                text: 'Preset\n1',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_CENTER_TINY_triggerPreset',
-                            options: {
-                                presetNumber: 1,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['tiny_preset_1'] = {
+			type: 'button',
+			category: 'Tiny Series',
+			name: 'Preset 1',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_1,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_CENTER_TINY_triggerPreset',
+							options: {
+								presetNumber: 1,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 
-        presets['tiny_preset_2'] = {
-            type: 'button',
-            category: 'Tiny Series',
-            name: 'Preset 2',
-            style: {
-                text: 'Preset\n2',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_CENTER_TINY_triggerPreset',
-                            options: {
-                                presetNumber: 2,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['tiny_preset_2'] = {
+			type: 'button',
+			category: 'Tiny Series',
+			name: 'Preset 2',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_2,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_CENTER_TINY_triggerPreset',
+							options: {
+								presetNumber: 2,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 
-        presets['tiny_preset_3'] = {
-            type: 'button',
-            category: 'Tiny Series',
-            name: 'Preset 3',
-            style: {
-                text: 'Preset\n3',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_CENTER_TINY_triggerPreset',
-                            options: {
-                                presetNumber: 3,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['tiny_preset_3'] = {
+			type: 'button',
+			category: 'Tiny Series',
+			name: 'Preset 3',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_3,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_CENTER_TINY_triggerPreset',
+							options: {
+								presetNumber: 3,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 	}
 
 	// Tail 2 specific presets
@@ -1408,10 +1533,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail 2',
 			name: 'AI Single-person',
 			style: {
-				text: 'AI\nSingle',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AI_SINGLE,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1435,10 +1563,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail 2',
 			name: 'AI Multi-person',
 			style: {
-				text: 'AI\nMulti',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AI_MULTI,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1462,10 +1593,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail 2',
 			name: 'Tracking Slow',
 			style: {
-				text: 'Tracking\nSlow',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.TRACKING_SLOW,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1488,10 +1622,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail 2',
 			name: 'Tracking Fast',
 			style: {
-				text: 'Tracking\nFast',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.TRACKING_FAST,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1514,10 +1651,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail 2',
 			name: 'Only Me On',
 			style: {
-				text: 'Only Me\nON',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.green,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.ONLY_ME_ON,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1540,10 +1680,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail 2',
 			name: 'Only Me Off',
 			style: {
-				text: 'Only Me\nOFF',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.ONLY_ME_OFF,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1566,10 +1709,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail 2',
 			name: 'Start Recording',
 			style: {
-				text: 'Start\nRecording',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.START_RECORDING,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1590,10 +1736,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail 2',
 			name: 'Stop Recording',
 			style: {
-				text: 'Stop\nRecording',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.STOP_RECORDING,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1614,10 +1763,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail 2',
 			name: 'Take Snapshot',
 			style: {
-				text: 'Take\nSnapshot',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.TAKE_SNAPSHOT,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1633,83 +1785,92 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			],
 		}
 
-        presets['tail2_preset_1'] = {
-            type: 'button',
-            category: 'Tail 2',
-            name: 'Preset 1',
-            style: {
-                text: 'Preset\n1',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_TAIL_2_triggerPreset',
-                            options: {
-                                presetNumber: 1,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['tail2_preset_1'] = {
+			type: 'button',
+			category: 'Tail 2',
+			name: 'Preset 1',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_1,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_TAIL_2_triggerPreset',
+							options: {
+								presetNumber: 1,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 
-        presets['tail2_preset_2'] = {
-            type: 'button',
-            category: 'Tail 2',
-            name: 'Preset 2',
-            style: {
-                text: 'Preset\n2',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_TAIL_2_triggerPreset',
-                            options: {
-                                presetNumber: 2,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['tail2_preset_2'] = {
+			type: 'button',
+			category: 'Tail 2',
+			name: 'Preset 2',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_2,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_TAIL_2_triggerPreset',
+							options: {
+								presetNumber: 2,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 
-        presets['tail2_preset_3'] = {
-            type: 'button',
-            category: 'Tail 2',
-            name: 'Preset 3',
-            style: {
-                text: 'Preset\n3',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_TAIL_2_triggerPreset',
-                            options: {
-                                presetNumber: 3,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['tail2_preset_3'] = {
+			type: 'button',
+			category: 'Tail 2',
+			name: 'Preset 3',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_3,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_TAIL_2_triggerPreset',
+							options: {
+								presetNumber: 3,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 	}
 
 	// Tail Air specific presets
@@ -1719,10 +1880,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail Air',
 			name: 'AI Normal Tracking',
 			style: {
-				text: 'AI\nNormal',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AI_MODE_NORMAL,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1745,10 +1909,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail Air',
 			name: 'AI Close Up',
 			style: {
-				text: 'AI\nClose Up',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AI_CLOSE_UP,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1771,10 +1938,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail Air',
 			name: 'Tracking Slow',
 			style: {
-				text: 'Tracking\nSlow',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.TRACKING_SLOW,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1797,10 +1967,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail Air',
 			name: 'Tracking Fast',
 			style: {
-				text: 'Tracking\nFast',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.TRACKING_FAST,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1823,10 +1996,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail Air',
 			name: 'Start Recording',
 			style: {
-				text: 'Start\nRecording',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.START_RECORDING,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1847,10 +2023,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail Air',
 			name: 'Stop Recording',
 			style: {
-				text: 'Stop\nRecording',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.STOP_RECORDING,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1871,10 +2050,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Tail Air',
 			name: 'Take Snapshot',
 			style: {
-				text: 'Take\nSnapshot',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.TAKE_SNAPSHOT,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -1890,99 +2072,115 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			],
 		}
 
-        presets['tailair_preset_1'] = {
-            type: 'button',
-            category: 'Tail Air',
-            name: 'Preset 1',
-            style: {
-                text: 'Preset\n1',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_TAIL_AIR_triggerPreset',
-                            options: {
-                                presetNumber: 1,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['tailair_preset_1'] = {
+			type: 'button',
+			category: 'Tail Air',
+			name: 'Preset 1',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_1,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_TAIL_AIR_triggerPreset',
+							options: {
+								presetNumber: 1,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 
-        presets['tailair_preset_2'] = {
-            type: 'button',
-            category: 'Tail Air',
-            name: 'Preset 2',
-            style: {
-                text: 'Preset\n2',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_TAIL_AIR_triggerPreset',
-                            options: {
-                                presetNumber: 2,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['tailair_preset_2'] = {
+			type: 'button',
+			category: 'Tail Air',
+			name: 'Preset 2',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_2,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_TAIL_AIR_triggerPreset',
+							options: {
+								presetNumber: 2,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 
-        presets['tailair_preset_3'] = {
-            type: 'button',
-            category: 'Tail Air',
-            name: 'Preset 3',
-            style: {
-                text: 'Preset\n3',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_TAIL_AIR_triggerPreset',
-                            options: {
-                                presetNumber: 3,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['tailair_preset_3'] = {
+			type: 'button',
+			category: 'Tail Air',
+			name: 'Preset 3',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_3,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_TAIL_AIR_triggerPreset',
+							options: {
+								presetNumber: 3,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 	}
 
 	// Center App Tail Series
 	if (self.config.model === 'OBSBOT_CENTER_TAIL_AIR' || self.config.model === 'OBSBOT_CENTER_TAIL_2') {
-        let tailCategory = '';
-        self.config.model === 'OBSBOT_CENTER_TAIL_AIR' ? tailCategory = 'Center Tail Air' : tailCategory = 'Center Tail 2';
+		let tailCategory = ''
+		if (self.config.model === 'OBSBOT_CENTER_TAIL_AIR') {
+			tailCategory = 'Center Tail Air'
+		} else {
+			tailCategory = 'Center Tail 2'
+		}
 
 		presets['center_tail_ai_normal'] = {
 			type: 'button',
 			category: tailCategory,
 			name: 'AI Normal Tracking',
 			style: {
-				text: 'AI\nNormal',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.blue,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.AI_MODE_NORMAL,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -2005,10 +2203,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: tailCategory,
 			name: 'Tracking Slow',
 			style: {
-				text: 'Tracking\nSlow',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.TRACKING_SLOW,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -2031,10 +2232,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: tailCategory,
 			name: 'Start Recording',
 			style: {
-				text: 'Start\nRecording',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.START_RECORDING,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -2055,10 +2259,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: tailCategory,
 			name: 'Stop Recording',
 			style: {
-				text: 'Stop\nRecording',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.red,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.STOP_RECORDING,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -2079,10 +2286,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: tailCategory,
 			name: 'Take Snapshot',
 			style: {
-				text: 'Take\nSnapshot',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.TAKE_SNAPSHOT,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -2098,83 +2308,92 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			],
 		}
 
-        presets['center_tail_preset_1'] = {
-            type: 'button',
-            category: tailCategory,
-            name: 'Preset 1',
-            style: {
-                text: 'Preset\n1',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_CENTER_TAIL_triggerPreset',
-                            options: {
-                                presetNumber: 1,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['center_tail_preset_1'] = {
+			type: 'button',
+			category: tailCategory,
+			name: 'Preset 1',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_1,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_CENTER_TAIL_triggerPreset',
+							options: {
+								presetNumber: 1,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 
-        presets['center_tail_preset_2'] = {
-            type: 'button',
-            category: tailCategory,
-            name: 'Preset 2',
-            style: {
-                text: 'Preset\n2',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_CENTER_TAIL_triggerPreset',
-                            options: {
-                                presetNumber: 2,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['center_tail_preset_2'] = {
+			type: 'button',
+			category: tailCategory,
+			name: 'Preset 2',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_2,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_CENTER_TAIL_triggerPreset',
+							options: {
+								presetNumber: 2,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 
-        presets['center_tail_preset_3'] = {
-            type: 'button',
-            category: tailCategory,
-            name: 'Preset 3',
-            style: {
-                text: 'Preset\n3',
-                size: '14',
-                color: colors.white,
-                bgcolor: colors.purple,
-            },
-            feedbacks: [],
-            steps: [
-                {
-                    down: [
-                        {
-                            actionId: 'OBSBOT_CENTER_TAIL_triggerPreset',
-                            options: {
-                                presetNumber: 3,
-                            },
-                        },
-                    ],
-                    up: [],
-                },
-            ],
-        }
+		presets['center_tail_preset_3'] = {
+			type: 'button',
+			category: tailCategory,
+			name: 'Preset 3',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.PRESET_3,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'OBSBOT_CENTER_TAIL_triggerPreset',
+							options: {
+								presetNumber: 3,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
 	}
 
 	// Tail 2 specific Center app actions
@@ -2184,10 +2403,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center Tail 2',
 			name: 'Pan Speed 5',
 			style: {
-				text: 'Pan\nSpeed 5',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_PAN_SPEED,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -2210,10 +2432,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center Tail 2',
 			name: 'Tilt Speed 5',
 			style: {
-				text: 'Tilt\nSpeed 5',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.teal,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_TILT_SPEED,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -2236,10 +2461,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center Tail 2',
 			name: 'Pan Lock Toggle',
 			style: {
-				text: 'Pan\nLock',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.purple,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_PAN_LOCK,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
@@ -2262,10 +2490,13 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			category: 'Center Tail 2',
 			name: 'Tilt Lock Toggle',
 			style: {
-				text: 'Tilt\nLock',
+				text: '',
 				size: '14',
 				color: colors.white,
-				bgcolor: colors.purple,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_TILT_LOCK,
+				pngalignment: 'center:center',
 			},
 			feedbacks: [],
 			steps: [
