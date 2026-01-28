@@ -75,6 +75,7 @@ If you wish to connect to the Tiny series or Meet series of OBSBOT cameras you w
 - Image | Set Shutter Speed
 - Other | Set Mirror Mode
 - Tail 2 | Set AI Mode and Auto Zoom Mode
+- Tail 2 | Set AI Mode On/Off
 - Tail 2 | Set Only Me On/Off
 - Tail 2 | Set Tracking Speed
 - Tail 2 | Start Recording
