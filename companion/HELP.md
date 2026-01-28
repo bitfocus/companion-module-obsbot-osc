@@ -52,6 +52,9 @@ If you wish to connect to the Tiny series or Meet series of OBSBOT cameras you w
 - Center App | Tiny Series | AI Mode
 - Center App | Tiny Series | Set Tracking Mode
 - Center App | Tiny Series | Trigger Preset
+- Center App | Tiny Series | Set White Balance Shift
+- Center App | Tiny Series | Set Red/Blue Gain
+- Center App | Tiny Series | Set Tracking Speed
 - Gimbal | Move Down
 - Gimbal | Move Left
 - Gimbal | Move Right
