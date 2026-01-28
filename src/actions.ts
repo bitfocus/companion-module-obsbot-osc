@@ -979,6 +979,32 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			},
 		}
 
+		actions.OBSBOT_TAIL_2_aiModeEnable = {
+			name: 'Tail 2 | AI Mode On/Off',
+			description: 'Set the AI mode of the camera',
+			options: [
+				{
+					type: 'dropdown',
+					label: 'AI Mode',
+					id: 'aiMode',
+					default: '0',
+					choices: [
+						{ id: '0', label: 'Off' },
+						{ id: '1', label: 'On' },
+					],
+				},
+			],
+			callback: (action) => {
+				self.log('info', `Setting AI Mode to ${action.options.aiMode}.`)
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: parseInt(action.options.aiMode?.toString() || '0'),
+				})
+				self.sendCommand('/OBSBOT/Camera/Tail2/SetAiEnable', args)
+			},
+		}
+
 		actions.OBSBOT_TAIL_2_setTrackingSpeed = {
 			name: 'Tail 2 | Set Tracking Speed',
 			description: 'Set the tracking speed of the camera',
