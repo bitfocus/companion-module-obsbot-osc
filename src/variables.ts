@@ -5,7 +5,6 @@ import type { OBSBOTInstance } from './main.js'
 export function UpdateVariableDefinitions(self: OBSBOTInstance): void {
 	const variables: CompanionVariableDefinition[] = []
 
-	console.log('devices le ngth', self.DEVICES.length)
 	if ((self.DEVICES.length as number) > 1) {
 		for (let i = 0; i < self.DEVICES.length; i++) {
 			variables.push({ variableId: `device${i + 1}_connected`, name: `Device ${i + 1} Connected` })
