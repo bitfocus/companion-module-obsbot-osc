@@ -24,4 +24,24 @@ export const UpgradeScripts: CompanionStaticUpgradeScript<ModuleConfig>[] = [
 			updatedFeedbacks: [],
 		}
 	},
+
+	//Polling did not exist before this, so leave existing connections behaving as they did.
+	//New connections pick up the field default instead, as upgrade scripts do not run for them.
+	function pollIntervalUpgrade(
+		_context: CompanionUpgradeContext<ModuleConfig>,
+		props: CompanionStaticUpgradeProps<ModuleConfig>,
+	): CompanionStaticUpgradeResult<ModuleConfig> {
+		let updatedConfig: ModuleConfig | null = null
+
+		if (props.config && props.config.pollinterval === undefined) {
+			props.config.pollinterval = 0
+			updatedConfig = props.config
+		}
+
+		return {
+			updatedConfig,
+			updatedActions: [],
+			updatedFeedbacks: [],
+		}
+	},
 ]
