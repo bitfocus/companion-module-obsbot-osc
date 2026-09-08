@@ -14,6 +14,8 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 	_pollTimer: NodeJS.Timeout | undefined
 	_reconnectTimer: NodeJS.Timeout | undefined
 	_reconnecting = false
+	_resolvedIp: string | undefined // config.ip resolved to an address, so hostnames can be matched against rinfo
+	_lastMessageAt = 0
 	STATE: OBSBOTState = CreateState()
 
 	constructor(internal: unknown) {

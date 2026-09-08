@@ -3,6 +3,7 @@ import { InstanceStatus, type CompanionVariableValues } from '@companion-module/
 import type { OBSBOTInstance } from './main.js'
 import type { DeviceEntry, PresetPosition } from './state.js'
 import osc from 'osc'
+import dns from 'node:dns/promises'
 
 export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 	const { ip, port, transport, verbose } = self.config
@@ -16,6 +17,9 @@ export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 	// Cleanup previous socket
 	CloseConnection(self)
 	self._reconnecting = false
+	self._lastMessageAt = Date.now()
+
+	await ResolveDeviceAddress(self)
 
 	if (transport === 'udp') {
 		// Shared UDP socket on fixed OBSBOT response port 57120
@@ -108,6 +112,8 @@ function StopPolling(self: OBSBOTInstance): void {
 }
 
 export function PollDeviceState(self: OBSBOTInstance): void {
+	CheckForSilence(self)
+
 	const noop: OSCArgument[] = [{ type: 'i', value: 0 }]
 
 	SendCommand(self, '/OBSBOT/WebCam/General/GetDeviceInfo', noop)
@@ -125,6 +131,22 @@ export function PollDeviceState(self: OBSBOTInstance): void {
 			SendCommand(self, '/OBSBOT/WebCam/Meet/GetPresetPositionInfo', noop)
 			break
 	}
+}
+
+/**
+ * The UDP socket has no notion of a connection, so a device that never answers would
+ * otherwise sit at "Connecting" forever. Treat prolonged silence as a failure, and
+ * re-resolve in case a hostname now points somewhere else.
+ */
+function CheckForSilence(self: OBSBOTInstance): void {
+	const timeout = Math.max(self.config.pollinterval * 3, 15) * 1000
+
+	if (Date.now() - self._lastMessageAt < timeout) {
+		return
+	}
+
+	self.updateStatus(InstanceStatus.ConnectionFailure, `No response from ${self.config.ip}`)
+	void ResolveDeviceAddress(self)
 }
 
 export function CloseConnection(self: OBSBOTInstance): void {
@@ -154,9 +176,39 @@ export function CloseConnection(self: OBSBOTInstance): void {
 	self._socket = undefined
 }
 
+/**
+ * Replies arrive from the device's numeric address, so a hostname in the config
+ * (such as an mDNS `.local` name) never matches what dgram reports. Resolve it up
+ * front and compare against that instead.
+ */
+export async function ResolveDeviceAddress(self: OBSBOTInstance): Promise<void> {
+	const host = self.config.ip
+
+	if (!host) {
+		self._resolvedIp = undefined
+		return
+	}
+
+	try {
+		const { address } = await dns.lookup(host, { family: 4 })
+		self._resolvedIp = address
+
+		if (self.config.verbose && address !== host) {
+			self.log('debug', `Resolved ${host} to ${address}`)
+		}
+	} catch (err) {
+		self._resolvedIp = undefined
+		self.log('warn', `Could not resolve ${host}: ${err instanceof Error ? err.message : err}`)
+	}
+}
+
+function isFromDevice(self: OBSBOTInstance, address: string): boolean {
+	return address === self.config.ip || address === self._resolvedIp
+}
+
 function CheckMessage(self: OBSBOTInstance, msg: Buffer, rinfo: { address: string; port: number }): void {
 	try {
-		if (rinfo.address === self.config.ip) {
+		if (isFromDevice(self, rinfo.address)) {
 			const packet = osc.readPacket(msg, {})
 			const messages = 'packets' in packet ? packet.packets : [packet]
 
@@ -165,6 +217,8 @@ function CheckMessage(self: OBSBOTInstance, msg: Buffer, rinfo: { address: strin
 					processData(self, message.address, message.args)
 				}
 			}
+		} else if (self.config.verbose) {
+			self.log('debug', `Ignoring packet from ${rinfo.address}, expected ${self._resolvedIp ?? self.config.ip}`)
 		}
 	} catch (_err) {
 		//self.log('error', `OSC decode error: ${err.message}`)
@@ -202,6 +256,7 @@ function processData(self: OBSBOTInstance, address: string, rawArgs: OSCValue[])
 			: rawArgs
 
 	//if we got any data, let's say the module status is ok
+	self._lastMessageAt = Date.now()
 	self.updateStatus(InstanceStatus.Ok)
 
 	const variableObj: CompanionVariableValues = {}
