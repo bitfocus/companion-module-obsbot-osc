@@ -26,6 +26,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 
 	if (CommonActions.includes(self.config.model)) {
 		//ZOOM
+		const zoomSpeedMax = model.id === 'OBSBOT_TAIL_2' ? 10 : 11
 		actions.setZoom = {
 			name: 'Zoom | Set Zoom Level',
 			description: 'Set the zoom level of the camera',
@@ -74,7 +75,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					id: 'zoomSpeed',
 					default: 0,
 					min: 0,
-					max: 10,
+					max: zoomSpeedMax,
 					step: 1,
 					required: true,
 					range: true,
@@ -469,7 +470,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					type: 'i',
 					value: 1,
 				})
-				self.sendCommand('SetPCRecording', args)
+				self.sendCommand('/OBSBOT/WebCam/General/SetPCRecording', args)
 			},
 		}
 
@@ -499,36 +500,41 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					type: 'i',
 					value: 1,
 				})
-				self.sendCommand('/OBSBOT/WebCam/General/SetPCSnapshot', args)
+				self.sendCommand('/OBSBOT/WebCam/General/PCSnapshot', args)
 			},
 		}
 	}
 
 	//IMAGE
-	actions.setAutoFocus = {
-		name: 'Image | Set Auto Focus On/Off',
-		description: 'Set the auto focus of the camera',
-		options: [
-			{
-				type: 'dropdown',
-				label: 'Auto Focus',
-				id: 'autoFocus',
-				default: '0',
-				choices: [
-					{ id: '0', label: 'Off' },
-					{ id: '1', label: 'On' },
-				],
+	//Auto Focus is only supported on the Tiny and Meet series when going through the Center App
+	const autoFocusUnsupported = ['OBSBOT_CENTER_TAIL_AIR', 'OBSBOT_CENTER_TAIL_2']
+
+	if (!autoFocusUnsupported.includes(self.config.model)) {
+		actions.setAutoFocus = {
+			name: 'Image | Set Auto Focus On/Off',
+			description: 'Set the auto focus of the camera',
+			options: [
+				{
+					type: 'dropdown',
+					label: 'Auto Focus',
+					id: 'autoFocus',
+					default: '0',
+					choices: [
+						{ id: '0', label: 'Off' },
+						{ id: '1', label: 'On' },
+					],
+				},
+			],
+			callback: (action) => {
+				self.log('info', `Setting auto focus to ${action.options.autoFocus}.`)
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: parseInt(action.options.autoFocus?.toString() || '0'),
+				})
+				self.sendCommand('/OBSBOT/WebCam/General/SetAutoFocus', args)
 			},
-		],
-		callback: (action) => {
-			self.log('info', `Setting auto focus to ${action.options.autoFocus}.`)
-			const args: OSCArgument[] = []
-			args.push({
-				type: 'i',
-				value: parseInt(action.options.autoFocus?.toString() || '0'),
-			})
-			self.sendCommand('/OBSBOT/WebCam/General/SetAutoFocus', args)
-		},
+		}
 	}
 
 	actions.setManualFocus = {
@@ -601,7 +607,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						value: parseInt(action.options.focusValue?.toString() || '0'),
 					})
 				}
-				self.sendCommand('/OBSBOT/WebCam/General/SetFocusMode', args)
+				self.sendCommand('/OBSBOT/Camera/Tail/SetFocusMode', args)
 			},
 		}
 	}
@@ -934,6 +940,12 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					choices: [
 						{ id: '0', label: 'None' },
 						{ id: '1', label: 'Close Up' },
+						{ id: '2', label: 'Half Body' },
+						{ id: '3', label: 'Above The Knees' },
+						{ id: '4', label: 'Nine Head Portrait' },
+						{ id: '5', label: 'Full Body' },
+						{ id: '6', label: 'Long Shot 1' },
+						{ id: '7', label: 'Long Shot 2' },
 					],
 					isVisible: (config) => config.aiMode === '0',
 				},
@@ -963,19 +975,11 @@ export function UpdateActions(self: OBSBOTInstance): void {
 				})
 				self.sendCommand('/OBSBOT/Camera/Tail2/SetAiMode', args)
 
-				if (action.options.aiMode === '0') {
-					args.push({
-						type: 'i',
-						value: parseInt(action.options.autoZoomModeSingle?.toString() || '0'),
-					})
-					self.sendCommand('/OBSBOT/Camera/Tail2/SetAutoZoom', args)
-				} else {
-					args.push({
-						type: 'i',
-						value: parseInt(action.options.autoZoomModeMulti?.toString() || '0'),
-					})
-					self.sendCommand('/OBSBOT/Camera/Tail2/SetAutoZoom', args)
-				}
+				const autoZoomMode =
+					action.options.aiMode === '0' ? action.options.autoZoomModeSingle : action.options.autoZoomModeMulti
+				self.sendCommand('/OBSBOT/Camera/Tail2/SetAutoZoom', [
+					{ type: 'i', value: parseInt(autoZoomMode?.toString() || '0') },
+				])
 			},
 		}
 
@@ -1848,6 +1852,10 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			callback: () => {
 				self.log('info', 'Setting standard mode.')
 				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: 0,
+				})
 				self.sendCommand('/OBSBOT/WebCam/Meet/SetStandardMode', args)
 			},
 		}
