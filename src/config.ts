@@ -1,12 +1,13 @@
 import type { SomeCompanionConfigField } from '@companion-module/base'
-import { Models } from './models.js'
+import { Models, type ModelId } from './models.js'
 
 export interface ModuleConfig {
 	ip: string
 	port: number
-	transport: string
+	transport: 'udp' | 'tcp'
 	listenport: number
-	model: string
+	pollinterval: number
+	model: ModelId
 	device: number
 	verbose: boolean
 }
@@ -62,6 +63,17 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			isVisible: (config) => config.transport === 'udp',
 		},
 		{
+			type: 'number',
+			id: 'pollinterval',
+			width: 4,
+			label: 'Poll Interval (seconds)',
+			default: 5,
+			min: 0,
+			max: 3600,
+			tooltip:
+				'How often to query the device for zoom, gimbal position and other state used by variables and feedbacks. Set to 0 to disable polling.',
+		},
+		{
 			type: 'static-text',
 			id: 'hr1',
 			width: 12,
@@ -73,7 +85,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			id: 'model',
 			label: 'Device Model',
 			default: Models[0].id,
-			choices: Models,
+			choices: [...Models],
 			tooltip: 'Select the model of your OBSBOT device',
 			width: 6,
 		},

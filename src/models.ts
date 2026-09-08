@@ -31,4 +31,6 @@ export const Models = [
 		id: 'OBSBOT_CENTER_MEET',
 		label: 'OBSBOT Center App (Meet Series)',
 	},
-]
+] as const
+
+export type ModelId = (typeof Models)[number]['id']

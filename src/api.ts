@@ -1,6 +1,7 @@
-import { InstanceStatus } from '@companion-module/base'
+import { InstanceStatus, type CompanionVariableValues } from '@companion-module/base'
 
 import type { OBSBOTInstance } from './main.js'
+import type { DeviceEntry, PresetPosition } from './state.js'
 import osc from 'osc'
 
 export async function InitConnection(self: OBSBOTInstance): Promise<void> {
@@ -14,6 +15,7 @@ export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 
 	// Cleanup previous socket
 	CloseConnection(self)
+	self._reconnecting = false
 
 	if (transport === 'udp') {
 		// Shared UDP socket on fixed OBSBOT response port 57120
@@ -24,10 +26,12 @@ export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 			SendCommand(self, '/OBSBOT/WebCam/General/Connected', [{ type: 'i', value: 0 }])
 		})
 
-		self._socket.on('error', (err: any) => {
+		self._socket.on('error', (err: Error) => {
 			self.log('error', `UDP socket error: ${err.message}`)
 			self.updateStatus(InstanceStatus.ConnectionFailure)
 		})
+
+		StartPolling(self)
 	} else {
 		// TCP connection
 		self._socket = new osc.TCPSocketPort({
@@ -39,25 +43,98 @@ export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 			self.log('info', `TCP connection established to ${ip}:${port}`)
 			self.updateStatus(InstanceStatus.Ok)
 			SendCommand(self, '/OBSBOT/WebCam/General/Connected', [{ type: 'i', value: 0 }])
+			StartPolling(self)
 		})
 
-		self._socket.on('message', (msg: any) => {
+		self._socket.on('close', () => {
+			self.log('warn', 'TCP connection closed.')
+			self.updateStatus(InstanceStatus.Disconnected)
+			ScheduleReconnect(self)
+		})
+
+		self._socket.on('message', (msg) => {
 			if (msg.address) {
 				self.log('debug', `Received: ${msg.address} ${JSON.stringify(msg.args)}`)
 				processData(self, msg.address, msg.args)
 			}
 		})
 
-		self._socket.on('error', (err: any) => {
+		self._socket.on('error', (err: Error) => {
 			self.log('error', `TCP error: ${err.message}`)
 			self.updateStatus(InstanceStatus.ConnectionFailure)
+			ScheduleReconnect(self)
 		})
 
 		self._socket.open()
 	}
 }
 
+const ReconnectDelay = 5000
+
+function ScheduleReconnect(self: OBSBOTInstance): void {
+	if (self._reconnecting) {
+		return
+	}
+
+	self._reconnecting = true
+	StopPolling(self)
+
+	self._reconnectTimer = setTimeout(() => {
+		self._reconnectTimer = undefined
+		self.log('info', 'Attempting to reconnect...')
+		void self.initConnection()
+	}, ReconnectDelay)
+}
+
+// The device only pushes zoom/gimbal/device info when asked, so poll for it
+function StartPolling(self: OBSBOTInstance): void {
+	StopPolling(self)
+
+	const interval = self.config.pollinterval
+
+	if (!interval) {
+		return
+	}
+
+	self._pollTimer = setInterval(() => PollDeviceState(self), interval * 1000)
+	PollDeviceState(self)
+}
+
+function StopPolling(self: OBSBOTInstance): void {
+	if (self._pollTimer) {
+		clearInterval(self._pollTimer)
+		self._pollTimer = undefined
+	}
+}
+
+export function PollDeviceState(self: OBSBOTInstance): void {
+	const noop: OSCArgument[] = [{ type: 'i', value: 0 }]
+
+	SendCommand(self, '/OBSBOT/WebCam/General/GetDeviceInfo', noop)
+	SendCommand(self, '/OBSBOT/WebCam/General/GetZoomInfo', noop)
+	SendCommand(self, '/OBSBOT/WebCam/General/GetGimbalPosInfo', noop)
+
+	switch (self.config.model) {
+		case 'OBSBOT_CENTER_TINY':
+			SendCommand(self, '/OBSBOT/WebCam/Tiny/GetAiTrackingInfo', noop)
+			SendCommand(self, '/OBSBOT/WebCam/Tiny/GetPresetPositionInfo', noop)
+			break
+		case 'OBSBOT_CENTER_MEET':
+			SendCommand(self, '/OBSBOT/WebCam/Meet/GetVirtualBackgroundInfo', noop)
+			SendCommand(self, '/OBSBOT/WebCam/Meet/GetAutoFramingInfo', noop)
+			SendCommand(self, '/OBSBOT/WebCam/Meet/GetPresetPositionInfo', noop)
+			break
+	}
+}
+
 export function CloseConnection(self: OBSBOTInstance): void {
+	StopPolling(self)
+
+	if (self._reconnectTimer) {
+		clearTimeout(self._reconnectTimer)
+		self._reconnectTimer = undefined
+	}
+
 	if (!self._socket) {
 		return
 	}
@@ -77,11 +154,11 @@ export function CloseConnection(self: OBSBOTInstance): void {
 	self._socket = undefined
 }
 
-function CheckMessage(self: OBSBOTInstance, msg: Buffer, rinfo: any): void {
+function CheckMessage(self: OBSBOTInstance, msg: Buffer, rinfo: { address: string; port: number }): void {
 	try {
 		if (rinfo.address === self.config.ip) {
 			const packet = osc.readPacket(msg, {})
-			const messages = packet.packets || [packet]
+			const messages = 'packets' in packet ? packet.packets : [packet]
 
 			for (const message of messages) {
 				if (message.address) {
@@ -89,20 +166,45 @@ function CheckMessage(self: OBSBOTInstance, msg: Buffer, rinfo: any): void {
 				}
 			}
 		}
-	} catch (_err: any) {
+	} catch (_err) {
 		//self.log('error', `OSC decode error: ${err.message}`)
 	}
 }
 
-function processData(self: OBSBOTInstance, address: string, args: OSCArgument[]): void {
+// osc.js hands back whatever the device encoded, so narrow before using it
+function toNumber(value: OSCValue | undefined): number {
+	return typeof value === 'number' ? value : Number(value)
+}
+
+function toText(value: OSCValue | undefined): string {
+	return value === undefined ? '' : String(value)
+}
+
+// In Center App these replies are prefixed with the device index, hardware devices send them bare
+const RepliesWithDeviceId = [
+	'/OBSBOT/WebCam/General/DeviceInfo',
+	'/OBSBOT/WebCam/General/ZoomInfo',
+	'/OBSBOT/WebCam/Tiny/AiTrackingInfo',
+	'/OBSBOT/WebCam/Tiny/PresetPositionInfo',
+	'/OBSBOT/WebCam/Meet/VirtualBackgroundInfo',
+	'/OBSBOT/WebCam/Meet/AutoFramingInfo',
+	'/OBSBOT/WebCam/Meet/PresetPositionInfo',
+]
+
+function processData(self: OBSBOTInstance, address: string, rawArgs: OSCValue[]): void {
 	if (self.config.verbose) {
-		self.log('debug', `Processing message: ${address} ${JSON.stringify(args)}`)
+		self.log('debug', `Processing message: ${address} ${JSON.stringify(rawArgs)}`)
 	}
+
+	const args =
+		self.config.model?.toString().includes('OBSBOT_CENTER') && RepliesWithDeviceId.includes(address)
+			? rawArgs.slice(1)
+			: rawArgs
 
 	//if we got any data, let's say the module status is ok
 	self.updateStatus(InstanceStatus.Ok)
 
-	const variableObj: any = {}
+	const variableObj: CompanionVariableValues = {}
 
 	switch (address) {
 		case '/OBSBOT/WebCam/General/DeviceInfo': {
@@ -112,41 +214,90 @@ function processData(self: OBSBOTInstance, address: string, args: OSCArgument[])
 				break
 			}
 
-			self.DEVICES = info.devices
+			self.STATE.devices = info.devices
+			self.STATE.selectedDeviceIndex = info.selectedDeviceIndex
+			self.STATE.selectedDeviceAwake = info.selectedDeviceRunState === 'Run'
 			self.updateVariableDefinitions()
 
-			if (self.DEVICES.length > 1) {
-				let i = 1
-
-				for (const device in info.devices) {
-					variableObj[`device${i}_connected`] = info.devices[device].connected ? 'Connected' : 'Disconnected'
-					variableObj[`device${i}_name`] = info.devices[device].name
-					i++
-				}
+			if (info.devices.length > 1) {
+				info.devices.forEach((device, index) => {
+					variableObj[`device${index + 1}_connected`] = device.connected ? 'Connected' : 'Disconnected'
+					variableObj[`device${index + 1}_name`] = device.name
+				})
 
 				variableObj['selected_index'] = info.selectedDeviceIndex
+				//1-based to match the Center App UI and the Device ID config field
+				variableObj['selected_device'] = info.selectedDeviceIndex + 1
 				variableObj['selected_state'] = info.selectedDeviceRunState
 				variableObj['selected_type'] = info.selectedDeviceType
 
 				const selected = info.devices[info.selectedDeviceIndex]
 				variableObj['selected_name'] = selected ? selected.name : ''
 				variableObj['selected_connected'] = selected?.connected ? 'Connected' : 'Disconnected'
-			} else if ((self.DEVICES.length as number) === 1) {
+			} else if (info.devices.length === 1) {
 				variableObj.device_name = info.devices[0].name
+				variableObj.device_connected = info.devices[0].connected ? 'Connected' : 'Disconnected'
 			}
 
+			self.checkFeedbacks('deviceConnected', 'selectedDeviceAwake')
 			break
 		}
 		case '/OBSBOT/WebCam/General/ZoomInfo': {
 			const zoom = parseZoomInfo(args)
+
+			self.STATE.zoom = toNumber(args[0])
+			self.STATE.fov = toNumber(args[1])
+
 			variableObj['zoom'] = zoom.zoom
 			variableObj['fov'] = zoom.fov
+
+			self.checkFeedbacks('zoomLevel', 'fieldOfView')
 			break
 		}
 		case '/OBSBOT/WebCam/General/GetGimbalPosInfoResp': {
 			const pos = parseGimbalPosInfo(args)
+
+			self.STATE.gimbalRoll = pos.roll
+			self.STATE.gimbalPitch = pos.pitch
+			self.STATE.gimbalYaw = pos.yaw
+
+			variableObj['gimbal_roll'] = pos.roll
 			variableObj['gimbal_pitch'] = pos.pitch
 			variableObj['gimbal_yaw'] = pos.yaw
+
+			self.checkFeedbacks('gimbalPosition')
+			break
+		}
+		case '/OBSBOT/WebCam/Tiny/AiTrackingInfo': {
+			self.STATE.aiTrackingLocked = args[0] === 1
+			variableObj['ai_tracking'] = self.STATE.aiTrackingLocked ? 'Locked' : 'Unlocked'
+			self.checkFeedbacks('aiTrackingLocked')
+			break
+		}
+		case '/OBSBOT/WebCam/Tiny/PresetPositionInfo':
+		case '/OBSBOT/WebCam/Meet/PresetPositionInfo': {
+			self.STATE.presets = parsePresetPositionInfo(args)
+
+			for (let i = 0; i < self.STATE.presets.length; i++) {
+				variableObj[`preset${i + 1}_exists`] = self.STATE.presets[i].exists ? 'Yes' : 'No'
+				variableObj[`preset${i + 1}_name`] = self.STATE.presets[i].name
+			}
+
+			variableObj['preset_count'] = self.STATE.presets.filter((preset) => preset.exists).length
+
+			self.checkFeedbacks('presetExists')
+			break
+		}
+		case '/OBSBOT/WebCam/Meet/VirtualBackgroundInfo': {
+			self.STATE.virtualBackground = toNumber(args[0])
+			variableObj['virtual_background'] = getVirtualBackgroundLabel(toNumber(args[0]))
+			self.checkFeedbacks('virtualBackground')
+			break
+		}
+		case '/OBSBOT/WebCam/Meet/AutoFramingInfo': {
+			self.STATE.autoFraming = toNumber(args[0])
+			variableObj['auto_framing'] = getAutoFramingLabel(toNumber(args[0]))
+			self.checkFeedbacks('autoFraming')
 			break
 		}
 		case '/OBSBOT/WebCam/General/ConnectedResp': {
@@ -160,15 +311,26 @@ function processData(self: OBSBOTInstance, address: string, args: OSCArgument[])
 	self.setVariableValues(variableObj)
 }
 
-function parseDeviceInfo(self: OBSBOTInstance, args: any[]) {
-	const deviceInfo: any = {}
+interface ParsedDeviceInfo {
+	devices?: DeviceEntry[]
+	selectedDeviceIndex: number
+	selectedDeviceRunState: string
+	selectedDeviceType: string
+}
+
+function parseDeviceInfo(self: OBSBOTInstance, args: OSCValue[]): ParsedDeviceInfo {
+	const deviceInfo: ParsedDeviceInfo = {
+		selectedDeviceIndex: 0,
+		selectedDeviceRunState: 'Sleep',
+		selectedDeviceType: '',
+	}
 
 	try {
 		deviceInfo.devices = [
-			{ connected: args[0] === 1, name: args[1] },
-			{ connected: args[2] === 1, name: args[3] },
-			{ connected: args[4] === 1, name: args[5] },
-			{ connected: args[6] === 1, name: args[7] },
+			{ connected: args[0] === 1, name: toText(args[1]) },
+			{ connected: args[2] === 1, name: toText(args[3]) },
+			{ connected: args[4] === 1, name: toText(args[5]) },
+			{ connected: args[6] === 1, name: toText(args[7]) },
 		]
 
 		//if not OBS_CENTER_APP, strip off all but first entry
@@ -176,10 +338,10 @@ function parseDeviceInfo(self: OBSBOTInstance, args: any[]) {
 			deviceInfo.devices = [deviceInfo.devices[0]]
 		}
 
-		deviceInfo.selectedDeviceIndex = args[8]
+		deviceInfo.selectedDeviceIndex = toNumber(args[8])
 		deviceInfo.selectedDeviceRunState = args[9] === 1 ? 'Run' : 'Sleep'
-		deviceInfo.selectedDeviceType = getDeviceTypeLabel(args[10])
-	} catch (_err: any) {
+		deviceInfo.selectedDeviceType = getDeviceTypeLabel(toNumber(args[10]))
+	} catch (_err) {
 		self.log('debug', 'Failed to parse device info.')
 	}
 
@@ -204,10 +366,49 @@ function getDeviceTypeLabel(type: number): string {
 	}
 }
 
-function parseZoomInfo(args: any[]) {
+// Replies carry three preset slots as [exists, name] pairs
+function parsePresetPositionInfo(args: OSCValue[]): PresetPosition[] {
+	const presets: PresetPosition[] = []
+
+	for (let i = 0; i < 3; i++) {
+		presets.push({ exists: args[i * 2] === 1, name: toText(args[i * 2 + 1]) })
+	}
+
+	return presets
+}
+
+export function getVirtualBackgroundLabel(value: number): string {
+	switch (value) {
+		case 0:
+			return 'Disabled'
+		case 1:
+			return 'Blur'
+		case 2:
+			return 'Green Screen'
+		case 3:
+			return 'Replacement'
+		default:
+			return `Unknown (${value})`
+	}
+}
+
+export function getAutoFramingLabel(value: number): string {
+	switch (value) {
+		case 0:
+			return 'Disabled'
+		case 1:
+			return 'Single Mode'
+		case 2:
+			return 'Group Mode'
+		default:
+			return `Unknown (${value})`
+	}
+}
+
+function parseZoomInfo(args: OSCValue[]) {
 	return {
-		zoom: args[0],
-		fov: getFovLabel(args[1]),
+		zoom: toNumber(args[0]),
+		fov: getFovLabel(toNumber(args[1])),
 	}
 }
 
@@ -224,11 +425,11 @@ function getFovLabel(value: number): string {
 	}
 }
 
-function parseGimbalPosInfo(args: any[]) {
+function parseGimbalPosInfo(args: OSCValue[]) {
 	return {
-		roll: undefined, // Currently unused
-		pitch: args[0],
-		yaw: args[1],
+		roll: toNumber(args[0]), // Reported as unused by the spec, exposed anyway
+		pitch: toNumber(args[1]),
+		yaw: toNumber(args[2]),
 	}
 }
 
@@ -244,7 +445,7 @@ const AddressesWithoutDeviceId = [
 
 export function SendCommand(
 	self: OBSBOTInstance,
-	address: string,
+	address: OSCAddress,
 	args: OSCArgument[],
 	targetIp?: string, // for multi-camera UDP control
 ): void {
@@ -272,11 +473,13 @@ export function SendCommand(
 	}
 
 	try {
-		if (transport === 'udp') {
-			const binary = osc.writePacket(message)
-			self._socket.send(binary, 0, binary.length, self.config.port, destinationIp)
-		} else {
+		if ('open' in self._socket) {
 			self._socket.send(message)
+		} else {
+			const binary = osc.writePacket(message)
+			//wrap without copying so the shared socket's Buffer overload applies
+			const buffer = Buffer.from(binary.buffer, binary.byteOffset, binary.byteLength)
+			self._socket.send(buffer, 0, buffer.length, self.config.port, destinationIp)
 		}
 
 		if (verbose) {
@@ -285,7 +488,7 @@ export function SendCommand(
 				`Sent: ${address} ${JSON.stringify(args)} via ${transport.toUpperCase()} to ${destinationIp}:${self.config.port}`,
 			)
 		}
-	} catch (err: any) {
-		self.log('error', `Failed to send OSC: ${err.message}`)
+	} catch (err) {
+		self.log('error', `Failed to send OSC: ${err instanceof Error ? err.message : err}`)
 	}
 }
