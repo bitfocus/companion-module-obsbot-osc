@@ -3,7 +3,7 @@ import { GetConfigFields, type ModuleConfig } from './config.js'
 import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions } from './actions.js'
 import { UpdateVariableDefinitions } from './variables.js'
-import { InitConnection, SendCommand } from './api.js'
+import { CloseConnection, InitConnection, SendCommand } from './api.js'
 import { UpdatePresets } from './presets.js'
 
 export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
@@ -26,6 +26,7 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 	// When module gets deleted
 	async destroy(): Promise<void> {
 		this.log('debug', 'destroy')
+		CloseConnection(this)
 	}
 
 	async configUpdated(config: ModuleConfig): Promise<void> {

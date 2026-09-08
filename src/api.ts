@@ -13,19 +13,13 @@ export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 	self.updateStatus(InstanceStatus.Connecting)
 
 	// Cleanup previous socket
-	if (self._socket?.close) {
-		try {
-			self._socket.close()
-		} catch (e) {
-			self.log('warn', `Failed to close previous socket: ${e}`)
-		}
-	}
+	CloseConnection(self)
 
 	if (transport === 'udp') {
 		// Shared UDP socket on fixed OBSBOT response port 57120
 		self._socket = self.createSharedUdpSocket('udp4', (msg, rinfo) => CheckMessage(self, msg, rinfo))
 
-		self._socket.bind(self.config.listenport, self.config.ip, () => {
+		self._socket.bind(self.config.listenport, '0.0.0.0', () => {
 			self.log('info', `Shared UDP socket listening on port ${self.config.listenport}`)
 			SendCommand(self, '/OBSBOT/WebCam/General/Connected', [{ type: 'i', value: 0 }])
 		})
@@ -63,9 +57,29 @@ export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 	}
 }
 
+export function CloseConnection(self: OBSBOTInstance): void {
+	if (!self._socket) {
+		return
+	}
+
+	try {
+		SendCommand(self, '/OBSBOT/WebCam/General/Disconnected', [{ type: 'i', value: 0 }])
+	} catch (e) {
+		self.log('debug', `Failed to send disconnect notification: ${e}`)
+	}
+
+	try {
+		self._socket.close()
+	} catch (e) {
+		self.log('warn', `Failed to close socket: ${e}`)
+	}
+
+	self._socket = undefined
+}
+
 function CheckMessage(self: OBSBOTInstance, msg: Buffer, rinfo: any): void {
 	try {
-		if (rinfo.address == self.config.ip && rinfo.port == self.config.port) {
+		if (rinfo.address === self.config.ip) {
 			const packet = osc.readPacket(msg, {})
 			const messages = packet.packets || [packet]
 
@@ -94,6 +108,10 @@ function processData(self: OBSBOTInstance, address: string, args: OSCArgument[])
 		case '/OBSBOT/WebCam/General/DeviceInfo': {
 			const info = parseDeviceInfo(self, args)
 
+			if (!info.devices) {
+				break
+			}
+
 			self.DEVICES = info.devices
 			self.updateVariableDefinitions()
 
@@ -109,10 +127,10 @@ function processData(self: OBSBOTInstance, address: string, args: OSCArgument[])
 				variableObj['selected_index'] = info.selectedDeviceIndex
 				variableObj['selected_state'] = info.selectedDeviceRunState
 				variableObj['selected_type'] = info.selectedDeviceType
-				variableObj['selected_name'] = info.devices[info.selectedDeviceIndex].name
-				variableObj['selected_connected'] = info.devices[info.selectedDeviceIndex].connected
-					? 'Connected'
-					: 'Disconnected'
+
+				const selected = info.devices[info.selectedDeviceIndex]
+				variableObj['selected_name'] = selected ? selected.name : ''
+				variableObj['selected_connected'] = selected?.connected ? 'Connected' : 'Disconnected'
 			} else if ((self.DEVICES.length as number) === 1) {
 				variableObj.device_name = info.devices[0].name
 			}
@@ -168,6 +186,7 @@ function parseDeviceInfo(self: OBSBOTInstance, args: any[]) {
 	return deviceInfo
 }
 
+// The OSC spec only documents types 0-3; 4 is unassigned and 5 has been observed on Tail 2 hardware
 function getDeviceTypeLabel(type: number): string {
 	switch (type) {
 		case 0:
@@ -213,6 +232,16 @@ function parseGimbalPosInfo(args: any[]) {
 	}
 }
 
+// Commands that take a single argument with no leading device selector, per the OBSBOT Center OSC spec
+const AddressesWithoutDeviceId = [
+	'/OBSBOT/WebCam/General/Connected',
+	'/OBSBOT/WebCam/General/Disconnected',
+	'/OBSBOT/WebCam/General/SelectDevice',
+	'/OBSBOT/WebCam/General/SetPCRecording',
+	'/OBSBOT/WebCam/General/SetHighfpsRecording',
+	'/OBSBOT/WebCam/General/PCSnapshot',
+]
+
 export function SendCommand(
 	self: OBSBOTInstance,
 	address: string,
@@ -229,7 +258,7 @@ export function SendCommand(
 	const destinationIp = targetIp || self.config.ip
 
 	// Prepend device ID if needed
-	if (model?.toString().includes('OBSBOT_CENTER') && address !== '/OBSBOT/WebCam/General/Connected') {
+	if (model?.toString().includes('OBSBOT_CENTER') && !AddressesWithoutDeviceId.includes(address)) {
 		// Minus 1 because device ID is 1-based in OBSBOT Center and 0-based with OSC
 		args = [{ type: 'i', value: device - 1 }, ...args]
 	}
