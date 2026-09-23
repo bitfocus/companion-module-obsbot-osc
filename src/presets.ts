@@ -651,62 +651,66 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		// ==================
 		// Image Presets
 		// ==================
-		presets['autofocus_on'] = {
-			type: 'button',
-			category: 'Image',
-			name: 'Auto Focus On',
-			style: {
-				text: '',
-				size: '14',
-				color: colors.white,
-				bgcolor: colors.black,
-				show_topbar: false,
-				png64: OBSBOT_ICONS.AUTO_FOCUS_ON,
-				pngalignment: 'center:center',
-			},
-			feedbacks: [],
-			steps: [
-				{
-					down: [
-						{
-							actionId: 'setAutoFocus',
-							options: {
-								autoFocus: '1',
-							},
-						},
-					],
-					up: [],
+		// SetAutoFocus is Tiny/Meet (and hardware) only; Center Tail uses SetFocusMode instead
+		const autoFocusUnsupported = ['OBSBOT_CENTER_TAIL_AIR', 'OBSBOT_CENTER_TAIL_2']
+		if (!autoFocusUnsupported.includes(self.config.model)) {
+			presets['autofocus_on'] = {
+				type: 'button',
+				category: 'Image',
+				name: 'Auto Focus On',
+				style: {
+					text: '',
+					size: '14',
+					color: colors.white,
+					bgcolor: colors.black,
+					show_topbar: false,
+					png64: OBSBOT_ICONS.AUTO_FOCUS_ON,
+					pngalignment: 'center:center',
 				},
-			],
-		}
+				feedbacks: [],
+				steps: [
+					{
+						down: [
+							{
+								actionId: 'setAutoFocus',
+								options: {
+									autoFocus: '1',
+								},
+							},
+						],
+						up: [],
+					},
+				],
+			}
 
-		presets['autofocus_off'] = {
-			type: 'button',
-			category: 'Image',
-			name: 'Auto Focus Off',
-			style: {
-				text: '',
-				size: '14',
-				color: colors.white,
-				bgcolor: colors.black,
-				show_topbar: false,
-				png64: OBSBOT_ICONS.AUTO_FOCUS_OFF,
-				pngalignment: 'center:center',
-			},
-			feedbacks: [],
-			steps: [
-				{
-					down: [
-						{
-							actionId: 'setAutoFocus',
-							options: {
-								autoFocus: '0',
-							},
-						},
-					],
-					up: [],
+			presets['autofocus_off'] = {
+				type: 'button',
+				category: 'Image',
+				name: 'Auto Focus Off',
+				style: {
+					text: '',
+					size: '14',
+					color: colors.white,
+					bgcolor: colors.black,
+					show_topbar: false,
+					png64: OBSBOT_ICONS.AUTO_FOCUS_OFF,
+					pngalignment: 'center:center',
 				},
-			],
+				feedbacks: [],
+				steps: [
+					{
+						down: [
+							{
+								actionId: 'setAutoFocus',
+								options: {
+									autoFocus: '0',
+								},
+							},
+						],
+						up: [],
+					},
+				],
+			}
 		}
 
 		presets['autoexposure_on'] = {
@@ -973,94 +977,6 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			],
 		}
 
-		presets['center_focus_afs'] = {
-			type: 'button',
-			category: 'Center App',
-			name: 'Focus Mode AF-S',
-			style: {
-				text: '',
-				size: '14',
-				color: colors.white,
-				bgcolor: colors.black,
-				show_topbar: false,
-				png64: OBSBOT_ICONS.CENTER_AF_S,
-				pngalignment: 'center:center',
-			},
-			feedbacks: [],
-			steps: [
-				{
-					down: [
-						{
-							actionId: 'setFocusMode',
-							options: {
-								focusMode: '0',
-							},
-						},
-					],
-					up: [],
-				},
-			],
-		}
-
-		presets['center_focus_afc'] = {
-			type: 'button',
-			category: 'Center App',
-			name: 'Focus Mode AF-C',
-			style: {
-				text: '',
-				size: '14',
-				color: colors.white,
-				bgcolor: colors.black,
-				show_topbar: false,
-				png64: OBSBOT_ICONS.CENTER_AF_C,
-				pngalignment: 'center:center',
-			},
-			feedbacks: [],
-			steps: [
-				{
-					down: [
-						{
-							actionId: 'setFocusMode',
-							options: {
-								focusMode: '1',
-							},
-						},
-					],
-					up: [],
-				},
-			],
-		}
-
-		presets['center_focus_mf'] = {
-			type: 'button',
-			category: 'Center App',
-			name: 'Focus Mode MF',
-			style: {
-				text: '',
-				size: '14',
-				color: colors.white,
-				bgcolor: colors.black,
-				show_topbar: false,
-				png64: OBSBOT_ICONS.CENTER_MF,
-				pngalignment: 'center:center',
-			},
-			feedbacks: [],
-			steps: [
-				{
-					down: [
-						{
-							actionId: 'setFocusMode',
-							options: {
-								focusMode: '2',
-								focusValue: 50,
-							},
-						},
-					],
-					up: [],
-				},
-			],
-		}
-
 		presets['center_recording_start'] = {
 			type: 'button',
 			category: 'Center App',
@@ -1135,6 +1051,100 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 						{
 							actionId: 'PCSnapshot',
 							options: {},
+						},
+					],
+					up: [],
+				},
+			],
+		}
+	}
+
+	// SetFocusMode is Center App Tail series only
+	const focusModeModels = ['OBSBOT_CENTER', 'OBSBOT_CENTER_TAIL_AIR', 'OBSBOT_CENTER_TAIL_2']
+	if (focusModeModels.includes(self.config.model)) {
+		presets['center_focus_afs'] = {
+			type: 'button',
+			category: 'Center App',
+			name: 'Focus Mode AF-S',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_AF_S,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'setFocusMode',
+							options: {
+								focusMode: '0',
+								focusValue: 0,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
+
+		presets['center_focus_afc'] = {
+			type: 'button',
+			category: 'Center App',
+			name: 'Focus Mode AF-C',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_AF_C,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'setFocusMode',
+							options: {
+								focusMode: '1',
+								focusValue: 0,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+		}
+
+		presets['center_focus_mf'] = {
+			type: 'button',
+			category: 'Center App',
+			name: 'Focus Mode MF',
+			style: {
+				text: '',
+				size: '14',
+				color: colors.white,
+				bgcolor: colors.black,
+				show_topbar: false,
+				png64: OBSBOT_ICONS.CENTER_MF,
+				pngalignment: 'center:center',
+			},
+			feedbacks: [],
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'setFocusMode',
+							options: {
+								focusMode: '2',
+								focusValue: 50,
+							},
 						},
 					],
 					up: [],
@@ -1550,6 +1560,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 							options: {
 								aiMode: '0',
 								autoZoomModeSingle: '0',
+								autoZoomModeMulti: '0',
 							},
 						},
 					],
@@ -1579,6 +1590,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 							actionId: 'OBSBOT_TAIL_2_setAIMode',
 							options: {
 								aiMode: '1',
+								autoZoomModeSingle: '0',
 								autoZoomModeMulti: '0',
 							},
 						},
@@ -1609,6 +1621,10 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 							actionId: 'OBSBOT_TAIL_2_setTrackingSpeed',
 							options: {
 								mode: '2',
+								panMode: '0',
+								panSpeed: 1,
+								pitchMode: '0',
+								pitchSpeed: 1,
 							},
 						},
 					],
@@ -1638,6 +1654,10 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 							actionId: 'OBSBOT_TAIL_2_setTrackingSpeed',
 							options: {
 								mode: '3',
+								panMode: '0',
+								panSpeed: 1,
+								pitchMode: '0',
+								pitchSpeed: 1,
 							},
 						},
 					],
