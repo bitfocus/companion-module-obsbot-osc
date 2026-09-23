@@ -60,7 +60,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			min: 1,
 			max: 65535,
 			tooltip: 'Port for receiving OSC messages over UDP. 57120 is the default for OBSBOT devices and Center App',
-			isVisible: (config) => config.transport === 'udp',
+			isVisibleExpression: '$(options:transport) === "udp"',
 		},
 		{
 			type: 'number',
@@ -98,7 +98,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			max: 255,
 			tooltip: 'Device ID for the OBSBOT Center App. This is not used for hardware devices.',
 			width: 4,
-			isVisible: (config) => config.model?.toString().indexOf('OBSBOT_CENTER') !== -1,
+			isVisibleExpression: 'includes($(options:model), "OBSBOT_CENTER")',
 		},
 		{
 			type: 'static-text',

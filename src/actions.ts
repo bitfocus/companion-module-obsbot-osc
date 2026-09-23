@@ -736,7 +736,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					step: 1,
 					required: true,
 					range: true,
-					isVisible: (config) => config.focusMode === '2',
+					isVisibleExpression: '$(options:focusMode) === "2"',
 				},
 			],
 			callback: (action) => {
@@ -1092,7 +1092,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						{ id: '6', label: 'Long Shot 1' },
 						{ id: '7', label: 'Long Shot 2' },
 					],
-					isVisible: (config) => config.aiMode === '0',
+					isVisibleExpression: '$(options:aiMode) === "0"',
 				},
 				{
 					type: 'dropdown',
@@ -1108,7 +1108,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						{ id: '6', label: 'Long Shot 1' },
 						{ id: '7', label: 'Long Shot 2' },
 					],
-					isVisible: (config) => config.aiMode === '1',
+					isVisibleExpression: '$(options:aiMode) === "1"',
 				},
 			],
 			callback: (action) => {
@@ -1181,7 +1181,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						{ id: '0', label: 'Manual' },
 						{ id: '1', label: 'Auto' },
 					],
-					isVisible: (config) => config.mode === '5',
+					isVisibleExpression: '$(options:mode) === "5"',
 				},
 				{
 					type: 'number',
@@ -1193,7 +1193,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					step: 1,
 					required: true,
 					range: true,
-					isVisible: (config) => config.mode === '5',
+					isVisibleExpression: '$(options:mode) === "5"',
 				},
 				{
 					type: 'dropdown',
@@ -1204,7 +1204,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						{ id: '0', label: 'Manual' },
 						{ id: '1', label: 'Auto' },
 					],
-					isVisible: (config) => config.mode === '5',
+					isVisibleExpression: '$(options:mode) === "5"',
 				},
 				{
 					type: 'number',
@@ -1216,7 +1216,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					step: 1,
 					required: true,
 					range: true,
-					isVisible: (config) => config.mode === '5',
+					isVisibleExpression: '$(options:mode) === "5"',
 				},
 			],
 			callback: (action) => {
