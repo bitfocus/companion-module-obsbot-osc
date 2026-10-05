@@ -1,31 +1,15 @@
 // types.d.ts
 declare module 'osc' {
-	interface OSCMessage {
+	export interface OSCMessage {
 		address: string
 		args: OSCValue[]
 	}
 
-	interface OSCBundle {
+	export interface OSCBundle {
 		packets: OSCMessage[]
 	}
 
-	interface TCPSocketPortOptions {
-		address: string
-		port: number
-	}
-
-	export class TCPSocketPort {
-		constructor(options: TCPSocketPortOptions)
-		open(): void
-		close(): void
-		send(message: { address: string; args: OSCArgument[] }): void
-		on(event: 'ready' | 'close', handler: () => void): void
-		on(event: 'message', handler: (message: OSCMessage) => void): void
-		on(event: 'error', handler: (error: Error) => void): void
-	}
-
 	const osc: {
-		TCPSocketPort: typeof TCPSocketPort
 		readPacket(buffer: Buffer, options: Record<string, unknown>): OSCMessage | OSCBundle
 		writePacket(message: { address: string; args: OSCArgument[] }): Uint8Array
 	}
@@ -34,7 +18,7 @@ declare module 'osc' {
 }
 
 /** Either transport the module can be talking over */
-type OSCSocket = import('@companion-module/base').SharedUdpSocket | import('osc').TCPSocketPort
+type OSCSocket = import('@companion-module/base').SharedUdpSocket | import('./tcp.js').OSCTCPPort
 
 /** OSC type tags used by the OBSBOT protocol, per the definitions in docs/ */
 type OSCArgTag = 'i' | 'f' | 's' | 'b'

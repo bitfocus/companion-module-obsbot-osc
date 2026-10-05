@@ -4,6 +4,7 @@ import type { OBSBOTInstance } from './main.js'
 import type { DeviceEntry, PresetPosition } from './state.js'
 import osc from 'osc'
 import dns from 'node:dns/promises'
+import { OSCTCPPort } from './tcp.js'
 
 export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 	const { ip, port, transport, verbose } = self.config
@@ -38,10 +39,7 @@ export async function InitConnection(self: OBSBOTInstance): Promise<void> {
 		StartPolling(self)
 	} else {
 		// TCP connection
-		self._socket = new osc.TCPSocketPort({
-			address: ip,
-			port: port,
-		})
+		self._socket = new OSCTCPPort(ip, port)
 
 		self._socket.on('ready', () => {
 			self.log('info', `TCP connection established to ${ip}:${port}`)
