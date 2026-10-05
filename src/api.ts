@@ -319,11 +319,9 @@ function processData(self: OBSBOTInstance, address: string, rawArgs: OSCValue[])
 		case '/OBSBOT/WebCam/General/GetGimbalPosInfoResp': {
 			const pos = parseGimbalPosInfo(args)
 
-			self.STATE.gimbalRoll = pos.roll
 			self.STATE.gimbalPitch = pos.pitch
 			self.STATE.gimbalYaw = pos.yaw
 
-			variableObj['gimbal_roll'] = pos.roll
 			variableObj['gimbal_pitch'] = pos.pitch
 			variableObj['gimbal_yaw'] = pos.yaw
 
@@ -471,13 +469,13 @@ function getFovLabel(value: number): string {
 	}
 }
 
-// The spec documents [roll, pitch, yaw], but Center App sends just [yaw, pitch]
-function parseGimbalPosInfo(args: OSCValue[]): { roll: number | undefined; pitch: number; yaw: number } {
+// The spec documents [roll, pitch, yaw], but Center App and Tail 2 send just [yaw, pitch]
+function parseGimbalPosInfo(args: OSCValue[]): { pitch: number; yaw: number } {
 	if (args.length >= 3) {
-		return { roll: toNumber(args[0]), pitch: toNumber(args[1]), yaw: toNumber(args[2]) }
+		return { pitch: toNumber(args[1]), yaw: toNumber(args[2]) }
 	}
 
-	return { roll: undefined, pitch: toNumber(args[1]), yaw: toNumber(args[0]) }
+	return { pitch: toNumber(args[1]), yaw: toNumber(args[0]) }
 }
 
 // Commands that take a single argument with no leading device selector, per the OBSBOT Center OSC spec

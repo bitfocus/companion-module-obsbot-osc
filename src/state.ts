@@ -12,7 +12,6 @@ export interface DeviceEntry {
 export interface OBSBOTState {
 	zoom: number | undefined
 	fov: number | undefined
-	gimbalRoll: number | undefined
 	gimbalPitch: number | undefined
 	gimbalYaw: number | undefined
 	devices: DeviceEntry[]
@@ -28,7 +27,6 @@ export function CreateState(): OBSBOTState {
 	return {
 		zoom: undefined,
 		fov: undefined,
-		gimbalRoll: undefined,
 		gimbalPitch: undefined,
 		gimbalYaw: undefined,
 		devices: [],

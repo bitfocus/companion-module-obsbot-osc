@@ -101,7 +101,6 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				choices: [
 					{ id: 'yaw', label: 'Yaw (Pan)' },
 					{ id: 'pitch', label: 'Pitch (Tilt)' },
-					{ id: 'roll', label: 'Roll' },
 				],
 			},
 			{
@@ -129,14 +128,15 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 			let value
 
 			switch (feedback.options.axis) {
+				case 'yaw':
+					value = self.STATE.gimbalYaw
+					break
 				case 'pitch':
 					value = self.STATE.gimbalPitch
 					break
-				case 'roll':
-					value = self.STATE.gimbalRoll
-					break
 				default:
-					value = self.STATE.gimbalYaw
+					// Includes the removed 'roll' axis, which no device ever reported
+					return false
 			}
 
 			if (value === undefined) {
