@@ -1,6 +1,6 @@
 # companion-module-obsbot-osc
 
-See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
+See [HELP.md](./companion/HELP.md), [CHANGELOG.md](./companion/CHANGELOG.md)and [LICENSE](./LICENSE)
 
 ## Getting started
 
