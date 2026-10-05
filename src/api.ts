@@ -1,6 +1,7 @@
 import { InstanceStatus, type CompanionVariableValues } from '@companion-module/base'
 
 import type { OBSBOTInstance } from './main.js'
+import type { ModelId } from './models.js'
 import type { DeviceEntry, PresetPosition } from './state.js'
 import osc from 'osc'
 import dns from 'node:dns/promises'
@@ -305,6 +306,10 @@ function processData(self: OBSBOTInstance, address: string, rawArgs: OSCValue[])
 			break
 		}
 		case '/OBSBOT/WebCam/General/ZoomInfo': {
+			if (self.config.model === 'OBSBOT_TAIL_2') {
+				break // Always [0, -1] on Tail 2 hardware, see UpdateVariableDefinitions
+			}
+
 			const zoom = parseZoomInfo(args)
 
 			self.STATE.zoom = zoom.zoom
@@ -317,7 +322,7 @@ function processData(self: OBSBOTInstance, address: string, rawArgs: OSCValue[])
 			break
 		}
 		case '/OBSBOT/WebCam/General/GetGimbalPosInfoResp': {
-			const pos = parseGimbalPosInfo(args)
+			const pos = parseGimbalPosInfo(self.config.model, args)
 
 			self.STATE.gimbalPitch = pos.pitch
 			self.STATE.gimbalYaw = pos.yaw
@@ -457,7 +462,7 @@ function parseZoomInfo(args: OSCValue[]) {
 function getFovLabel(value: number): string {
 	switch (value) {
 		case -1:
-			return 'N/A' // Reported by models without FOV presets, such as the Tiny 2
+			return 'Custom' // The current zoom doesn't match any of the three FOV presets
 		case 0:
 			return '86°'
 		case 1:
@@ -469,10 +474,15 @@ function getFovLabel(value: number): string {
 	}
 }
 
-// The spec documents [roll, pitch, yaw], but Center App and Tail 2 send just [yaw, pitch]
-function parseGimbalPosInfo(args: OSCValue[]): { pitch: number; yaw: number } {
+// The spec documents [roll, pitch, yaw], but devices send just two values:
+// Center App sends [yaw, pitch] and Tail 2 hardware sends [pitch, yaw]
+function parseGimbalPosInfo(model: ModelId, args: OSCValue[]): { pitch: number; yaw: number } {
 	if (args.length >= 3) {
 		return { pitch: toNumber(args[1]), yaw: toNumber(args[2]) }
+	}
+
+	if (model === 'OBSBOT_TAIL_2') {
+		return { pitch: toNumber(args[0]), yaw: toNumber(args[1]) }
 	}
 
 	return { pitch: toNumber(args[1]), yaw: toNumber(args[0]) }
@@ -480,6 +490,7 @@ function parseGimbalPosInfo(args: OSCValue[]): { pitch: number; yaw: number } {
 
 // Commands that take a single argument with no leading device selector, per the OBSBOT Center OSC spec
 const AddressesWithoutDeviceId = [
+	'/OBSBOT/WebCam/General/GetDeviceInfo', // Not in the spec, but Center App ignores it with a device ID
 	'/OBSBOT/WebCam/General/Connected',
 	'/OBSBOT/WebCam/General/Disconnected',
 	'/OBSBOT/WebCam/General/SelectDevice',

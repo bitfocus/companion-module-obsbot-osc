@@ -21,8 +21,11 @@ export function UpdateVariableDefinitions(self: OBSBOTInstance): void {
 		variables.push({ variableId: 'device_connected', name: 'Device Connected' })
 	}
 
-	variables.push({ variableId: 'zoom', name: 'Zoom Level' })
-	variables.push({ variableId: 'fov', name: 'Field of View' })
+	// Tail 2 hardware always reports zoom 0 and FOV -1, whatever it is actually set to
+	if (self.config.model !== 'OBSBOT_TAIL_2') {
+		variables.push({ variableId: 'zoom', name: 'Zoom Level' })
+		variables.push({ variableId: 'fov', name: 'Field of View' })
+	}
 	variables.push({ variableId: 'gimbal_pitch', name: 'Gimbal Pitch' })
 	variables.push({ variableId: 'gimbal_yaw', name: 'Gimbal Yaw' })
 

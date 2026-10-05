@@ -7,83 +7,86 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 	const foregroundColor = combineRgb(0, 0, 0)
 	const backgroundColor = combineRgb(255, 255, 0)
 
+	// Tail 2 hardware zooms on command but always reports zoom 0 and FOV -1, so these could never be accurate
+	if (self.config.model !== 'OBSBOT_TAIL_2') {
+		feedbacks.zoomLevel = {
+			type: 'boolean',
+			name: 'Zoom Level',
+			description: 'Change style based on the current zoom level',
+			defaultStyle: {
+				color: foregroundColor,
+				bgcolor: backgroundColor,
+			},
+			options: [
+				{
+					type: 'dropdown',
+					label: 'Comparison',
+					id: 'comparison',
+					default: 'eq',
+					choices: [
+						{ id: 'eq', label: 'Equal to' },
+						{ id: 'gte', label: 'Greater than or equal to' },
+						{ id: 'lte', label: 'Less than or equal to' },
+					],
+				},
+				{
+					type: 'number',
+					label: 'Zoom Level',
+					id: 'zoom',
+					default: 0,
+					min: 0,
+					max: 100,
+					step: 1,
+					required: true,
+					range: true,
+				},
+			],
+			callback: (feedback) => {
+				if (self.STATE.zoom === undefined) {
+					return false
+				}
+
+				const target = parseInt(feedback.options.zoom?.toString() || '0')
+
+				switch (feedback.options.comparison) {
+					case 'gte':
+						return self.STATE.zoom >= target
+					case 'lte':
+						return self.STATE.zoom <= target
+					default:
+						return self.STATE.zoom === target
+				}
+			},
+		}
+
+		feedbacks.fieldOfView = {
+			type: 'boolean',
+			name: 'Field of View',
+			description: 'Change style when the camera is at the selected field of view',
+			defaultStyle: {
+				color: foregroundColor,
+				bgcolor: backgroundColor,
+			},
+			options: [
+				{
+					type: 'dropdown',
+					label: 'Field of View',
+					id: 'fov',
+					default: '0',
+					choices: [
+						{ id: '0', label: '86 Degrees' },
+						{ id: '1', label: '78 Degrees' },
+						{ id: '2', label: '65 Degrees' },
+					],
+				},
+			],
+			callback: (feedback) => {
+				return self.STATE.fov === parseInt(feedback.options.fov?.toString() || '0')
+			},
+		}
+	}
+
 	//These are driven by replies every model sends, so they apply to hardware and Center App alike
-	feedbacks.zoomLevel = {
-		type: 'boolean',
-		name: 'Zoom Level',
-		description: 'Change style based on the current zoom level',
-		defaultStyle: {
-			color: foregroundColor,
-			bgcolor: backgroundColor,
-		},
-		options: [
-			{
-				type: 'dropdown',
-				label: 'Comparison',
-				id: 'comparison',
-				default: 'eq',
-				choices: [
-					{ id: 'eq', label: 'Equal to' },
-					{ id: 'gte', label: 'Greater than or equal to' },
-					{ id: 'lte', label: 'Less than or equal to' },
-				],
-			},
-			{
-				type: 'number',
-				label: 'Zoom Level',
-				id: 'zoom',
-				default: 0,
-				min: 0,
-				max: 100,
-				step: 1,
-				required: true,
-				range: true,
-			},
-		],
-		callback: (feedback) => {
-			if (self.STATE.zoom === undefined) {
-				return false
-			}
-
-			const target = parseInt(feedback.options.zoom?.toString() || '0')
-
-			switch (feedback.options.comparison) {
-				case 'gte':
-					return self.STATE.zoom >= target
-				case 'lte':
-					return self.STATE.zoom <= target
-				default:
-					return self.STATE.zoom === target
-			}
-		},
-	}
-
-	feedbacks.fieldOfView = {
-		type: 'boolean',
-		name: 'Field of View',
-		description: 'Change style when the camera is at the selected field of view',
-		defaultStyle: {
-			color: foregroundColor,
-			bgcolor: backgroundColor,
-		},
-		options: [
-			{
-				type: 'dropdown',
-				label: 'Field of View',
-				id: 'fov',
-				default: '0',
-				choices: [
-					{ id: '0', label: '86 Degrees' },
-					{ id: '1', label: '78 Degrees' },
-					{ id: '2', label: '65 Degrees' },
-				],
-			},
-		],
-		callback: (feedback) => {
-			return self.STATE.fov === parseInt(feedback.options.fov?.toString() || '0')
-		},
-	}
-
 	feedbacks.gimbalPosition = {
 		type: 'boolean',
 		name: 'Gimbal Position In Range',
