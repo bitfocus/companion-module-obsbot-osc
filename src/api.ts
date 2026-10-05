@@ -114,6 +114,12 @@ export function PollDeviceState(self: OBSBOTInstance): void {
 
 	const noop: OSCArgument[] = [{ type: 'i', value: 0 }]
 
+	// Tail 2 hardware ignores every Get* query, but answers each Connected with its full state
+	if (self.config.model === 'OBSBOT_TAIL_2') {
+		SendCommand(self, '/OBSBOT/WebCam/General/Connected', noop)
+		return
+	}
+
 	SendCommand(self, '/OBSBOT/WebCam/General/GetDeviceInfo', noop)
 	SendCommand(self, '/OBSBOT/WebCam/General/GetZoomInfo', noop)
 	SendCommand(self, '/OBSBOT/WebCam/General/GetGimbalPosInfo', noop)
@@ -237,6 +243,7 @@ function toText(value: OSCValue | undefined): string {
 const ReplyArgCounts: Partial<Record<OSCAddress, number>> = {
 	'/OBSBOT/WebCam/General/DeviceInfo': 11,
 	'/OBSBOT/WebCam/General/ZoomInfo': 2,
+	'/OBSBOT/WebCam/General/PresetPositionInfo': 6,
 	'/OBSBOT/WebCam/Tiny/AiTrackingInfo': 1,
 	'/OBSBOT/WebCam/Tiny/PresetPositionInfo': 6,
 	'/OBSBOT/WebCam/Meet/VirtualBackgroundInfo': 1,
@@ -329,6 +336,7 @@ function processData(self: OBSBOTInstance, address: string, rawArgs: OSCValue[])
 			self.checkFeedbacks('aiTrackingLocked')
 			break
 		}
+		case '/OBSBOT/WebCam/General/PresetPositionInfo': // Tail 2, not in its spec
 		case '/OBSBOT/WebCam/Tiny/PresetPositionInfo':
 		case '/OBSBOT/WebCam/Meet/PresetPositionInfo': {
 			self.STATE.presets = parsePresetPositionInfo(args)
