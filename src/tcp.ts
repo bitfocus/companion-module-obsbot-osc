@@ -43,6 +43,9 @@ export class OSCTCPPort extends EventEmitter<TCPPortEvents> {
 	}
 
 	close(): void {
+		// destroy() still emits 'close', which would look like a dropped connection and trigger a reconnect
+		this.#socket?.removeAllListeners()
+		this.#socket?.on('error', () => {})
 		this.#socket?.destroy()
 		this.#socket = undefined
 		this.#pending = Buffer.alloc(0)
