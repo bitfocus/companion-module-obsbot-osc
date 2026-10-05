@@ -14,7 +14,6 @@ export function UpdateVariableDefinitions(self: OBSBOTInstance): void {
 		variables.push({ variableId: 'selected_index', name: 'Selected Device Index (0 based)' })
 		variables.push({ variableId: 'selected_device', name: 'Selected Device Number (1 based)' })
 		variables.push({ variableId: 'selected_state', name: 'Selected Device Run State' })
-		variables.push({ variableId: 'selected_type', name: 'Selected Device Type' })
 		variables.push({ variableId: 'selected_name', name: 'Selected Device Name' })
 		variables.push({ variableId: 'selected_connected', name: 'Selected Device Connected' })
 	} else if (self.STATE.devices.length === 1) {

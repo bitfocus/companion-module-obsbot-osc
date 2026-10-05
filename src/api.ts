@@ -232,26 +232,29 @@ function toText(value: OSCValue | undefined): string {
 	return value === undefined ? '' : String(value)
 }
 
-// In Center App these replies are prefixed with the device index, hardware devices send them bare
-const RepliesWithDeviceId = [
-	'/OBSBOT/WebCam/General/DeviceInfo',
-	'/OBSBOT/WebCam/General/ZoomInfo',
-	'/OBSBOT/WebCam/Tiny/AiTrackingInfo',
-	'/OBSBOT/WebCam/Tiny/PresetPositionInfo',
-	'/OBSBOT/WebCam/Meet/VirtualBackgroundInfo',
-	'/OBSBOT/WebCam/Meet/AutoFramingInfo',
-	'/OBSBOT/WebCam/Meet/PresetPositionInfo',
-]
+// Argument counts per the spec. Some Center App builds prefix these replies with the device
+// index and others (and hardware) send them bare, so strip a leading index only when present
+const ReplyArgCounts: Partial<Record<OSCAddress, number>> = {
+	'/OBSBOT/WebCam/General/DeviceInfo': 11,
+	'/OBSBOT/WebCam/General/ZoomInfo': 2,
+	'/OBSBOT/WebCam/Tiny/AiTrackingInfo': 1,
+	'/OBSBOT/WebCam/Tiny/PresetPositionInfo': 6,
+	'/OBSBOT/WebCam/Meet/VirtualBackgroundInfo': 1,
+	'/OBSBOT/WebCam/Meet/AutoFramingInfo': 1,
+	'/OBSBOT/WebCam/Meet/PresetPositionInfo': 6,
+}
+
+function stripDeviceIndex(address: string, args: OSCValue[]): OSCValue[] {
+	const expected = ReplyArgCounts[address as OSCAddress]
+	return expected !== undefined && args.length === expected + 1 ? args.slice(1) : args
+}
 
 function processData(self: OBSBOTInstance, address: string, rawArgs: OSCValue[]): void {
 	if (self.config.verbose) {
 		self.log('debug', `Processing message: ${address} ${JSON.stringify(rawArgs)}`)
 	}
 
-	const args =
-		self.config.model?.toString().includes('OBSBOT_CENTER') && RepliesWithDeviceId.includes(address)
-			? rawArgs.slice(1)
-			: rawArgs
+	const args = stripDeviceIndex(address, rawArgs)
 
 	//if we got any data, let's say the module status is ok
 	self._lastMessageAt = Date.now()
@@ -282,7 +285,6 @@ function processData(self: OBSBOTInstance, address: string, rawArgs: OSCValue[])
 				//1-based to match the Center App UI and the Device ID config field
 				variableObj['selected_device'] = info.selectedDeviceIndex + 1
 				variableObj['selected_state'] = info.selectedDeviceRunState
-				variableObj['selected_type'] = info.selectedDeviceType
 
 				const selected = info.devices[info.selectedDeviceIndex]
 				variableObj['selected_name'] = selected ? selected.name : ''
@@ -298,7 +300,7 @@ function processData(self: OBSBOTInstance, address: string, rawArgs: OSCValue[])
 		case '/OBSBOT/WebCam/General/ZoomInfo': {
 			const zoom = parseZoomInfo(args)
 
-			self.STATE.zoom = toNumber(args[0])
+			self.STATE.zoom = zoom.zoom
 			self.STATE.fov = toNumber(args[1])
 
 			variableObj['zoom'] = zoom.zoom
@@ -368,14 +370,12 @@ interface ParsedDeviceInfo {
 	devices?: DeviceEntry[]
 	selectedDeviceIndex: number
 	selectedDeviceRunState: string
-	selectedDeviceType: string
 }
 
 function parseDeviceInfo(self: OBSBOTInstance, args: OSCValue[]): ParsedDeviceInfo {
 	const deviceInfo: ParsedDeviceInfo = {
 		selectedDeviceIndex: 0,
 		selectedDeviceRunState: 'Sleep',
-		selectedDeviceType: '',
 	}
 
 	try {
@@ -393,7 +393,6 @@ function parseDeviceInfo(self: OBSBOTInstance, args: OSCValue[]): ParsedDeviceIn
 
 		deviceInfo.selectedDeviceIndex = toNumber(args[8])
 		deviceInfo.selectedDeviceRunState = args[9] === 1 ? 'Run' : 'Sleep'
-		deviceInfo.selectedDeviceType = getDeviceTypeLabel(toNumber(args[10]))
 	} catch (_err) {
 		self.log('debug', 'Failed to parse device info.')
 	}
@@ -401,30 +400,14 @@ function parseDeviceInfo(self: OBSBOTInstance, args: OSCValue[]): ParsedDeviceIn
 	return deviceInfo
 }
 
-// The OSC spec only documents types 0-3; 4 is unassigned and 5 has been observed on Tail 2 hardware
-function getDeviceTypeLabel(type: number): string {
-	switch (type) {
-		case 0:
-			return 'Tiny'
-		case 1:
-			return 'Tiny 4K'
-		case 2:
-			return 'Meet'
-		case 3:
-			return 'Meet 4K'
-		case 5:
-			return 'Tail2'
-		default:
-			return `Unknown (${type})`
-	}
-}
-
-// Replies carry three preset slots as [exists, name] pairs
+// Replies carry three preset slots as [exists, name] pairs. Center App names empty slots
+// after its "Add" button, so only trust the name of a saved slot
 function parsePresetPositionInfo(args: OSCValue[]): PresetPosition[] {
 	const presets: PresetPosition[] = []
 
 	for (let i = 0; i < 3; i++) {
-		presets.push({ exists: args[i * 2] === 1, name: toText(args[i * 2 + 1]) })
+		const exists = args[i * 2] === 1
+		presets.push({ exists, name: exists ? toText(args[i * 2 + 1]) : '' })
 	}
 
 	return presets
@@ -467,6 +450,8 @@ function parseZoomInfo(args: OSCValue[]) {
 
 function getFovLabel(value: number): string {
 	switch (value) {
+		case -1:
+			return 'N/A' // Reported by models without FOV presets, such as the Tiny 2
 		case 0:
 			return '86°'
 		case 1:
@@ -478,12 +463,13 @@ function getFovLabel(value: number): string {
 	}
 }
 
-function parseGimbalPosInfo(args: OSCValue[]) {
-	return {
-		roll: toNumber(args[0]), // Reported as unused by the spec, exposed anyway
-		pitch: toNumber(args[1]),
-		yaw: toNumber(args[2]),
+// The spec documents [roll, pitch, yaw], but Center App sends just [yaw, pitch]
+function parseGimbalPosInfo(args: OSCValue[]): { roll: number | undefined; pitch: number; yaw: number } {
+	if (args.length >= 3) {
+		return { roll: toNumber(args[0]), pitch: toNumber(args[1]), yaw: toNumber(args[2]) }
 	}
+
+	return { roll: undefined, pitch: toNumber(args[1]), yaw: toNumber(args[0]) }
 }
 
 // Commands that take a single argument with no leading device selector, per the OBSBOT Center OSC spec
