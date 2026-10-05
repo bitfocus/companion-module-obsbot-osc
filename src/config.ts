@@ -1,12 +1,13 @@
 import type { SomeCompanionConfigField } from '@companion-module/base'
-import { Models } from './models.js'
+import { Models, type ModelId } from './models.js'
 
 export interface ModuleConfig {
 	ip: string
 	port: number
-	transport: string
+	transport: 'udp' | 'tcp'
 	listenport: number
-	model: string
+	pollinterval: number
+	model: ModelId
 	device: number
 	verbose: boolean
 }
@@ -19,7 +20,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			width: 12,
 			label: 'Information',
 			value:
-				'This module will communicate with OBSBOT products over OSC. It can be applied to the OBSBOT Center App (software), OBSBOT Tail 2 (hardware), and OBSBOT Tail Air (hardware). The OSC application on OBSBOT Center is compatible with the OBSBOT Tiny series (Tiny, Tiny 4K, Tiny 2, Tiny 2 Lite, Tiny 3, Tiny 3 Lite, Tiny SE), OBSBOT Meet series (Meet, Meet 4K, Meet 2, Meet SE), and OBSBOT Tail series (Tail Air, Tail 2). However, when using the OSC protocol with OBSBOT Center, the software must be running and OSC activated.',
+				'Controls Tail 2 and Tail Air directly, or Tiny, Meet and Tail cameras through the OBSBOT Center App (which must be running with OSC enabled). See the "Help" tab for more information.',
 		},
 		{
 			type: 'textinput',
@@ -59,7 +60,18 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			min: 1,
 			max: 65535,
 			tooltip: 'Port for receiving OSC messages over UDP. 57120 is the default for OBSBOT devices and Center App',
-			isVisible: (config) => config.transport === 'udp',
+			isVisibleExpression: '$(options:transport) === "udp"',
+		},
+		{
+			type: 'number',
+			id: 'pollinterval',
+			width: 4,
+			label: 'Poll Interval (seconds)',
+			default: 5,
+			min: 0,
+			max: 3600,
+			tooltip:
+				'How often to query the device for zoom, gimbal position and other state used by variables and feedbacks. Set to 0 to disable polling.',
 		},
 		{
 			type: 'static-text',
@@ -73,7 +85,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			id: 'model',
 			label: 'Device Model',
 			default: Models[0].id,
-			choices: Models,
+			choices: [...Models],
 			tooltip: 'Select the model of your OBSBOT device',
 			width: 6,
 		},
@@ -86,7 +98,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			max: 255,
 			tooltip: 'Device ID for the OBSBOT Center App. This is not used for hardware devices.',
 			width: 4,
-			isVisible: (config) => config.model?.toString().indexOf('OBSBOT_CENTER') !== -1,
+			isVisibleExpression: 'includes($(options:model), "OBSBOT_CENTER")',
 		},
 		{
 			type: 'static-text',

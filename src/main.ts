@@ -2,14 +2,21 @@ import { InstanceBase, InstanceStatus, runEntrypoint, type SomeCompanionConfigFi
 import { GetConfigFields, type ModuleConfig } from './config.js'
 import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions } from './actions.js'
+import { UpdateFeedbacks } from './feedbacks.js'
+import { CreateState, type OBSBOTState } from './state.js'
 import { UpdateVariableDefinitions } from './variables.js'
-import { InitConnection, SendCommand } from './api.js'
+import { CloseConnection, InitConnection, SendCommand } from './api.js'
 import { UpdatePresets } from './presets.js'
 
 export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 	config!: ModuleConfig // Setup in init()
-	_socket: any // Socket for communication, type can be more specific based on implementation
-	DEVICES: [] = [] // Device list, type can be more specific based on implementation
+	_socket: OSCSocket | undefined
+	_pollTimer: NodeJS.Timeout | undefined
+	_reconnectTimer: NodeJS.Timeout | undefined
+	_reconnecting = false
+	_resolvedIp: string | undefined // config.ip resolved to an address, so hostnames can be matched against rinfo
+	_lastMessageAt = 0
+	STATE: OBSBOTState = CreateState()
 
 	constructor(internal: unknown) {
 		super(internal)
@@ -18,6 +25,7 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 	async init(config: ModuleConfig): Promise<void> {
 		this.config = config
 		this.updateActions() // export actions
+		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
 		this.updatePresets() // export presets
 		this.updateStatus(InstanceStatus.Connecting)
@@ -26,11 +34,14 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 	// When module gets deleted
 	async destroy(): Promise<void> {
 		this.log('debug', 'destroy')
+		CloseConnection(this)
 	}
 
 	async configUpdated(config: ModuleConfig): Promise<void> {
 		this.config = config
+		this.STATE = CreateState()
 		this.updateActions()
+		this.updateFeedbacks()
 		this.updateVariableDefinitions()
 		this.updatePresets()
 		this.updateStatus(InstanceStatus.Connecting)
@@ -46,6 +57,10 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 		UpdateActions(this)
 	}
 
+	updateFeedbacks(): void {
+		UpdateFeedbacks(this)
+	}
+
 	updateVariableDefinitions(): void {
 		UpdateVariableDefinitions(this)
 	}
@@ -58,7 +73,7 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 		await InitConnection(this)
 	}
 
-	sendCommand(address: string, args: OSCArgument[]): void {
+	sendCommand(address: OSCAddress, args: OSCArgument[]): void {
 		SendCommand(this, address, args)
 	}
 }

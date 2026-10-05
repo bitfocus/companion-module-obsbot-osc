@@ -9,6 +9,10 @@
 	"bugs": "https://github.com/bitfocus/companion-module-obsbot-osc/issues",
 	"maintainers": [
 		{
+			"name": "Bitfocus AS",
+			"email": "connections@bitfocus.io"
+		},
+		{
 			"name": "Joseph Adams",
 			"email": "joseph@josephadams.dev"
 		}

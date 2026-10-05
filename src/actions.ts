@@ -1,6 +1,7 @@
 import type { CompanionActionDefinitions } from '@companion-module/base'
 import type { OBSBOTInstance } from './main.js'
 import { Models } from './models.js'
+import { PollDeviceState } from './api.js'
 
 export function UpdateActions(self: OBSBOTInstance): void {
 	//get the model from the config and then get the model from the Models array
@@ -26,6 +27,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 
 	if (CommonActions.includes(self.config.model)) {
 		//ZOOM
+		const zoomSpeedMax = model.id === 'OBSBOT_TAIL_2' ? 10 : 11
 		actions.setZoom = {
 			name: 'Zoom | Set Zoom Level',
 			description: 'Set the zoom level of the camera',
@@ -74,7 +76,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					id: 'zoomSpeed',
 					default: 0,
 					min: 0,
-					max: 10,
+					max: zoomSpeedMax,
 					step: 1,
 					required: true,
 					range: true,
@@ -402,6 +404,62 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			},
 		}
 
+		if (self.config.model?.toString().includes('OBSBOT_CENTER')) {
+			actions.setGimMotorDegreeEx = {
+				name: 'Gimbal | Set Motor Degree (Precise)',
+				description: 'Set the motor degrees of the gimbal using fractional degrees',
+				options: [
+					{
+						type: 'number',
+						label: 'Speed',
+						id: 'speed',
+						default: 0,
+						min: 0,
+						max: 90,
+						step: 0.1,
+						required: true,
+					},
+					{
+						type: 'number',
+						label: 'Pan',
+						id: 'pan',
+						default: 0,
+						min: gimbalMotorPanMin,
+						max: gimbalMotorPanMax,
+						step: 0.1,
+						required: true,
+					},
+					{
+						type: 'number',
+						label: 'Pitch',
+						id: 'pitch',
+						default: 0,
+						min: gimbalMotorPitchMin,
+						max: gimbalMotorPitchMax,
+						step: 0.1,
+						required: true,
+					},
+				],
+				callback: (action) => {
+					self.log('info', `Setting gimbal motor degree to ${action.options.pan} ${action.options.pitch}.`)
+					const args: OSCArgument[] = []
+					args.push({
+						type: 'f',
+						value: parseFloat(action.options.speed?.toString() || '0'),
+					})
+					args.push({
+						type: 'f',
+						value: parseFloat(action.options.pan?.toString() || '0'),
+					})
+					args.push({
+						type: 'f',
+						value: parseFloat(action.options.pitch?.toString() || '0'),
+					})
+					self.sendCommand('/OBSBOT/WebCam/General/SetGimMotorDegreeEx', args)
+				},
+			}
+		}
+
 		actions.setMirror = {
 			name: 'Other | Set Mirror Mode',
 			description: 'Set the mirror mode of the camera',
@@ -430,7 +488,93 @@ export function UpdateActions(self: OBSBOTInstance): void {
 	}
 
 	//general commands specific to CENTER APP
-	if (self.config.model === 'OBSBOT_CENTER') {
+	const isCenterApp = self.config.model?.toString().includes('OBSBOT_CENTER')
+
+	if (isCenterApp) {
+		actions.selectDevice = {
+			name: 'Center App | Select Device',
+			description: 'Select which connected device subsequent commands target',
+			options: [
+				{
+					type: 'number',
+					label: 'Device',
+					id: 'device',
+					default: 1,
+					min: 1,
+					max: 255,
+					step: 1,
+					required: true,
+					tooltip: 'Device number as shown in the Center App',
+				},
+			],
+			callback: (action) => {
+				self.log('info', `Selecting device ${action.options.device}.`)
+				const args: OSCArgument[] = []
+				//Device ID is 1-based in OBSBOT Center and 0-based with OSC
+				args.push({
+					type: 'i',
+					value: parseInt(action.options.device?.toString() || '1') - 1,
+				})
+				self.sendCommand('/OBSBOT/WebCam/General/SelectDevice', args)
+			},
+		}
+
+		actions.setWakeSleep = {
+			name: 'Center App | Sleep/Wake Device',
+			description: 'Put the device to sleep or wake it up',
+			options: [
+				{
+					type: 'dropdown',
+					label: 'State',
+					id: 'state',
+					default: '1',
+					choices: [
+						{ id: '0', label: 'Sleep' },
+						{ id: '1', label: 'Awake' },
+					],
+				},
+			],
+			callback: (action) => {
+				self.log('info', `Setting device state to ${action.options.state}.`)
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: parseInt(action.options.state?.toString() || '1'),
+				})
+				self.sendCommand('/OBSBOT/WebCam/General/WakeSleep', args)
+			},
+		}
+
+		actions.startHighfpsRecording = {
+			name: 'Center App | Start High-fps Recording',
+			description: 'Start high-fps recording. Only supported on Tail 2s, Tiny 3 and Tiny 3 Lite',
+			options: [],
+			callback: () => {
+				self.log('info', 'Starting high-fps recording.')
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: 1,
+				})
+				self.sendCommand('/OBSBOT/WebCam/General/SetHighfpsRecording', args)
+			},
+		}
+
+		actions.stopHighfpsRecording = {
+			name: 'Center App | Stop High-fps Recording',
+			description: 'Stop high-fps recording. Only supported on Tail 2s, Tiny 3 and Tiny 3 Lite',
+			options: [],
+			callback: () => {
+				self.log('info', 'Stopping high-fps recording.')
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: 0,
+				})
+				self.sendCommand('/OBSBOT/WebCam/General/SetHighfpsRecording', args)
+			},
+		}
+
 		actions.setView = {
 			name: 'Center App | Set View',
 			description: 'Set the view of the camera',
@@ -469,7 +613,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					type: 'i',
 					value: 1,
 				})
-				self.sendCommand('SetPCRecording', args)
+				self.sendCommand('/OBSBOT/WebCam/General/SetPCRecording', args)
 			},
 		}
 
@@ -499,36 +643,41 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					type: 'i',
 					value: 1,
 				})
-				self.sendCommand('/OBSBOT/WebCam/General/SetPCSnapshot', args)
+				self.sendCommand('/OBSBOT/WebCam/General/PCSnapshot', args)
 			},
 		}
 	}
 
 	//IMAGE
-	actions.setAutoFocus = {
-		name: 'Image | Set Auto Focus On/Off',
-		description: 'Set the auto focus of the camera',
-		options: [
-			{
-				type: 'dropdown',
-				label: 'Auto Focus',
-				id: 'autoFocus',
-				default: '0',
-				choices: [
-					{ id: '0', label: 'Off' },
-					{ id: '1', label: 'On' },
-				],
+	//Auto Focus is only supported on the Tiny and Meet series when going through the Center App
+	const autoFocusUnsupported = ['OBSBOT_CENTER_TAIL_AIR', 'OBSBOT_CENTER_TAIL_2']
+
+	if (!autoFocusUnsupported.includes(self.config.model)) {
+		actions.setAutoFocus = {
+			name: 'Image | Set Auto Focus On/Off',
+			description: 'Set the auto focus of the camera',
+			options: [
+				{
+					type: 'dropdown',
+					label: 'Auto Focus',
+					id: 'autoFocus',
+					default: '0',
+					choices: [
+						{ id: '0', label: 'Off' },
+						{ id: '1', label: 'On' },
+					],
+				},
+			],
+			callback: (action) => {
+				self.log('info', `Setting auto focus to ${action.options.autoFocus}.`)
+				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: parseInt(action.options.autoFocus?.toString() || '0'),
+				})
+				self.sendCommand('/OBSBOT/WebCam/General/SetAutoFocus', args)
 			},
-		],
-		callback: (action) => {
-			self.log('info', `Setting auto focus to ${action.options.autoFocus}.`)
-			const args: OSCArgument[] = []
-			args.push({
-				type: 'i',
-				value: parseInt(action.options.autoFocus?.toString() || '0'),
-			})
-			self.sendCommand('/OBSBOT/WebCam/General/SetAutoFocus', args)
-		},
+		}
 	}
 
 	actions.setManualFocus = {
@@ -558,8 +707,10 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		},
 	}
 
-	//Set Focus Mode - for CENTER APP only
-	if (self.config.model === 'OBSBOT_CENTER') {
+	//Set Focus Mode - CENTER APP Tail series only
+	const focusModeModels = ['OBSBOT_CENTER', 'OBSBOT_CENTER_TAIL_AIR', 'OBSBOT_CENTER_TAIL_2']
+
+	if (focusModeModels.includes(self.config.model)) {
 		actions.setFocusMode = {
 			name: 'Center App | Set Focus Mode',
 			description: 'Set the focus mode of the camera',
@@ -585,7 +736,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					step: 1,
 					required: true,
 					range: true,
-					isVisible: (config) => config.focusMode === '2',
+					isVisibleExpression: '$(options:focusMode) === "2"',
 				},
 			],
 			callback: (action) => {
@@ -601,7 +752,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						value: parseInt(action.options.focusValue?.toString() || '0'),
 					})
 				}
-				self.sendCommand('/OBSBOT/WebCam/General/SetFocusMode', args)
+				self.sendCommand('/OBSBOT/Camera/Tail/SetFocusMode', args)
 			},
 		}
 	}
@@ -934,8 +1085,14 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					choices: [
 						{ id: '0', label: 'None' },
 						{ id: '1', label: 'Close Up' },
+						{ id: '2', label: 'Half Body' },
+						{ id: '3', label: 'Above The Knees' },
+						{ id: '4', label: 'Nine Head Portrait' },
+						{ id: '5', label: 'Full Body' },
+						{ id: '6', label: 'Long Shot 1' },
+						{ id: '7', label: 'Long Shot 2' },
 					],
-					isVisible: (config) => config.aiMode === '0',
+					isVisibleExpression: '$(options:aiMode) === "0"',
 				},
 				{
 					type: 'dropdown',
@@ -951,7 +1108,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						{ id: '6', label: 'Long Shot 1' },
 						{ id: '7', label: 'Long Shot 2' },
 					],
-					isVisible: (config) => config.aiMode === '1',
+					isVisibleExpression: '$(options:aiMode) === "1"',
 				},
 			],
 			callback: (action) => {
@@ -963,19 +1120,11 @@ export function UpdateActions(self: OBSBOTInstance): void {
 				})
 				self.sendCommand('/OBSBOT/Camera/Tail2/SetAiMode', args)
 
-				if (action.options.aiMode === '0') {
-					args.push({
-						type: 'i',
-						value: parseInt(action.options.autoZoomModeSingle?.toString() || '0'),
-					})
-					self.sendCommand('/OBSBOT/Camera/Tail2/SetAutoZoom', args)
-				} else {
-					args.push({
-						type: 'i',
-						value: parseInt(action.options.autoZoomModeMulti?.toString() || '0'),
-					})
-					self.sendCommand('/OBSBOT/Camera/Tail2/SetAutoZoom', args)
-				}
+				const autoZoomMode =
+					action.options.aiMode === '0' ? action.options.autoZoomModeSingle : action.options.autoZoomModeMulti
+				self.sendCommand('/OBSBOT/Camera/Tail2/SetAutoZoom', [
+					{ type: 'i', value: parseInt(autoZoomMode?.toString() || '0') },
+				])
 			},
 		}
 
@@ -1032,7 +1181,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						{ id: '0', label: 'Manual' },
 						{ id: '1', label: 'Auto' },
 					],
-					isVisible: (config) => config.mode === '5',
+					isVisibleExpression: '$(options:mode) === "5"',
 				},
 				{
 					type: 'number',
@@ -1044,7 +1193,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					step: 1,
 					required: true,
 					range: true,
-					isVisible: (config) => config.mode === '5',
+					isVisibleExpression: '$(options:mode) === "5"',
 				},
 				{
 					type: 'dropdown',
@@ -1055,7 +1204,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						{ id: '0', label: 'Manual' },
 						{ id: '1', label: 'Auto' },
 					],
-					isVisible: (config) => config.mode === '5',
+					isVisibleExpression: '$(options:mode) === "5"',
 				},
 				{
 					type: 'number',
@@ -1067,7 +1216,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					step: 1,
 					required: true,
 					range: true,
-					isVisible: (config) => config.mode === '5',
+					isVisibleExpression: '$(options:mode) === "5"',
 				},
 			],
 			callback: (action) => {
@@ -1848,7 +1997,98 @@ export function UpdateActions(self: OBSBOTInstance): void {
 			callback: () => {
 				self.log('info', 'Setting standard mode.')
 				const args: OSCArgument[] = []
+				args.push({
+					type: 'i',
+					value: 0,
+				})
 				self.sendCommand('/OBSBOT/WebCam/Meet/SetStandardMode', args)
+			},
+		}
+	}
+
+	//QUERIES - refresh the variables and feedbacks on demand
+	actions.refreshState = {
+		name: 'Query | Refresh Device State',
+		description: 'Request the device info, zoom and gimbal position, plus any model specific state',
+		options: [],
+		callback: () => {
+			self.log('info', 'Refreshing device state.')
+			PollDeviceState(self)
+		},
+	}
+
+	actions.getDeviceInfo = {
+		name: 'Query | Get Device Info',
+		description: 'Request the device information',
+		options: [],
+		callback: () => {
+			self.sendCommand('/OBSBOT/WebCam/General/GetDeviceInfo', [{ type: 'i', value: 0 }])
+		},
+	}
+
+	actions.getZoomInfo = {
+		name: 'Query | Get Zoom Info',
+		description: 'Request the current zoom level and field of view',
+		options: [],
+		callback: () => {
+			self.sendCommand('/OBSBOT/WebCam/General/GetZoomInfo', [{ type: 'i', value: 0 }])
+		},
+	}
+
+	actions.getGimbalPosInfo = {
+		name: 'Query | Get Gimbal Position Info',
+		description: 'Request the current gimbal pitch and yaw',
+		options: [],
+		callback: () => {
+			self.sendCommand('/OBSBOT/WebCam/General/GetGimbalPosInfo', [{ type: 'i', value: 0 }])
+		},
+	}
+
+	if (self.config.model === 'OBSBOT_CENTER_TINY') {
+		actions.getAiTrackingInfo = {
+			name: 'Query | Get AI Tracking Info',
+			description: 'Request the current AI tracking lock state',
+			options: [],
+			callback: () => {
+				self.sendCommand('/OBSBOT/WebCam/Tiny/GetAiTrackingInfo', [{ type: 'i', value: 0 }])
+			},
+		}
+
+		actions.getPresetPositionInfo = {
+			name: 'Query | Get Preset Position Info',
+			description: 'Request which preset positions are saved and their names',
+			options: [],
+			callback: () => {
+				self.sendCommand('/OBSBOT/WebCam/Tiny/GetPresetPositionInfo', [{ type: 'i', value: 0 }])
+			},
+		}
+	}
+
+	if (self.config.model === 'OBSBOT_CENTER_MEET') {
+		actions.getVirtualBackgroundInfo = {
+			name: 'Query | Get Virtual Background Info',
+			description: 'Request the current virtual background mode',
+			options: [],
+			callback: () => {
+				self.sendCommand('/OBSBOT/WebCam/Meet/GetVirtualBackgroundInfo', [{ type: 'i', value: 0 }])
+			},
+		}
+
+		actions.getAutoFramingInfo = {
+			name: 'Query | Get Auto Framing Info',
+			description: 'Request the current auto framing mode',
+			options: [],
+			callback: () => {
+				self.sendCommand('/OBSBOT/WebCam/Meet/GetAutoFramingInfo', [{ type: 'i', value: 0 }])
+			},
+		}
+
+		actions.getPresetPositionInfo = {
+			name: 'Query | Get Preset Position Info',
+			description: 'Request which preset positions are saved and their names. Only supported on Meet Flip',
+			options: [],
+			callback: () => {
+				self.sendCommand('/OBSBOT/WebCam/Meet/GetPresetPositionInfo', [{ type: 'i', value: 0 }])
 			},
 		}
 	}
