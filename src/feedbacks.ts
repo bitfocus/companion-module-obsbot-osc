@@ -262,7 +262,11 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 		}
 	}
 
-	if (self.config.model === 'OBSBOT_CENTER_TINY' || self.config.model === 'OBSBOT_CENTER_MEET') {
+	if (
+		self.config.model === 'OBSBOT_CENTER_TINY' ||
+		self.config.model === 'OBSBOT_CENTER_MEET' ||
+		self.config.model === 'OBSBOT_TAIL_2'
+	) {
 		feedbacks.presetExists = {
 			type: 'boolean',
 			name: 'Preset Position Saved',

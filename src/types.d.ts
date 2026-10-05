@@ -68,6 +68,7 @@ type OSCAddress =
 	| '/OBSBOT/WebCam/General/GetGimbalPosInfoResp'
 	| '/OBSBOT/WebCam/General/GetZoomInfo'
 	| '/OBSBOT/WebCam/General/PCSnapshot'
+	| '/OBSBOT/WebCam/General/PresetPositionInfo'
 	| '/OBSBOT/WebCam/General/ResetGimbal'
 	| '/OBSBOT/WebCam/General/SelectDevice'
 	| '/OBSBOT/WebCam/General/SetAutoExposure'

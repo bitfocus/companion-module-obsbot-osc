@@ -36,7 +36,11 @@ export function UpdateVariableDefinitions(self: OBSBOTInstance): void {
 		variables.push({ variableId: 'auto_framing', name: 'Auto Framing Mode' })
 	}
 
-	if (self.config.model === 'OBSBOT_CENTER_TINY' || self.config.model === 'OBSBOT_CENTER_MEET') {
+	if (
+		self.config.model === 'OBSBOT_CENTER_TINY' ||
+		self.config.model === 'OBSBOT_CENTER_MEET' ||
+		self.config.model === 'OBSBOT_TAIL_2'
+	) {
 		for (let i = 1; i <= 3; i++) {
 			variables.push({ variableId: `preset${i}_exists`, name: `Preset Position ${i} Saved` })
 			variables.push({ variableId: `preset${i}_name`, name: `Preset Position ${i} Name` })
