@@ -5,6 +5,20 @@ All notable changes to this module are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Variables and expressions can be used in action and feedback fields. Number values outside a field's range are clamped to it.
+
+### Changed
+
+- Requires Companion 5.0 or newer. The module now uses API 2.1 and the Node 26 runtime.
+
+### Fixed
+
+- **Image | Set Color Temperature** now defaults to 5000 instead of 0, which was outside its allowed range.
+
 ## [1.2.0] - 2026-10-05
 
 ### Added

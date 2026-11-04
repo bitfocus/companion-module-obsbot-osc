@@ -1,6 +1,6 @@
 import { InstanceStatus, type CompanionVariableValues } from '@companion-module/base'
 
-import type { OBSBOTInstance } from './main.js'
+import type OBSBOTInstance from './main.js'
 import type { ModelId } from './models.js'
 import type { DeviceEntry, PresetPosition } from './state.js'
 import osc from 'osc'

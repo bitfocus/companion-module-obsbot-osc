@@ -1,6 +1,6 @@
 # OBSBOT OSC
 
-This module will communicate with OBSBOT products over OSC.
+This module will communicate with OBSBOT products over OSC. It requires Companion 5.0 or newer.
 
 The OBSBOT OSC standard protocol is based on the touchOSC protocol. It can be applied to the OBSBOT Center App (software), OBSBOT Tail 2 (hardware), and OBSBOT Tail Air (hardware). The OSC application on OBSBOT Center is compatible with the OBSBOT Tiny series (Tiny, Tiny 4K, Tiny 2, Tiny 2 Lite, Tiny 3, Tiny 3 Lite, Tiny SE), OBSBOT Meet series (Meet, Meet 4K, Meet 2, Meet SE), and OBSBOT Tail series (Tail Air, Tail 2). However, when using the OSC protocol with OBSBOT Center, the software must be running and have the OSC server enabled.
 

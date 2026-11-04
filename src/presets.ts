@@ -1,5 +1,6 @@
 import { combineRgb, type CompanionPresetDefinitions, type CompanionPresetSection } from '@companion-module/base'
-import type { OBSBOTInstance, OBSBOTTypes } from './main.js'
+import type OBSBOTInstance from './main.js'
+import type { OBSBOTTypes } from './main.js'
 import { Models } from './models.js'
 import { OBSBOT_ICONS } from './icons.js'
 
@@ -2458,7 +2459,18 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		{
 			id: 'gimbal',
 			name: 'Gimbal',
-			definitions: ['gimbal_up', 'gimbal_down', 'gimbal_left', 'gimbal_right', 'gimbal_motor_degree', 'gimbal_reset'],
+			definitions: [
+				'gimbal_up',
+				'gimbal_down',
+				'gimbal_left',
+				'gimbal_right',
+				'gimbal_up_left',
+				'gimbal_up_right',
+				'gimbal_down_left',
+				'gimbal_down_right',
+				'gimbal_motor_degree',
+				'gimbal_reset',
+			],
 		},
 		{
 			id: 'other',

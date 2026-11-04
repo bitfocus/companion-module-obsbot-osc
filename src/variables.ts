@@ -1,6 +1,6 @@
-import type { CompanionVariableDefinitions, CompanionVariableValues } from '@companion-module/base'
+import type { CompanionVariableDefinitions } from '@companion-module/base'
 
-import type { OBSBOTInstance } from './main.js'
+import type OBSBOTInstance from './main.js'
 
 export function UpdateVariableDefinitions(self: OBSBOTInstance): void {
 	const variables: CompanionVariableDefinitions = {}
@@ -52,10 +52,4 @@ export function UpdateVariableDefinitions(self: OBSBOTInstance): void {
 	}
 
 	self.setVariableDefinitions(variables)
-}
-
-export function CheckVariables(self: OBSBOTInstance): void {
-	const variableValues: CompanionVariableValues = {}
-
-	self.setVariableValues(variableValues)
 }

@@ -1,5 +1,6 @@
 import { combineRgb, type CompanionFeedbackDefinitions } from '@companion-module/base'
-import type { OBSBOTInstance, OBSBOTTypes } from './main.js'
+import type OBSBOTInstance from './main.js'
+import type { OBSBOTTypes } from './main.js'
 
 export function UpdateFeedbacks(self: OBSBOTInstance): void {
 	const feedbacks: CompanionFeedbackDefinitions<OBSBOTTypes['feedbacks']> = {}
@@ -37,6 +38,8 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 					min: 0,
 					max: 100,
 					step: 1,
+					clampValues: true,
+					asInteger: true,
 					range: true,
 				},
 			],
@@ -100,6 +103,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				label: 'Axis',
 				id: 'axis',
 				default: 'yaw',
+				allowInvalidValues: true,
 				choices: [
 					{ id: 'yaw', label: 'Yaw (Pan)' },
 					{ id: 'pitch', label: 'Pitch (Tilt)' },
@@ -113,6 +117,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				min: -180,
 				max: 180,
 				step: 1,
+				clampValues: true,
 			},
 			{
 				type: 'number',
@@ -122,6 +127,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				min: -180,
 				max: 180,
 				step: 1,
+				clampValues: true,
 			},
 		],
 		callback: (feedback) => {
@@ -167,6 +173,8 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				min: 1,
 				max: 4,
 				step: 1,
+				clampValues: true,
+				asInteger: true,
 				tooltip: 'Device number as reported in the device info. Hardware devices only report device 1',
 			},
 		],

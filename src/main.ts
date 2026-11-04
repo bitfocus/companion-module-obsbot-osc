@@ -26,7 +26,7 @@ export interface OBSBOTTypes extends InstanceTypes {
 
 export { UpgradeScripts }
 
-export class OBSBOTInstance extends InstanceBase<OBSBOTTypes> {
+export default class OBSBOTInstance extends InstanceBase<OBSBOTTypes> {
 	config!: ModuleConfig // Setup in init()
 	_socket: OSCSocket | undefined
 	_pollTimer: NodeJS.Timeout | undefined
@@ -95,5 +95,3 @@ export class OBSBOTInstance extends InstanceBase<OBSBOTTypes> {
 		SendCommand(this, address, args)
 	}
 }
-
-export default OBSBOTInstance
