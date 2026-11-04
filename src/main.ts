@@ -1,4 +1,11 @@
-import { InstanceBase, InstanceStatus, runEntrypoint, type SomeCompanionConfigField } from '@companion-module/base'
+import {
+	InstanceBase,
+	InstanceStatus,
+	type CompanionActionSchema,
+	type CompanionFeedbackSchema,
+	type InstanceTypes,
+	type SomeCompanionConfigField,
+} from '@companion-module/base'
 import { GetConfigFields, type ModuleConfig } from './config.js'
 import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions } from './actions.js'
@@ -8,7 +15,18 @@ import { UpdateVariableDefinitions } from './variables.js'
 import { CloseConnection, InitConnection, SendCommand } from './api.js'
 import { UpdatePresets } from './presets.js'
 
-export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
+// Every action and feedback option is a dropdown or number field, and Companion validates values against the field
+type OptionValues = Record<string, string | number | undefined>
+
+export interface OBSBOTTypes extends InstanceTypes {
+	config: ModuleConfig
+	actions: Record<string, CompanionActionSchema<OptionValues, void>>
+	feedbacks: Record<string, CompanionFeedbackSchema<OptionValues>>
+}
+
+export { UpgradeScripts }
+
+export class OBSBOTInstance extends InstanceBase<OBSBOTTypes> {
 	config!: ModuleConfig // Setup in init()
 	_socket: OSCSocket | undefined
 	_pollTimer: NodeJS.Timeout | undefined
@@ -78,4 +96,4 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 	}
 }
 
-runEntrypoint(OBSBOTInstance, UpgradeScripts)
+export default OBSBOTInstance

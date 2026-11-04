@@ -1,7 +1,7 @@
 import type { SomeCompanionConfigField } from '@companion-module/base'
 import { Models, type ModelId } from './models.js'
 
-export interface ModuleConfig {
+export type ModuleConfig = {
 	ip: string
 	port: number
 	transport: 'udp' | 'tcp'

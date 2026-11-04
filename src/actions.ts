@@ -1,5 +1,5 @@
 import type { CompanionActionDefinitions } from '@companion-module/base'
-import type { OBSBOTInstance } from './main.js'
+import type { OBSBOTInstance, OBSBOTTypes } from './main.js'
 import { Models } from './models.js'
 import { PollDeviceState } from './api.js'
 
@@ -11,7 +11,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 		return
 	}
 
-	const actions: CompanionActionDefinitions = {}
+	const actions: CompanionActionDefinitions<OBSBOTTypes['actions']> = {}
 
 	//Cameras that should have these actions - other future models may not have these
 	const CommonActions = [
@@ -40,7 +40,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 0,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -67,7 +66,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 0,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 				},
 				{
@@ -78,7 +76,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 0,
 					max: zoomSpeedMax,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -109,7 +106,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 0,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -136,7 +132,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 0,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -179,7 +174,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -222,7 +216,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -264,7 +257,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -306,7 +298,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -359,7 +350,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 0,
 					max: 90,
 					step: 1,
-					required: true,
 					range: true,
 				},
 				{
@@ -370,7 +360,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: gimbalMotorPanMin,
 					max: gimbalMotorPanMax,
 					step: 1,
-					required: true,
 					range: true,
 				},
 				{
@@ -381,7 +370,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: gimbalMotorPitchMin,
 					max: gimbalMotorPitchMax,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -417,7 +405,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						min: 0,
 						max: 90,
 						step: 0.1,
-						required: true,
 					},
 					{
 						type: 'number',
@@ -427,7 +414,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						min: gimbalMotorPanMin,
 						max: gimbalMotorPanMax,
 						step: 0.1,
-						required: true,
 					},
 					{
 						type: 'number',
@@ -437,7 +423,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						min: gimbalMotorPitchMin,
 						max: gimbalMotorPitchMax,
 						step: 0.1,
-						required: true,
 					},
 				],
 				callback: (action) => {
@@ -503,7 +488,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 255,
 					step: 1,
-					required: true,
 					tooltip: 'Device number as shown in the Center App',
 				},
 			],
@@ -692,7 +676,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 				min: 0,
 				max: 100,
 				step: 1,
-				required: true,
 				range: true,
 			},
 		],
@@ -720,6 +703,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					label: 'Focus Mode',
 					id: 'focusMode',
 					default: '0',
+					disableAutoExpression: true,
 					choices: [
 						{ id: '0', label: 'AF-S' },
 						{ id: '1', label: 'AF-C' },
@@ -734,7 +718,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 0,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 					isVisibleExpression: '$(options:focusMode) === "2"',
 				},
@@ -955,7 +938,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: -7,
 					max: 7,
 					step: 0.25,
-					required: true,
 					range: true,
 				},
 				{
@@ -966,7 +948,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: -7,
 					max: 7,
 					step: 0.25,
-					required: true,
 					range: true,
 				},
 			],
@@ -1000,7 +981,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 0,
 					max: 255,
 					step: 1,
-					required: true,
 					range: true,
 				},
 				{
@@ -1011,7 +991,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 0,
 					max: 255,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -1046,7 +1025,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 				min: 2000,
 				max: 10000,
 				step: 1,
-				required: true,
 				range: true,
 			},
 		],
@@ -1072,6 +1050,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					label: 'AI Mode',
 					id: 'aiMode',
 					default: '0',
+					disableAutoExpression: true,
 					choices: [
 						{ id: '0', label: 'Single-person' },
 						{ id: '1', label: 'Multi-person' },
@@ -1163,6 +1142,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					label: 'Mode',
 					id: 'mode',
 					default: '0',
+					disableAutoExpression: true,
 					choices: [
 						{ id: '0', label: 'Super Lazy' },
 						{ id: '1', label: 'Lazy' },
@@ -1191,7 +1171,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 10,
 					step: 1,
-					required: true,
 					range: true,
 					isVisibleExpression: '$(options:mode) === "5"',
 				},
@@ -1214,7 +1193,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 10,
 					step: 1,
-					required: true,
 					range: true,
 					isVisibleExpression: '$(options:mode) === "5"',
 				},
@@ -1331,7 +1309,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 3,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -1465,7 +1442,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 3,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -1523,7 +1499,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 3,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -1548,6 +1523,7 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					label: 'Camera',
 					id: 'camera',
 					default: 'tiny2',
+					disableAutoExpression: true,
 					choices: [
 						{ id: 'tiny2', label: 'Tiny 2' },
 						{ id: 'tiny3', label: 'Tiny 3 / Tiny 3 Lite' },
@@ -1755,7 +1731,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						min: 1,
 						max: 10,
 						step: 1,
-						required: true,
 						range: true,
 					},
 				],
@@ -1783,7 +1758,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 						min: 1,
 						max: 10,
 						step: 1,
-						required: true,
 						range: true,
 					},
 				],
@@ -1913,7 +1887,6 @@ export function UpdateActions(self: OBSBOTInstance): void {
 					min: 1,
 					max: 3,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],

@@ -1,8 +1,8 @@
 import { combineRgb, type CompanionFeedbackDefinitions } from '@companion-module/base'
-import type { OBSBOTInstance } from './main.js'
+import type { OBSBOTInstance, OBSBOTTypes } from './main.js'
 
 export function UpdateFeedbacks(self: OBSBOTInstance): void {
-	const feedbacks: CompanionFeedbackDefinitions = {}
+	const feedbacks: CompanionFeedbackDefinitions<OBSBOTTypes['feedbacks']> = {}
 
 	const foregroundColor = combineRgb(0, 0, 0)
 	const backgroundColor = combineRgb(255, 255, 0)
@@ -37,7 +37,6 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 					min: 0,
 					max: 100,
 					step: 1,
-					required: true,
 					range: true,
 				},
 			],
@@ -114,7 +113,6 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				min: -180,
 				max: 180,
 				step: 1,
-				required: true,
 			},
 			{
 				type: 'number',
@@ -124,7 +122,6 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				min: -180,
 				max: 180,
 				step: 1,
-				required: true,
 			},
 		],
 		callback: (feedback) => {
@@ -170,7 +167,6 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				min: 1,
 				max: 4,
 				step: 1,
-				required: true,
 				tooltip: 'Device number as reported in the device info. Hardware devices only report device 1',
 			},
 		],

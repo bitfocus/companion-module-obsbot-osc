@@ -1,5 +1,5 @@
-import { CompanionButtonPresetDefinition, combineRgb } from '@companion-module/base'
-import type { OBSBOTInstance } from './main.js'
+import { combineRgb, type CompanionPresetDefinitions, type CompanionPresetSection } from '@companion-module/base'
+import type { OBSBOTInstance, OBSBOTTypes } from './main.js'
 import { Models } from './models.js'
 import { OBSBOT_ICONS } from './icons.js'
 
@@ -20,7 +20,7 @@ const colors = {
 }
 
 export function UpdatePresets(self: OBSBOTInstance): void {
-	const presets: { [id: string]: CompanionButtonPresetDefinition } = {}
+	const presets: CompanionPresetDefinitions<OBSBOTTypes> = {}
 
 	const model = Models.find((m) => m.id === self.config.model)
 	if (!model) {
@@ -45,8 +45,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		// Zoom Presets
 		// ==================
 		presets['zoom_0'] = {
-			type: 'button',
-			category: 'Zoom',
+			type: 'simple',
 			name: 'Zoom 0%',
 			style: {
 				text: '',
@@ -74,8 +73,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['zoom_50'] = {
-			type: 'button',
-			category: 'Zoom',
+			type: 'simple',
 			name: 'Zoom 50%',
 			style: {
 				text: '',
@@ -103,8 +101,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['zoom_100'] = {
-			type: 'button',
-			category: 'Zoom',
+			type: 'simple',
 			name: 'Zoom 100%',
 			style: {
 				text: '',
@@ -132,8 +129,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['zoom_speed'] = {
-			type: 'button',
-			category: 'Zoom',
+			type: 'simple',
 			name: 'Zoom Speed',
 			style: {
 				text: '',
@@ -162,8 +158,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['zoom_max'] = {
-			type: 'button',
-			category: 'Zoom',
+			type: 'simple',
 			name: 'Zoom Max',
 			style: {
 				text: '',
@@ -191,8 +186,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['zoom_min'] = {
-			type: 'button',
-			category: 'Zoom',
+			type: 'simple',
 			name: 'Zoom Min',
 			style: {
 				text: '',
@@ -223,8 +217,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		// Gimbal Presets
 		// ==================
 		presets['gimbal_up'] = {
-			type: 'button',
-			category: 'Gimbal',
+			type: 'simple',
 			name: 'Move Gimbal Up',
 			style: {
 				text: '',
@@ -257,8 +250,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['gimbal_down'] = {
-			type: 'button',
-			category: 'Gimbal',
+			type: 'simple',
 			name: 'Move Gimbal Down',
 			style: {
 				text: '',
@@ -291,8 +283,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['gimbal_left'] = {
-			type: 'button',
-			category: 'Gimbal',
+			type: 'simple',
 			name: 'Move Gimbal Left',
 			style: {
 				text: '',
@@ -325,8 +316,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['gimbal_right'] = {
-			type: 'button',
-			category: 'Gimbal',
+			type: 'simple',
 			name: 'Move Gimbal Right',
 			style: {
 				text: '',
@@ -359,8 +349,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 		// ! Uncomment when gimbal diagonal movement is supported by OBSBOT
 		// presets['gimbal_up_left'] = {
-		//     type: 'button',
-		//     category: 'Gimbal',
+		//     type: 'simple',
 		//     name: 'Move Gimbal Up-Left',
 		//     style: {
 		//         text: '',
@@ -402,8 +391,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		// }
 
 		// presets['gimbal_up_right'] = {
-		//     type: 'button',
-		//     category: 'Gimbal',
+		//     type: 'simple',
 		//     name: 'Move Gimbal Up-Right',
 		//     style: {
 		//         text: '',
@@ -444,8 +432,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		// }
 
 		// presets['gimbal_down_left'] = {
-		//     type: 'button',
-		//     category: 'Gimbal',
+		//     type: 'simple',
 		//     name: 'Move Gimbal Down-Left',
 		//     style: {
 		//         text: '',
@@ -487,8 +474,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		// }
 
 		// presets['gimbal_down_right'] = {
-		//     type: 'button',
-		//     category: 'Gimbal',
+		//     type: 'simple',
 		//     name: 'Move Gimbal Down-Right',
 		//     style: {
 		//         text: '',
@@ -530,8 +516,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		// }
 
 		presets['gimbal_motor_degree'] = {
-			type: 'button',
-			category: 'Gimbal',
+			type: 'simple',
 			name: 'Set Gimbal Position',
 			style: {
 				text: '',
@@ -561,8 +546,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['gimbal_reset'] = {
-			type: 'button',
-			category: 'Gimbal',
+			type: 'simple',
 			name: 'Reset Gimbal',
 			style: {
 				text: '',
@@ -591,8 +575,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		// Other Presets
 		// ==================
 		presets['mirror_mode_on'] = {
-			type: 'button',
-			category: 'Other',
+			type: 'simple',
 			name: 'Mirror Mode On',
 			style: {
 				text: '',
@@ -620,8 +603,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['mirror_mode_off'] = {
-			type: 'button',
-			category: 'Other',
+			type: 'simple',
 			name: 'Mirror Mode Off',
 			style: {
 				text: '',
@@ -655,8 +637,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		const autoFocusUnsupported = ['OBSBOT_CENTER_TAIL_AIR', 'OBSBOT_CENTER_TAIL_2']
 		if (!autoFocusUnsupported.includes(self.config.model)) {
 			presets['autofocus_on'] = {
-				type: 'button',
-				category: 'Image',
+				type: 'simple',
 				name: 'Auto Focus On',
 				style: {
 					text: '',
@@ -684,8 +665,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 			}
 
 			presets['autofocus_off'] = {
-				type: 'button',
-				category: 'Image',
+				type: 'simple',
 				name: 'Auto Focus Off',
 				style: {
 					text: '',
@@ -714,8 +694,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['autoexposure_on'] = {
-			type: 'button',
-			category: 'Image',
+			type: 'simple',
 			name: 'Auto Exposure On',
 			style: {
 				text: '',
@@ -743,8 +722,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['autoexposure_off'] = {
-			type: 'button',
-			category: 'Image',
+			type: 'simple',
 			name: 'Auto Exposure Off',
 			style: {
 				text: '',
@@ -772,8 +750,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['auto_wb_on'] = {
-			type: 'button',
-			category: 'Image',
+			type: 'simple',
 			name: 'Auto White Balance On',
 			style: {
 				text: '',
@@ -801,8 +778,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['auto_wb_off'] = {
-			type: 'button',
-			category: 'Image',
+			type: 'simple',
 			name: 'Auto White Balance Off',
 			style: {
 				text: '',
@@ -830,8 +806,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['manual_focus_50'] = {
-			type: 'button',
-			category: 'Image',
+			type: 'simple',
 			name: 'Manual Focus 50',
 			style: {
 				text: '',
@@ -859,8 +834,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['color_temp_5000'] = {
-			type: 'button',
-			category: 'Image',
+			type: 'simple',
 			name: 'Color Temp 5000K',
 			style: {
 				text: '',
@@ -891,8 +865,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 	// Model-specific presets
 	if (self.config.model === 'OBSBOT_CENTER') {
 		presets['center_view_86'] = {
-			type: 'button',
-			category: 'Center App',
+			type: 'simple',
 			name: 'View 86°',
 			style: {
 				text: '',
@@ -920,8 +893,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_view_78'] = {
-			type: 'button',
-			category: 'Center App',
+			type: 'simple',
 			name: 'View 78°',
 			style: {
 				text: '',
@@ -949,8 +921,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_view_65'] = {
-			type: 'button',
-			category: 'Center App',
+			type: 'simple',
 			name: 'View 65°',
 			style: {
 				text: '',
@@ -978,8 +949,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_recording_start'] = {
-			type: 'button',
-			category: 'Center App',
+			type: 'simple',
 			name: 'Start Recording',
 			style: {
 				text: '',
@@ -1005,8 +975,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_recording_stop'] = {
-			type: 'button',
-			category: 'Center App',
+			type: 'simple',
 			name: 'Stop Recording',
 			style: {
 				text: '',
@@ -1032,8 +1001,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_snapshot'] = {
-			type: 'button',
-			category: 'Center App',
+			type: 'simple',
 			name: 'Take Snapshot',
 			style: {
 				text: '',
@@ -1063,8 +1031,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 	const focusModeModels = ['OBSBOT_CENTER', 'OBSBOT_CENTER_TAIL_AIR', 'OBSBOT_CENTER_TAIL_2']
 	if (focusModeModels.includes(self.config.model)) {
 		presets['center_focus_afs'] = {
-			type: 'button',
-			category: 'Center App',
+			type: 'simple',
 			name: 'Focus Mode AF-S',
 			style: {
 				text: '',
@@ -1093,8 +1060,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_focus_afc'] = {
-			type: 'button',
-			category: 'Center App',
+			type: 'simple',
 			name: 'Focus Mode AF-C',
 			style: {
 				text: '',
@@ -1123,8 +1089,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_focus_mf'] = {
-			type: 'button',
-			category: 'Center App',
+			type: 'simple',
 			name: 'Focus Mode MF',
 			style: {
 				text: '',
@@ -1156,8 +1121,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 	// Center App Meet Series presets
 	if (self.config.model === 'OBSBOT_CENTER_MEET') {
 		presets['meet_autoframe_off'] = {
-			type: 'button',
-			category: 'Meet Series',
+			type: 'simple',
 			name: 'Auto Framing Off',
 			style: {
 				text: '',
@@ -1185,8 +1149,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['meet_autoframe_single'] = {
-			type: 'button',
-			category: 'Meet Series',
+			type: 'simple',
 			name: 'Auto Framing Single',
 			style: {
 				text: '',
@@ -1214,8 +1177,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['meet_autoframe_group'] = {
-			type: 'button',
-			category: 'Meet Series',
+			type: 'simple',
 			name: 'Auto Framing Group',
 			style: {
 				text: '',
@@ -1243,8 +1205,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['meet_vb_disable'] = {
-			type: 'button',
-			category: 'Meet Series',
+			type: 'simple',
 			name: 'Virtual BG Disable',
 			style: {
 				text: '',
@@ -1272,8 +1233,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['meet_vb_blur'] = {
-			type: 'button',
-			category: 'Meet Series',
+			type: 'simple',
 			name: 'Virtual BG Blur',
 			style: {
 				text: '',
@@ -1301,8 +1261,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['meet_standard_mode'] = {
-			type: 'button',
-			category: 'Meet Series',
+			type: 'simple',
 			name: 'Standard Mode',
 			style: {
 				text: '',
@@ -1331,8 +1290,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 	// Center App Tiny Series
 	if (self.config.model === 'OBSBOT_CENTER_TINY') {
 		presets['tiny_ai_lock_on'] = {
-			type: 'button',
-			category: 'Tiny Series',
+			type: 'simple',
 			name: 'AI Lock On',
 			style: {
 				text: '',
@@ -1360,8 +1318,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tiny_ai_lock_off'] = {
-			type: 'button',
-			category: 'Tiny Series',
+			type: 'simple',
 			name: 'AI Lock Off',
 			style: {
 				text: '',
@@ -1389,8 +1346,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tiny_ai_mode_normal'] = {
-			type: 'button',
-			category: 'Tiny Series',
+			type: 'simple',
 			name: 'AI Mode Normal',
 			style: {
 				text: '',
@@ -1420,8 +1376,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tiny_tracking_headroom'] = {
-			type: 'button',
-			category: 'Tiny Series',
+			type: 'simple',
 			name: 'Tracking Headroom',
 			style: {
 				text: '',
@@ -1449,8 +1404,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tiny_preset_1'] = {
-			type: 'button',
-			category: 'Tiny Series',
+			type: 'simple',
 			name: 'Preset 1',
 			style: {
 				text: '',
@@ -1478,8 +1432,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tiny_preset_2'] = {
-			type: 'button',
-			category: 'Tiny Series',
+			type: 'simple',
 			name: 'Preset 2',
 			style: {
 				text: '',
@@ -1507,8 +1460,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tiny_preset_3'] = {
-			type: 'button',
-			category: 'Tiny Series',
+			type: 'simple',
 			name: 'Preset 3',
 			style: {
 				text: '',
@@ -1539,8 +1491,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 	// Tail 2 specific presets
 	if (self.config.model === 'OBSBOT_TAIL_2') {
 		presets['tail2_ai_single'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'AI Single-person',
 			style: {
 				text: '',
@@ -1570,8 +1521,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_ai_multi'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'AI Multi-person',
 			style: {
 				text: '',
@@ -1601,8 +1551,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_tracking_slow'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Tracking Slow',
 			style: {
 				text: '',
@@ -1634,8 +1583,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_tracking_fast'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Tracking Fast',
 			style: {
 				text: '',
@@ -1667,8 +1615,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_only_me_on'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Only Me On',
 			style: {
 				text: '',
@@ -1696,8 +1643,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_only_me_off'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Only Me Off',
 			style: {
 				text: '',
@@ -1725,8 +1671,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_start_recording'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Start Recording',
 			style: {
 				text: '',
@@ -1752,8 +1697,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_stop_recording'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Stop Recording',
 			style: {
 				text: '',
@@ -1779,8 +1723,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_snapshot'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Take Snapshot',
 			style: {
 				text: '',
@@ -1806,8 +1749,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_preset_1'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Preset 1',
 			style: {
 				text: '',
@@ -1835,8 +1777,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_preset_2'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Preset 2',
 			style: {
 				text: '',
@@ -1864,8 +1805,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tail2_preset_3'] = {
-			type: 'button',
-			category: 'Tail 2',
+			type: 'simple',
 			name: 'Preset 3',
 			style: {
 				text: '',
@@ -1896,8 +1836,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 	// Tail Air specific presets
 	if (self.config.model === 'OBSBOT_TAIL_AIR') {
 		presets['tailair_ai_normal'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'AI Normal Tracking',
 			style: {
 				text: '',
@@ -1925,8 +1864,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tailair_ai_closeup'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'AI Close Up',
 			style: {
 				text: '',
@@ -1954,8 +1892,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tailair_tracking_slow'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'Tracking Slow',
 			style: {
 				text: '',
@@ -1983,8 +1920,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tailair_tracking_fast'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'Tracking Fast',
 			style: {
 				text: '',
@@ -2012,8 +1948,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tailair_start_recording'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'Start Recording',
 			style: {
 				text: '',
@@ -2039,8 +1974,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tailair_stop_recording'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'Stop Recording',
 			style: {
 				text: '',
@@ -2066,8 +2000,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tailair_snapshot'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'Take Snapshot',
 			style: {
 				text: '',
@@ -2093,8 +2026,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tailair_preset_1'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'Preset 1',
 			style: {
 				text: '',
@@ -2122,8 +2054,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tailair_preset_2'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'Preset 2',
 			style: {
 				text: '',
@@ -2151,8 +2082,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['tailair_preset_3'] = {
-			type: 'button',
-			category: 'Tail Air',
+			type: 'simple',
 			name: 'Preset 3',
 			style: {
 				text: '',
@@ -2182,16 +2112,8 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 
 	// Center App Tail Series
 	if (self.config.model === 'OBSBOT_CENTER_TAIL_AIR' || self.config.model === 'OBSBOT_CENTER_TAIL_2') {
-		let tailCategory = ''
-		if (self.config.model === 'OBSBOT_CENTER_TAIL_AIR') {
-			tailCategory = 'Center Tail Air'
-		} else {
-			tailCategory = 'Center Tail 2'
-		}
-
 		presets['center_tail_ai_normal'] = {
-			type: 'button',
-			category: tailCategory,
+			type: 'simple',
 			name: 'AI Normal Tracking',
 			style: {
 				text: '',
@@ -2219,8 +2141,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail_tracking_slow'] = {
-			type: 'button',
-			category: tailCategory,
+			type: 'simple',
 			name: 'Tracking Slow',
 			style: {
 				text: '',
@@ -2248,8 +2169,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail_start_recording'] = {
-			type: 'button',
-			category: tailCategory,
+			type: 'simple',
 			name: 'Start Recording',
 			style: {
 				text: '',
@@ -2275,8 +2195,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail_stop_recording'] = {
-			type: 'button',
-			category: tailCategory,
+			type: 'simple',
 			name: 'Stop Recording',
 			style: {
 				text: '',
@@ -2302,8 +2221,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail_snapshot'] = {
-			type: 'button',
-			category: tailCategory,
+			type: 'simple',
 			name: 'Take Snapshot',
 			style: {
 				text: '',
@@ -2329,8 +2247,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail_preset_1'] = {
-			type: 'button',
-			category: tailCategory,
+			type: 'simple',
 			name: 'Preset 1',
 			style: {
 				text: '',
@@ -2358,8 +2275,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail_preset_2'] = {
-			type: 'button',
-			category: tailCategory,
+			type: 'simple',
 			name: 'Preset 2',
 			style: {
 				text: '',
@@ -2387,8 +2303,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail_preset_3'] = {
-			type: 'button',
-			category: tailCategory,
+			type: 'simple',
 			name: 'Preset 3',
 			style: {
 				text: '',
@@ -2419,8 +2334,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 	// Tail 2 specific Center app actions
 	if (self.config.model === 'OBSBOT_CENTER_TAIL_2') {
 		presets['center_tail2_pan_speed'] = {
-			type: 'button',
-			category: 'Center Tail 2',
+			type: 'simple',
 			name: 'Pan Speed 5',
 			style: {
 				text: '',
@@ -2448,8 +2362,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail2_tilt_speed'] = {
-			type: 'button',
-			category: 'Center Tail 2',
+			type: 'simple',
 			name: 'Tilt Speed 5',
 			style: {
 				text: '',
@@ -2477,8 +2390,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail2_pan_lock'] = {
-			type: 'button',
-			category: 'Center Tail 2',
+			type: 'simple',
 			name: 'Pan Lock Toggle',
 			style: {
 				text: '',
@@ -2506,8 +2418,7 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 
 		presets['center_tail2_tilt_lock'] = {
-			type: 'button',
-			category: 'Center Tail 2',
+			type: 'simple',
 			name: 'Tilt Lock Toggle',
 			style: {
 				text: '',
@@ -2535,5 +2446,136 @@ export function UpdatePresets(self: OBSBOTInstance): void {
 		}
 	}
 
-	self.setPresetDefinitions(presets)
+	const centerTailSectionName = self.config.model === 'OBSBOT_CENTER_TAIL_AIR' ? 'Center Tail Air' : 'Center Tail 2'
+
+	// Lists every preset a section can hold; those not offered on the current model are filtered out below
+	const allSections: { id: string; name: string; definitions: string[] }[] = [
+		{
+			id: 'zoom',
+			name: 'Zoom',
+			definitions: ['zoom_0', 'zoom_50', 'zoom_100', 'zoom_speed', 'zoom_max', 'zoom_min'],
+		},
+		{
+			id: 'gimbal',
+			name: 'Gimbal',
+			definitions: ['gimbal_up', 'gimbal_down', 'gimbal_left', 'gimbal_right', 'gimbal_motor_degree', 'gimbal_reset'],
+		},
+		{
+			id: 'other',
+			name: 'Other',
+			definitions: ['mirror_mode_on', 'mirror_mode_off'],
+		},
+		{
+			id: 'image',
+			name: 'Image',
+			definitions: [
+				'autofocus_on',
+				'autofocus_off',
+				'autoexposure_on',
+				'autoexposure_off',
+				'auto_wb_on',
+				'auto_wb_off',
+				'manual_focus_50',
+				'color_temp_5000',
+			],
+		},
+		{
+			id: 'center_app',
+			name: 'Center App',
+			definitions: [
+				'center_view_86',
+				'center_view_78',
+				'center_view_65',
+				'center_recording_start',
+				'center_recording_stop',
+				'center_snapshot',
+				'center_focus_afs',
+				'center_focus_afc',
+				'center_focus_mf',
+			],
+		},
+		{
+			id: 'meet_series',
+			name: 'Meet Series',
+			definitions: [
+				'meet_autoframe_off',
+				'meet_autoframe_single',
+				'meet_autoframe_group',
+				'meet_vb_disable',
+				'meet_vb_blur',
+				'meet_standard_mode',
+			],
+		},
+		{
+			id: 'tiny_series',
+			name: 'Tiny Series',
+			definitions: [
+				'tiny_ai_lock_on',
+				'tiny_ai_lock_off',
+				'tiny_ai_mode_normal',
+				'tiny_tracking_headroom',
+				'tiny_preset_1',
+				'tiny_preset_2',
+				'tiny_preset_3',
+			],
+		},
+		{
+			id: 'tail_2',
+			name: 'Tail 2',
+			definitions: [
+				'tail2_ai_single',
+				'tail2_ai_multi',
+				'tail2_tracking_slow',
+				'tail2_tracking_fast',
+				'tail2_only_me_on',
+				'tail2_only_me_off',
+				'tail2_start_recording',
+				'tail2_stop_recording',
+				'tail2_snapshot',
+				'tail2_preset_1',
+				'tail2_preset_2',
+				'tail2_preset_3',
+			],
+		},
+		{
+			id: 'tail_air',
+			name: 'Tail Air',
+			definitions: [
+				'tailair_ai_normal',
+				'tailair_ai_closeup',
+				'tailair_tracking_slow',
+				'tailair_tracking_fast',
+				'tailair_start_recording',
+				'tailair_stop_recording',
+				'tailair_snapshot',
+				'tailair_preset_1',
+				'tailair_preset_2',
+				'tailair_preset_3',
+			],
+		},
+		{
+			id: 'center_tail',
+			name: centerTailSectionName,
+			definitions: [
+				'center_tail_ai_normal',
+				'center_tail_tracking_slow',
+				'center_tail_start_recording',
+				'center_tail_stop_recording',
+				'center_tail_snapshot',
+				'center_tail_preset_1',
+				'center_tail_preset_2',
+				'center_tail_preset_3',
+				'center_tail2_pan_speed',
+				'center_tail2_tilt_speed',
+				'center_tail2_pan_lock',
+				'center_tail2_tilt_lock',
+			],
+		},
+	]
+
+	const structure: CompanionPresetSection<OBSBOTTypes>[] = allSections
+		.map((section) => ({ ...section, definitions: section.definitions.filter((id) => id in presets) }))
+		.filter((section) => section.definitions.length > 0)
+
+	self.setPresetDefinitions(structure, presets)
 }

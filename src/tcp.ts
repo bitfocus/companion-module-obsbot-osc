@@ -39,7 +39,8 @@ export class OSCTCPPort extends EventEmitter<TCPPortEvents> {
 		socket.on('connect', () => this.emit('ready'))
 		socket.on('close', () => this.emit('close'))
 		socket.on('error', (err) => this.emit('error', err))
-		socket.on('data', (data) => this.#receive(data))
+		// Without setEncoding() the socket only ever emits Buffers
+		socket.on('data', (data) => this.#receive(data as Buffer))
 	}
 
 	close(): void {
