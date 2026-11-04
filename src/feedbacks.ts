@@ -1,15 +1,16 @@
 import { combineRgb, type CompanionFeedbackDefinitions } from '@companion-module/base'
 import type OBSBOTInstance from './main.js'
 import type { OBSBOTTypes } from './main.js'
+import { findModel } from './models.js'
 
 export function UpdateFeedbacks(self: OBSBOTInstance): void {
+	const model = findModel(self.config.model)
 	const feedbacks: CompanionFeedbackDefinitions<OBSBOTTypes['feedbacks']> = {}
 
 	const foregroundColor = combineRgb(0, 0, 0)
 	const backgroundColor = combineRgb(255, 255, 0)
 
-	// Tail 2 hardware zooms on command but always reports zoom 0 and FOV -1, so these could never be accurate
-	if (self.config.model !== 'OBSBOT_TAIL_2') {
+	if (model?.reportsZoom) {
 		feedbacks.zoomLevel = {
 			type: 'boolean',
 			name: 'Zoom Level',
@@ -198,7 +199,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 		},
 	}
 
-	if (self.config.model === 'OBSBOT_CENTER_TINY') {
+	if (model?.family === 'tiny') {
 		feedbacks.aiTrackingLocked = {
 			type: 'boolean',
 			name: 'AI Tracking Locked',
@@ -214,7 +215,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 		}
 	}
 
-	if (self.config.model === 'OBSBOT_CENTER_MEET') {
+	if (model?.family === 'meet') {
 		feedbacks.virtualBackground = {
 			type: 'boolean',
 			name: 'Virtual Background Mode',
@@ -269,11 +270,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 		}
 	}
 
-	if (
-		self.config.model === 'OBSBOT_CENTER_TINY' ||
-		self.config.model === 'OBSBOT_CENTER_MEET' ||
-		self.config.model === 'OBSBOT_TAIL_2'
-	) {
+	if (model?.hasPositionPresets) {
 		feedbacks.presetExists = {
 			type: 'boolean',
 			name: 'Preset Position Saved',

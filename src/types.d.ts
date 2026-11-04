@@ -17,9 +17,6 @@ declare module 'osc' {
 	export default osc
 }
 
-/** Either transport the module can be talking over */
-type OSCSocket = import('@companion-module/base').SharedUdpSocket | import('./tcp.js').OSCTCPPort
-
 /** OSC type tags used by the OBSBOT protocol, per the definitions in docs/ */
 type OSCArgTag = 'i' | 'f' | 's' | 'b'
 

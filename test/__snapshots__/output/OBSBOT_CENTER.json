@@ -1,0 +1,1890 @@
+{
+	"getDeviceInfo": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/GetDeviceInfo",
+					"args": [
+						0
+					]
+				}
+			]
+		}
+	],
+	"getGimbalPosInfo": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/GetGimbalPosInfo",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"getZoomInfo": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/GetZoomInfo",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"moveGimbalDown": [
+		{
+			"options": {
+				"moveSpeed": 1
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalDown",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"moveSpeed": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalDown",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		}
+	],
+	"moveGimbalLeft": [
+		{
+			"options": {
+				"moveSpeed": 1
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalLeft",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"moveSpeed": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalLeft",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		}
+	],
+	"moveGimbalRight": [
+		{
+			"options": {
+				"moveSpeed": 1
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalRight",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"moveSpeed": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalRight",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		}
+	],
+	"moveGimbalUp": [
+		{
+			"options": {
+				"moveSpeed": 1
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalUp",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"moveSpeed": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalUp",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		}
+	],
+	"PCSnapshot": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/PCSnapshot",
+					"args": [
+						1
+					]
+				}
+			]
+		}
+	],
+	"refreshState": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/GetDeviceInfo",
+					"args": [
+						0
+					]
+				},
+				{
+					"address": "/OBSBOT/WebCam/General/GetZoomInfo",
+					"args": [
+						0,
+						0
+					]
+				},
+				{
+					"address": "/OBSBOT/WebCam/General/GetGimbalPosInfo",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"resetGimbal": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/ResetGimbal",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"selectDevice": [
+		{
+			"options": {
+				"device": 1
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SelectDevice",
+					"args": [
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"device": 255
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SelectDevice",
+					"args": [
+						254
+					]
+				}
+			]
+		}
+	],
+	"setAutoExposure": [
+		{
+			"options": {
+				"autoExposure": "0"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetAutoExposure",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"autoExposure": "1"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetAutoExposure",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		}
+	],
+	"setAutoFocus": [
+		{
+			"options": {
+				"autoFocus": "0"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetAutoFocus",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"autoFocus": "1"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetAutoFocus",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		}
+	],
+	"setAutoWhiteBalance": [
+		{
+			"options": {
+				"autoWhiteBalance": "0"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetAutoWhiteBalance",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"autoWhiteBalance": "1"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetAutoWhiteBalance",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		}
+	],
+	"setColorTemperature": [
+		{
+			"options": {
+				"colorTemperature": 5000
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetColorTemperature",
+					"args": [
+						0,
+						5000
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"colorTemperature": 2000
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetColorTemperature",
+					"args": [
+						0,
+						2000
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"colorTemperature": 10000
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetColorTemperature",
+					"args": [
+						0,
+						10000
+					]
+				}
+			]
+		}
+	],
+	"setExposureCompensate": [
+		{
+			"options": {
+				"exposureCompensateValue": "0"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "-30"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						-30
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "-27"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						-27
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "-23"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						-23
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "-20"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						-20
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "-17"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						-17
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "-13"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						-13
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "-10"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						-10
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "-7"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						-7
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "-3"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						-3
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "3"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						3
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "7"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						7
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "10"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						10
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "13"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						13
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "17"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						17
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "20"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						20
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "23"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						23
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "27"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						27
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"exposureCompensateValue": "30"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetExposureCompensate",
+					"args": [
+						0,
+						30
+					]
+				}
+			]
+		}
+	],
+	"setFocusMode": [
+		{
+			"options": {
+				"focusMode": "0",
+				"focusValue": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/Camera/Tail/SetFocusMode",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"focusMode": "1",
+				"focusValue": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/Camera/Tail/SetFocusMode",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"focusMode": "2",
+				"focusValue": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/Camera/Tail/SetFocusMode",
+					"args": [
+						0,
+						2,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"focusMode": "0",
+				"focusValue": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/Camera/Tail/SetFocusMode",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"setGimMotorDegree": [
+		{
+			"options": {
+				"pan": 0,
+				"pitch": 0,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegree",
+					"args": [
+						0,
+						0,
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": 0,
+				"pitch": 0,
+				"speed": 90
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegree",
+					"args": [
+						0,
+						90,
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": -129,
+				"pitch": 0,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegree",
+					"args": [
+						0,
+						0,
+						-129,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": 129,
+				"pitch": 0,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegree",
+					"args": [
+						0,
+						0,
+						129,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": 0,
+				"pitch": -59,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegree",
+					"args": [
+						0,
+						0,
+						0,
+						-59
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": 0,
+				"pitch": 59,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegree",
+					"args": [
+						0,
+						0,
+						0,
+						59
+					]
+				}
+			]
+		}
+	],
+	"setGimMotorDegreeEx": [
+		{
+			"options": {
+				"pan": 0,
+				"pitch": 0,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegreeEx",
+					"args": [
+						0,
+						0,
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": 0,
+				"pitch": 0,
+				"speed": 90
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegreeEx",
+					"args": [
+						0,
+						90,
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": -129,
+				"pitch": 0,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegreeEx",
+					"args": [
+						0,
+						0,
+						-129,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": 129,
+				"pitch": 0,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegreeEx",
+					"args": [
+						0,
+						0,
+						129,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": 0,
+				"pitch": -59,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegreeEx",
+					"args": [
+						0,
+						0,
+						0,
+						-59
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"pan": 0,
+				"pitch": 59,
+				"speed": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimMotorDegreeEx",
+					"args": [
+						0,
+						0,
+						0,
+						59
+					]
+				}
+			]
+		}
+	],
+	"setISO": [
+		{
+			"options": {
+				"isoValue": "100"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetISO",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"isoValue": "200"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetISO",
+					"args": [
+						0,
+						200
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"isoValue": "400"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetISO",
+					"args": [
+						0,
+						400
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"isoValue": "800"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetISO",
+					"args": [
+						0,
+						800
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"isoValue": "1600"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetISO",
+					"args": [
+						0,
+						1600
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"isoValue": "3200"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetISO",
+					"args": [
+						0,
+						3200
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"isoValue": "6400"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetISO",
+					"args": [
+						0,
+						6400
+					]
+				}
+			]
+		}
+	],
+	"setManualFocus": [
+		{
+			"options": {
+				"focusValue": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetManualFocus",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"focusValue": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetManualFocus",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		}
+	],
+	"setMirror": [
+		{
+			"options": {
+				"mirrorMode": "0"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetMirror",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"mirrorMode": "1"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetMirror",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		}
+	],
+	"setShutterSpeed": [
+		{
+			"options": {
+				"shutterSpeedValue": "100"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "6400"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						6400
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "5000"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						5000
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "3200"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						3200
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "2500"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						2500
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "2000"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						2000
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "1600"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						1600
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "1250"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						1250
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "1000"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						1000
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "800"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						800
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "640"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						640
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "500"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						500
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "400"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						400
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "320"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						320
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "240"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						240
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "200"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						200
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "160"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						160
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "120"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						120
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "80"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						80
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "60"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						60
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "50"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						50
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "40"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						40
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "30"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						30
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "25"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						25
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "20"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						20
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "15"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						15
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "12.5"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						12
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": "10"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						10
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": 8
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						8
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": 6.25
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						6
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": 5
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						5
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": 4
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						4
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": 3
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						3
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"shutterSpeedValue": 2.5
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetShutterSpeed",
+					"args": [
+						0,
+						2
+					]
+				}
+			]
+		}
+	],
+	"setView": [
+		{
+			"options": {
+				"viewAngle": "0"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetView",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"viewAngle": "1"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetView",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"viewAngle": "2"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetView",
+					"args": [
+						0,
+						2
+					]
+				}
+			]
+		}
+	],
+	"setWakeSleep": [
+		{
+			"options": {
+				"state": "1"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/WakeSleep",
+					"args": [
+						0,
+						1
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"state": "0"
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/WakeSleep",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"setZoom": [
+		{
+			"options": {
+				"zoom": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetZoom",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"zoom": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetZoom",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		}
+	],
+	"setZoomMax": [
+		{
+			"options": {
+				"zoomLevel": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetZoomMax",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"zoomLevel": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetZoomMax",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		}
+	],
+	"setZoomMin": [
+		{
+			"options": {
+				"zoomLevel": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetZoomMin",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"zoomLevel": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetZoomMin",
+					"args": [
+						0,
+						100
+					]
+				}
+			]
+		}
+	],
+	"setZoomSpeed": [
+		{
+			"options": {
+				"zoomSpeed": 0,
+				"zoomValue": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetZoomSpeed",
+					"args": [
+						0,
+						0,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"zoomSpeed": 0,
+				"zoomValue": 100
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetZoomSpeed",
+					"args": [
+						0,
+						100,
+						0
+					]
+				}
+			]
+		},
+		{
+			"options": {
+				"zoomSpeed": 11,
+				"zoomValue": 0
+			},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetZoomSpeed",
+					"args": [
+						0,
+						0,
+						11
+					]
+				}
+			]
+		}
+	],
+	"startHighfpsRecording": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetHighfpsRecording",
+					"args": [
+						1
+					]
+				}
+			]
+		}
+	],
+	"startPCRecording": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetPCRecording",
+					"args": [
+						1
+					]
+				}
+			]
+		}
+	],
+	"stopGimbalDown": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalDown",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"stopGimbalLeft": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalLeft",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"stopGimbalRight": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalRight",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"stopGimbalUp": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetGimbalUp",
+					"args": [
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"stopHighfpsRecording": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetHighfpsRecording",
+					"args": [
+						0
+					]
+				}
+			]
+		}
+	],
+	"stopPCRecording": [
+		{
+			"options": {},
+			"sent": [
+				{
+					"address": "/OBSBOT/WebCam/General/SetPCRecording",
+					"args": [
+						0
+					]
+				}
+			]
+		}
+	]
+}

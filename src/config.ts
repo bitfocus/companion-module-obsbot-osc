@@ -85,7 +85,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			id: 'model',
 			label: 'Device Model',
 			default: Models[0].id,
-			choices: [...Models],
+			choices: Models.map(({ id, label }) => ({ id, label })),
 			tooltip: 'Select the model of your OBSBOT device',
 			width: 6,
 		},
