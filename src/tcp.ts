@@ -1,16 +1,12 @@
 import { EventEmitter } from 'node:events'
 import net from 'node:net'
 import osc, { type OSCBundle, type OSCMessage } from 'osc'
-
-interface TCPPortEvents {
-	ready: []
-	close: []
-	error: [Error]
-	message: [OSCMessage]
-}
+import type { OSCOutgoingMessage, OSCTransport, OSCTransportEvents } from './transport.js'
 
 // Comfortably above any OBSBOT reply, and low enough that the two byte orders can't be confused
 const MaxPacketLength = 0xffff
+const ConnectTimeout = 5000
+const KeepAliveDelay = 5000
 
 /**
  * OSC over TCP using OSC 1.0 framing (each packet prefixed with its int32 length), which
@@ -20,7 +16,7 @@ const MaxPacketLength = 0xffff
  * Center App writes the length big-endian but Tail 2 hardware writes it little-endian.
  * A plausible length in one order is always implausible in the other, so pick per frame.
  */
-export class OSCTCPPort extends EventEmitter<TCPPortEvents> {
+export class OSCTCPPort extends EventEmitter<OSCTransportEvents> implements OSCTransport {
 	readonly #address: string
 	readonly #port: number
 	#socket: net.Socket | undefined
@@ -36,10 +32,19 @@ export class OSCTCPPort extends EventEmitter<TCPPortEvents> {
 		const socket = net.connect(this.#port, this.#address)
 		this.#socket = socket
 
-		socket.on('connect', () => this.emit('ready'))
+		// Without a timeout, connecting to an address that drops packets takes minutes to fail
+		socket.setTimeout(ConnectTimeout)
+		socket.on('timeout', () => socket.destroy(new Error(`Timed out connecting to ${this.#address}`)))
+		socket.setKeepAlive(true, KeepAliveDelay)
+
+		socket.on('connect', () => {
+			socket.setTimeout(0)
+			this.emit('ready')
+		})
 		socket.on('close', () => this.emit('close'))
 		socket.on('error', (err) => this.emit('error', err))
-		socket.on('data', (data) => this.#receive(data))
+		// Without setEncoding() the socket only ever emits Buffers
+		socket.on('data', (data) => this.#receive(data as Buffer))
 	}
 
 	close(): void {
@@ -51,7 +56,7 @@ export class OSCTCPPort extends EventEmitter<TCPPortEvents> {
 		this.#pending = Buffer.alloc(0)
 	}
 
-	send(message: { address: string; args: OSCArgument[] }): void {
+	send(message: OSCOutgoingMessage): void {
 		if (!this.#socket) {
 			throw new Error('TCP socket is not open')
 		}
@@ -84,8 +89,9 @@ export class OSCTCPPort extends EventEmitter<TCPPortEvents> {
 			let decoded: OSCMessage | OSCBundle
 			try {
 				decoded = osc.readPacket(packet, {})
-			} catch {
+			} catch (err) {
 				// Drop malformed packets, matching the UDP path, rather than tearing down the connection
+				this.emit('malformed', err instanceof Error ? err : new Error(String(err)))
 				continue
 			}
 

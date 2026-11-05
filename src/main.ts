@@ -1,22 +1,35 @@
-import { InstanceBase, InstanceStatus, runEntrypoint, type SomeCompanionConfigField } from '@companion-module/base'
+import {
+	InstanceBase,
+	type CompanionActionSchema,
+	type CompanionFeedbackSchema,
+	type InstanceTypes,
+	type SomeCompanionConfigField,
+} from '@companion-module/base'
 import { GetConfigFields, type ModuleConfig } from './config.js'
 import { UpgradeScripts } from './upgrades.js'
-import { UpdateActions } from './actions.js'
+import { UpdateActions } from './actions/index.js'
 import { UpdateFeedbacks } from './feedbacks.js'
 import { CreateState, type OBSBOTState } from './state.js'
 import { UpdateVariableDefinitions } from './variables.js'
-import { CloseConnection, InitConnection, SendCommand } from './api.js'
+import { HandleReply, PollDeviceState } from './api.js'
+import { Connection } from './connection.js'
 import { UpdatePresets } from './presets.js'
 
-export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
+// Every action and feedback option is a dropdown or number field, and Companion validates values against the field
+type OptionValues = Record<string, string | number | undefined>
+
+export interface OBSBOTTypes extends InstanceTypes {
+	config: ModuleConfig
+	actions: Record<string, CompanionActionSchema<OptionValues, void>>
+	feedbacks: Record<string, CompanionFeedbackSchema<OptionValues>>
+}
+
+export { UpgradeScripts }
+
+export default class OBSBOTInstance extends InstanceBase<OBSBOTTypes> {
 	config!: ModuleConfig // Setup in init()
-	_socket: OSCSocket | undefined
-	_pollTimer: NodeJS.Timeout | undefined
-	_reconnectTimer: NodeJS.Timeout | undefined
-	_reconnecting = false
-	_resolvedIp: string | undefined // config.ip resolved to an address, so hostnames can be matched against rinfo
-	_lastMessageAt = 0
 	STATE: OBSBOTState = CreateState()
+	readonly connection = new Connection(this)
 
 	constructor(internal: unknown) {
 		super(internal)
@@ -28,13 +41,12 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
 		this.updatePresets() // export presets
-		this.updateStatus(InstanceStatus.Connecting)
-		await this.initConnection()
+		await this.connection.connect()
 	}
 	// When module gets deleted
 	async destroy(): Promise<void> {
 		this.log('debug', 'destroy')
-		CloseConnection(this)
+		this.connection.close()
 	}
 
 	async configUpdated(config: ModuleConfig): Promise<void> {
@@ -44,8 +56,7 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 		this.updateFeedbacks()
 		this.updateVariableDefinitions()
 		this.updatePresets()
-		this.updateStatus(InstanceStatus.Connecting)
-		await this.initConnection()
+		await this.connection.connect()
 	}
 
 	// Return config fields for web config
@@ -69,13 +80,15 @@ export class OBSBOTInstance extends InstanceBase<ModuleConfig> {
 		UpdatePresets(this)
 	}
 
-	async initConnection(): Promise<void> {
-		await InitConnection(this)
+	sendCommand(address: OSCAddress, args: OSCArgument[]): void {
+		this.connection.send(address, args)
 	}
 
-	sendCommand(address: OSCAddress, args: OSCArgument[]): void {
-		SendCommand(this, address, args)
+	handleReply(address: string, args: OSCValue[]): void {
+		HandleReply(this, address, args)
+	}
+
+	pollDeviceState(): void {
+		PollDeviceState(this)
 	}
 }
-
-runEntrypoint(OBSBOTInstance, UpgradeScripts)

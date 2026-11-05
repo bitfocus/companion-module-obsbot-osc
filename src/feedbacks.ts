@@ -1,14 +1,16 @@
 import { combineRgb, type CompanionFeedbackDefinitions } from '@companion-module/base'
-import type { OBSBOTInstance } from './main.js'
+import type OBSBOTInstance from './main.js'
+import type { OBSBOTTypes } from './main.js'
+import { findModel } from './models.js'
 
 export function UpdateFeedbacks(self: OBSBOTInstance): void {
-	const feedbacks: CompanionFeedbackDefinitions = {}
+	const model = findModel(self.config.model)
+	const feedbacks: CompanionFeedbackDefinitions<OBSBOTTypes['feedbacks']> = {}
 
 	const foregroundColor = combineRgb(0, 0, 0)
 	const backgroundColor = combineRgb(255, 255, 0)
 
-	// Tail 2 hardware zooms on command but always reports zoom 0 and FOV -1, so these could never be accurate
-	if (self.config.model !== 'OBSBOT_TAIL_2') {
+	if (model?.reportsZoom) {
 		feedbacks.zoomLevel = {
 			type: 'boolean',
 			name: 'Zoom Level',
@@ -37,7 +39,8 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 					min: 0,
 					max: 100,
 					step: 1,
-					required: true,
+					clampValues: true,
+					asInteger: true,
 					range: true,
 				},
 			],
@@ -101,6 +104,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				label: 'Axis',
 				id: 'axis',
 				default: 'yaw',
+				allowInvalidValues: true,
 				choices: [
 					{ id: 'yaw', label: 'Yaw (Pan)' },
 					{ id: 'pitch', label: 'Pitch (Tilt)' },
@@ -114,7 +118,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				min: -180,
 				max: 180,
 				step: 1,
-				required: true,
+				clampValues: true,
 			},
 			{
 				type: 'number',
@@ -124,7 +128,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				min: -180,
 				max: 180,
 				step: 1,
-				required: true,
+				clampValues: true,
 			},
 		],
 		callback: (feedback) => {
@@ -170,7 +174,8 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 				min: 1,
 				max: 4,
 				step: 1,
-				required: true,
+				clampValues: true,
+				asInteger: true,
 				tooltip: 'Device number as reported in the device info. Hardware devices only report device 1',
 			},
 		],
@@ -194,7 +199,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 		},
 	}
 
-	if (self.config.model === 'OBSBOT_CENTER_TINY') {
+	if (model?.family === 'tiny') {
 		feedbacks.aiTrackingLocked = {
 			type: 'boolean',
 			name: 'AI Tracking Locked',
@@ -210,7 +215,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 		}
 	}
 
-	if (self.config.model === 'OBSBOT_CENTER_MEET') {
+	if (model?.family === 'meet') {
 		feedbacks.virtualBackground = {
 			type: 'boolean',
 			name: 'Virtual Background Mode',
@@ -265,11 +270,7 @@ export function UpdateFeedbacks(self: OBSBOTInstance): void {
 		}
 	}
 
-	if (
-		self.config.model === 'OBSBOT_CENTER_TINY' ||
-		self.config.model === 'OBSBOT_CENTER_MEET' ||
-		self.config.model === 'OBSBOT_TAIL_2'
-	) {
+	if (model?.hasPositionPresets) {
 		feedbacks.presetExists = {
 			type: 'boolean',
 			name: 'Preset Position Saved',

@@ -5,6 +5,30 @@ All notable changes to this module are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Variables and expressions can be used in action and feedback fields. Number values outside a field's range are clamped to it.
+
+### Changed
+
+- Requires Companion 5.0 or newer. The module now uses API 2.1 and the Node 26 runtime.
+- Actions and options that only work on some Tiny and Tail models now say so in their names.
+- The module now checks that the device is responding every few seconds, including when polling is disabled.
+- Reconnection attempts back off from 1 second to 30 seconds, and a repeated failure is only logged once.
+
+### Fixed
+
+- **Image | Set Color Temperature** now defaults to 5000 instead of 0, which was outside its allowed range.
+- A UDP socket error no longer leaves the connection dead until it is reconfigured.
+- A device that stops responding is now reported as failed with polling disabled, instead of staying at "Connecting".
+- A TCP connection that goes silent without closing now reconnects, and a connection attempt that gets no answer now times out.
+- Changing the configuration or removing the connection during a slow hostname lookup no longer leaves an extra socket open.
+- An error while handling a reply over TCP no longer takes down the module.
+- Replies that are too short are ignored, rather than putting `NaN` into variables and feedbacks.
+- A missing address or an invalid port now shows as a configuration problem.
+
 ## [1.2.0] - 2026-10-05
 
 ### Added

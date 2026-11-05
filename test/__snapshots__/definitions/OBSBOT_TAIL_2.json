@@ -1,0 +1,2191 @@
+{
+	"actions": {
+		"getDeviceInfo": {
+			"description": "Request the device information",
+			"name": "Query | Get Device Info",
+			"options": []
+		},
+		"getGimbalPosInfo": {
+			"description": "Request the current gimbal pitch and yaw",
+			"name": "Query | Get Gimbal Position Info",
+			"options": []
+		},
+		"getZoomInfo": {
+			"description": "Request the current zoom level and field of view",
+			"name": "Query | Get Zoom Info",
+			"options": []
+		},
+		"moveGimbalDown": {
+			"description": "Move the gimbal down",
+			"name": "Gimbal | Move Down",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 1,
+					"id": "moveSpeed",
+					"label": "Move Speed",
+					"max": 100,
+					"min": 1,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"moveGimbalLeft": {
+			"description": "Move the gimbal left",
+			"name": "Gimbal | Move Left",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 1,
+					"id": "moveSpeed",
+					"label": "Move Speed",
+					"max": 100,
+					"min": 1,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"moveGimbalRight": {
+			"description": "Move the gimbal right",
+			"name": "Gimbal | Move Right",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 1,
+					"id": "moveSpeed",
+					"label": "Move Speed",
+					"max": 100,
+					"min": 1,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"moveGimbalUp": {
+			"description": "Move the gimbal up",
+			"name": "Gimbal | Move Up",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 1,
+					"id": "moveSpeed",
+					"label": "Move Speed",
+					"max": 100,
+					"min": 1,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"OBSBOT_TAIL_2_aiModeEnable": {
+			"description": "Set the AI mode of the camera",
+			"name": "Tail 2 | AI Mode On/Off",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Off"
+						},
+						{
+							"id": "1",
+							"label": "On"
+						}
+					],
+					"default": "0",
+					"id": "aiMode",
+					"label": "AI Mode",
+					"type": "dropdown"
+				}
+			]
+		},
+		"OBSBOT_TAIL_2_setAIMode": {
+			"description": "Set the AI mode and auto zoom mode of the camera",
+			"name": "Tail 2 | Set AI Mode and Auto Zoom Mode",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Single-person"
+						},
+						{
+							"id": "1",
+							"label": "Multi-person"
+						}
+					],
+					"default": "0",
+					"disableAutoExpression": true,
+					"id": "aiMode",
+					"label": "AI Mode",
+					"type": "dropdown"
+				},
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "None"
+						},
+						{
+							"id": "1",
+							"label": "Close Up"
+						},
+						{
+							"id": "2",
+							"label": "Half Body"
+						},
+						{
+							"id": "3",
+							"label": "Above The Knees"
+						},
+						{
+							"id": "4",
+							"label": "Nine Head Portrait"
+						},
+						{
+							"id": "5",
+							"label": "Full Body"
+						},
+						{
+							"id": "6",
+							"label": "Long Shot 1"
+						},
+						{
+							"id": "7",
+							"label": "Long Shot 2"
+						}
+					],
+					"default": "0",
+					"id": "autoZoomModeSingle",
+					"isVisibleExpression": "$(options:aiMode) === \"0\"",
+					"label": "Auto Zoom Mode",
+					"type": "dropdown"
+				},
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "None"
+						},
+						{
+							"id": "2",
+							"label": "Half Body"
+						},
+						{
+							"id": "3",
+							"label": "Above The Knees"
+						},
+						{
+							"id": "4",
+							"label": "Nine Head Portrait"
+						},
+						{
+							"id": "5",
+							"label": "Full Body"
+						},
+						{
+							"id": "6",
+							"label": "Long Shot 1"
+						},
+						{
+							"id": "7",
+							"label": "Long Shot 2"
+						}
+					],
+					"default": "0",
+					"id": "autoZoomModeMulti",
+					"isVisibleExpression": "$(options:aiMode) === \"1\"",
+					"label": "Auto Zoom Mode",
+					"type": "dropdown"
+				}
+			]
+		},
+		"OBSBOT_TAIL_2_setOnlyMe": {
+			"description": "Set the Only Me mode of the camera",
+			"name": "Tail 2 | Set Only Me On/Off",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Off"
+						},
+						{
+							"id": "1",
+							"label": "On"
+						}
+					],
+					"default": "0",
+					"id": "onlyMe",
+					"label": "Only Me",
+					"type": "dropdown"
+				}
+			]
+		},
+		"OBSBOT_TAIL_2_setTrackingSpeed": {
+			"description": "Set the tracking speed of the camera",
+			"name": "Tail 2 | Set Tracking Speed",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Super Lazy"
+						},
+						{
+							"id": "1",
+							"label": "Lazy"
+						},
+						{
+							"id": "2",
+							"label": "Slow"
+						},
+						{
+							"id": "3",
+							"label": "Fast"
+						},
+						{
+							"id": "4",
+							"label": "Crazy"
+						},
+						{
+							"id": "5",
+							"label": "Custom"
+						}
+					],
+					"default": "0",
+					"disableAutoExpression": true,
+					"id": "mode",
+					"label": "Mode",
+					"type": "dropdown"
+				},
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Manual"
+						},
+						{
+							"id": "1",
+							"label": "Auto"
+						}
+					],
+					"default": "0",
+					"id": "panMode",
+					"isVisibleExpression": "$(options:mode) === \"5\"",
+					"label": "Pan Mode",
+					"type": "dropdown"
+				},
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 1,
+					"id": "panSpeed",
+					"isVisibleExpression": "$(options:mode) === \"5\"",
+					"label": "Pan Speed",
+					"max": 10,
+					"min": 1,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				},
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Manual"
+						},
+						{
+							"id": "1",
+							"label": "Auto"
+						}
+					],
+					"default": "0",
+					"id": "pitchMode",
+					"isVisibleExpression": "$(options:mode) === \"5\"",
+					"label": "Pitch Mode",
+					"type": "dropdown"
+				},
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 1,
+					"id": "pitchSpeed",
+					"isVisibleExpression": "$(options:mode) === \"5\"",
+					"label": "Pitch Speed",
+					"max": 10,
+					"min": 1,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"OBSBOT_TAIL_2_startRecording": {
+			"description": "Start recording on the camera",
+			"name": "Tail 2 | Start Recording",
+			"options": []
+		},
+		"OBSBOT_TAIL_2_stopRecording": {
+			"description": "Stop recording on the camera",
+			"name": "Tail 2 | Stop Recording",
+			"options": []
+		},
+		"OBSBOT_TAIL_2_takeSnapshot": {
+			"description": "Take a snapshot on the camera",
+			"name": "Tail 2 | Take Snapshot",
+			"options": []
+		},
+		"OBSBOT_TAIL_2_triggerPreset": {
+			"description": "Trigger a preset on the camera",
+			"name": "Tail 2 | Trigger Preset",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 1,
+					"id": "presetNumber",
+					"label": "Preset Number",
+					"max": 3,
+					"min": 1,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"refreshState": {
+			"description": "Request the device info, zoom and gimbal position, plus any model specific state",
+			"name": "Query | Refresh Device State",
+			"options": []
+		},
+		"resetGimbal": {
+			"description": "Resets the gimbal to its default position",
+			"name": "Gimbal | Reset Position",
+			"options": []
+		},
+		"setAutoExposure": {
+			"description": "Set the auto exposure of the camera",
+			"name": "Image | Set Auto Exposure On/Off",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Off"
+						},
+						{
+							"id": "1",
+							"label": "On"
+						}
+					],
+					"default": "0",
+					"id": "autoExposure",
+					"label": "Auto Exposure",
+					"type": "dropdown"
+				}
+			]
+		},
+		"setAutoFocus": {
+			"description": "Set the auto focus of the camera",
+			"name": "Image | Set Auto Focus On/Off",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Off"
+						},
+						{
+							"id": "1",
+							"label": "On"
+						}
+					],
+					"default": "0",
+					"id": "autoFocus",
+					"label": "Auto Focus",
+					"type": "dropdown"
+				}
+			]
+		},
+		"setAutoWhiteBalance": {
+			"description": "Set the auto white balance of the camera",
+			"name": "Image | Set Auto White Balance On/Off",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Off"
+						},
+						{
+							"id": "1",
+							"label": "On"
+						}
+					],
+					"default": "0",
+					"id": "autoWhiteBalance",
+					"label": "Auto White Balance",
+					"type": "dropdown"
+				}
+			]
+		},
+		"setColorTemperature": {
+			"description": "Set the color temperature of the camera",
+			"name": "Image | Set Color Temperature",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 5000,
+					"id": "colorTemperature",
+					"label": "Color Temperature",
+					"max": 10000,
+					"min": 2000,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"setExposureCompensate": {
+			"description": "Set the exposure compensate value of the camera",
+			"name": "Image | Set Exposure Compensate Value",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "-30",
+							"label": "-3.0"
+						},
+						{
+							"id": "-27",
+							"label": "-2.7"
+						},
+						{
+							"id": "-23",
+							"label": "-2.3"
+						},
+						{
+							"id": "-20",
+							"label": "-2.0"
+						},
+						{
+							"id": "-17",
+							"label": "-1.7"
+						},
+						{
+							"id": "-13",
+							"label": "-1.3"
+						},
+						{
+							"id": "-10",
+							"label": "-1.0"
+						},
+						{
+							"id": "-7",
+							"label": "-0.7"
+						},
+						{
+							"id": "-3",
+							"label": "-0.3"
+						},
+						{
+							"id": "0",
+							"label": "0.0"
+						},
+						{
+							"id": "3",
+							"label": "0.3"
+						},
+						{
+							"id": "7",
+							"label": "0.7"
+						},
+						{
+							"id": "10",
+							"label": "1.0"
+						},
+						{
+							"id": "13",
+							"label": "1.3"
+						},
+						{
+							"id": "17",
+							"label": "1.7"
+						},
+						{
+							"id": "20",
+							"label": "2.0"
+						},
+						{
+							"id": "23",
+							"label": "2.3"
+						},
+						{
+							"id": "27",
+							"label": "2.7"
+						},
+						{
+							"id": "30",
+							"label": "3.0"
+						}
+					],
+					"default": "0",
+					"id": "exposureCompensateValue",
+					"label": "Exposure Compensate Value",
+					"type": "dropdown"
+				}
+			]
+		},
+		"setGimMotorDegree": {
+			"description": "Set the motor degrees of the gimbal",
+			"name": "Gimbal | Set Motor Degree",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 0,
+					"id": "speed",
+					"label": "Speed",
+					"max": 90,
+					"min": 0,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				},
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 0,
+					"id": "pan",
+					"label": "Pan",
+					"max": 159,
+					"min": -159,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				},
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 0,
+					"id": "pitch",
+					"label": "Pitch",
+					"max": 62,
+					"min": -62,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"setISO": {
+			"description": "Set the ISO of the camera",
+			"name": "Image | Set ISO",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "100",
+							"label": "100"
+						},
+						{
+							"id": "200",
+							"label": "200"
+						},
+						{
+							"id": "400",
+							"label": "400"
+						},
+						{
+							"id": "800",
+							"label": "800"
+						},
+						{
+							"id": "1600",
+							"label": "1600"
+						},
+						{
+							"id": "3200",
+							"label": "3200"
+						},
+						{
+							"id": "6400",
+							"label": "6400"
+						}
+					],
+					"default": "100",
+					"id": "isoValue",
+					"label": "ISO Value",
+					"type": "dropdown"
+				}
+			]
+		},
+		"setManualFocus": {
+			"description": "Set the manual focus value of the camera",
+			"name": "Image | Set Manual Focus Value",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 0,
+					"id": "focusValue",
+					"label": "Focus Value",
+					"max": 100,
+					"min": 0,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"setMirror": {
+			"description": "Set the mirror mode of the camera",
+			"name": "Other | Set Mirror Mode",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Normal"
+						},
+						{
+							"id": "1",
+							"label": "Mirror"
+						}
+					],
+					"default": "0",
+					"id": "mirrorMode",
+					"label": "Mirror Mode",
+					"type": "dropdown"
+				}
+			]
+		},
+		"setShutterSpeed": {
+			"description": "Set the shutter speed of the camera",
+			"name": "Image | Set Shutter Speed",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "6400",
+							"label": "1/6400"
+						},
+						{
+							"id": "5000",
+							"label": "1/5000"
+						},
+						{
+							"id": "3200",
+							"label": "1/3200"
+						},
+						{
+							"id": "2500",
+							"label": "1/2500"
+						},
+						{
+							"id": "2000",
+							"label": "1/2000"
+						},
+						{
+							"id": "1600",
+							"label": "1/1600"
+						},
+						{
+							"id": "1250",
+							"label": "1/1250"
+						},
+						{
+							"id": "1000",
+							"label": "1/1000"
+						},
+						{
+							"id": "800",
+							"label": "1/800"
+						},
+						{
+							"id": "640",
+							"label": "1/640"
+						},
+						{
+							"id": "500",
+							"label": "1/500"
+						},
+						{
+							"id": "400",
+							"label": "1/400"
+						},
+						{
+							"id": "320",
+							"label": "1/320"
+						},
+						{
+							"id": "240",
+							"label": "1/240"
+						},
+						{
+							"id": "200",
+							"label": "1/200"
+						},
+						{
+							"id": "160",
+							"label": "1/160"
+						},
+						{
+							"id": "120",
+							"label": "1/120"
+						},
+						{
+							"id": "100",
+							"label": "1/100"
+						},
+						{
+							"id": "80",
+							"label": "1/80"
+						},
+						{
+							"id": "60",
+							"label": "1/60"
+						},
+						{
+							"id": "50",
+							"label": "1/50"
+						},
+						{
+							"id": "40",
+							"label": "1/40"
+						},
+						{
+							"id": "30",
+							"label": "1/30"
+						},
+						{
+							"id": "25",
+							"label": "1/25"
+						},
+						{
+							"id": "20",
+							"label": "1/20"
+						},
+						{
+							"id": "15",
+							"label": "1/15"
+						},
+						{
+							"id": "12.5",
+							"label": "1/12.5"
+						},
+						{
+							"id": "10",
+							"label": "1/10"
+						},
+						{
+							"id": 8,
+							"label": "1/8"
+						},
+						{
+							"id": 6.25,
+							"label": "1/6.25"
+						},
+						{
+							"id": 5,
+							"label": "1/5"
+						},
+						{
+							"id": 4,
+							"label": "1/4"
+						},
+						{
+							"id": 3,
+							"label": "1/3"
+						},
+						{
+							"id": 2.5,
+							"label": "1/2.5"
+						}
+					],
+					"default": "100",
+					"id": "shutterSpeedValue",
+					"label": "Shutter Speed Value",
+					"type": "dropdown"
+				}
+			]
+		},
+		"setZoom": {
+			"description": "Set the zoom level of the camera",
+			"name": "Zoom | Set Zoom Level",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 0,
+					"id": "zoom",
+					"label": "Zoom Level",
+					"max": 100,
+					"min": 0,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"setZoomMax": {
+			"description": "Set the maximum zoom level of the camera",
+			"name": "Zoom | Set Zoom Max",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 0,
+					"id": "zoomLevel",
+					"label": "Zoom Level",
+					"max": 100,
+					"min": 0,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"setZoomMin": {
+			"description": "Set the minimum zoom level of the camera",
+			"name": "Zoom | Set Zoom Min",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 0,
+					"id": "zoomLevel",
+					"label": "Zoom Level",
+					"max": 100,
+					"min": 0,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"setZoomSpeed": {
+			"description": "Set the zoom speed of the camera",
+			"name": "Zoom | Set Zoom Speed",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 0,
+					"id": "zoomValue",
+					"label": "Target Zoom Value",
+					"max": 100,
+					"min": 0,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				},
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 0,
+					"id": "zoomSpeed",
+					"label": "Target Zoom Speed",
+					"max": 10,
+					"min": 0,
+					"range": true,
+					"step": 1,
+					"type": "number"
+				}
+			]
+		},
+		"stopGimbalDown": {
+			"description": "Stop moving the gimbal down",
+			"name": "Gimbal | Stop Moving Down",
+			"options": []
+		},
+		"stopGimbalLeft": {
+			"description": "Stop moving the gimbal left",
+			"name": "Gimbal | Stop Moving Left",
+			"options": []
+		},
+		"stopGimbalRight": {
+			"description": "Stop moving the gimbal right",
+			"name": "Gimbal | Stop Moving Right",
+			"options": []
+		},
+		"stopGimbalUp": {
+			"description": "Stop moving the gimbal up",
+			"name": "Gimbal | Stop Moving Up",
+			"options": []
+		}
+	},
+	"feedbacks": {
+		"deviceConnected": {
+			"defaultStyle": {
+				"bgcolor": 16776960,
+				"color": 0
+			},
+			"description": "Change style when the given device reports as connected",
+			"name": "Device Connected",
+			"options": [
+				{
+					"asInteger": true,
+					"clampValues": true,
+					"default": 1,
+					"id": "device",
+					"label": "Device",
+					"max": 4,
+					"min": 1,
+					"step": 1,
+					"tooltip": "Device number as reported in the device info. Hardware devices only report device 1",
+					"type": "number"
+				}
+			],
+			"type": "boolean"
+		},
+		"gimbalPosition": {
+			"defaultStyle": {
+				"bgcolor": 16776960,
+				"color": 0
+			},
+			"description": "Change style when the gimbal axis is within the given range",
+			"name": "Gimbal Position In Range",
+			"options": [
+				{
+					"allowInvalidValues": true,
+					"choices": [
+						{
+							"id": "yaw",
+							"label": "Yaw (Pan)"
+						},
+						{
+							"id": "pitch",
+							"label": "Pitch (Tilt)"
+						}
+					],
+					"default": "yaw",
+					"id": "axis",
+					"label": "Axis",
+					"type": "dropdown"
+				},
+				{
+					"clampValues": true,
+					"default": -5,
+					"id": "min",
+					"label": "Minimum Degrees",
+					"max": 180,
+					"min": -180,
+					"step": 1,
+					"type": "number"
+				},
+				{
+					"clampValues": true,
+					"default": 5,
+					"id": "max",
+					"label": "Maximum Degrees",
+					"max": 180,
+					"min": -180,
+					"step": 1,
+					"type": "number"
+				}
+			],
+			"type": "boolean"
+		},
+		"presetExists": {
+			"defaultStyle": {
+				"bgcolor": 16776960,
+				"color": 0
+			},
+			"description": "Change style when the selected preset position has been saved on the device",
+			"name": "Preset Position Saved",
+			"options": [
+				{
+					"choices": [
+						{
+							"id": "0",
+							"label": "Preset Position 1"
+						},
+						{
+							"id": "1",
+							"label": "Preset Position 2"
+						},
+						{
+							"id": "2",
+							"label": "Preset Position 3"
+						}
+					],
+					"default": "0",
+					"id": "preset",
+					"label": "Preset Position",
+					"type": "dropdown"
+				}
+			],
+			"type": "boolean"
+		},
+		"selectedDeviceAwake": {
+			"defaultStyle": {
+				"bgcolor": 16776960,
+				"color": 0
+			},
+			"description": "Change style when the selected device is running rather than asleep",
+			"name": "Selected Device Awake",
+			"options": [],
+			"type": "boolean"
+		}
+	},
+	"presets": {
+		"auto_wb_off": {
+			"feedbacks": [],
+			"name": "Auto White Balance Off",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setAutoWhiteBalance",
+							"options": {
+								"autoWhiteBalance": "0"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:6b8bb84295a2c2e4",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"auto_wb_on": {
+			"feedbacks": [],
+			"name": "Auto White Balance On",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setAutoWhiteBalance",
+							"options": {
+								"autoWhiteBalance": "1"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:8378174b32606b7c",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"autoexposure_off": {
+			"feedbacks": [],
+			"name": "Auto Exposure Off",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setAutoExposure",
+							"options": {
+								"autoExposure": "0"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:56590c6f761e4c44",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"autoexposure_on": {
+			"feedbacks": [],
+			"name": "Auto Exposure On",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setAutoExposure",
+							"options": {
+								"autoExposure": "1"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:8cc43ae9dca28689",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"autofocus_off": {
+			"feedbacks": [],
+			"name": "Auto Focus Off",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setAutoFocus",
+							"options": {
+								"autoFocus": "0"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:d348cbaea8e01642",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"autofocus_on": {
+			"feedbacks": [],
+			"name": "Auto Focus On",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setAutoFocus",
+							"options": {
+								"autoFocus": "1"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:f91b863ebd498e54",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"color_temp_5000": {
+			"feedbacks": [],
+			"name": "Color Temp 5000K",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setColorTemperature",
+							"options": {
+								"colorTemperature": 5000
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:f70e543e37b19206",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"gimbal_down": {
+			"feedbacks": [],
+			"name": "Move Gimbal Down",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "moveGimbalDown",
+							"options": {
+								"moveSpeed": 100
+							}
+						}
+					],
+					"up": [
+						{
+							"actionId": "stopGimbalDown",
+							"options": {}
+						}
+					]
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:56fe921ee2391ff3",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"gimbal_left": {
+			"feedbacks": [],
+			"name": "Move Gimbal Left",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "moveGimbalLeft",
+							"options": {
+								"moveSpeed": 100
+							}
+						}
+					],
+					"up": [
+						{
+							"actionId": "stopGimbalLeft",
+							"options": {}
+						}
+					]
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:5ec2259663c1a4e4",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"gimbal_motor_degree": {
+			"feedbacks": [],
+			"name": "Set Gimbal Position",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setGimMotorDegree",
+							"options": {
+								"pan": 0,
+								"pitch": 0,
+								"speed": 30
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:f111272c73bee3da",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"gimbal_reset": {
+			"feedbacks": [],
+			"name": "Reset Gimbal",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "resetGimbal",
+							"options": {}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:a6e2ccccceeb91c1",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"gimbal_right": {
+			"feedbacks": [],
+			"name": "Move Gimbal Right",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "moveGimbalRight",
+							"options": {
+								"moveSpeed": 100
+							}
+						}
+					],
+					"up": [
+						{
+							"actionId": "stopGimbalRight",
+							"options": {}
+						}
+					]
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:a4a1a59c6d2b481a",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"gimbal_up": {
+			"feedbacks": [],
+			"name": "Move Gimbal Up",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "moveGimbalUp",
+							"options": {
+								"moveSpeed": 100
+							}
+						}
+					],
+					"up": [
+						{
+							"actionId": "stopGimbalUp",
+							"options": {}
+						}
+					]
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:727effb045ea37d7",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"manual_focus_50": {
+			"feedbacks": [],
+			"name": "Manual Focus 50",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setManualFocus",
+							"options": {
+								"focusValue": 50
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:ff8ef0438a085361",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"mirror_mode_off": {
+			"feedbacks": [],
+			"name": "Mirror Mode Off",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setMirror",
+							"options": {
+								"mirrorMode": "0"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:99a6ca1d368559d4",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"mirror_mode_on": {
+			"feedbacks": [],
+			"name": "Mirror Mode On",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setMirror",
+							"options": {
+								"mirrorMode": "1"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:f9c5e66299a5f532",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_ai_multi": {
+			"feedbacks": [],
+			"name": "AI Multi-person",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_setAIMode",
+							"options": {
+								"aiMode": "1",
+								"autoZoomModeMulti": "0",
+								"autoZoomModeSingle": "0"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:dbdb8cc0a1badedd",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_ai_single": {
+			"feedbacks": [],
+			"name": "AI Single-person",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_setAIMode",
+							"options": {
+								"aiMode": "0",
+								"autoZoomModeMulti": "0",
+								"autoZoomModeSingle": "0"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:4690eb0fe96f0dc3",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_only_me_off": {
+			"feedbacks": [],
+			"name": "Only Me Off",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_setOnlyMe",
+							"options": {
+								"onlyMe": "0"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:6f99687dc4deeb20",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_only_me_on": {
+			"feedbacks": [],
+			"name": "Only Me On",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_setOnlyMe",
+							"options": {
+								"onlyMe": "1"
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:281575180e149ac6",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_preset_1": {
+			"feedbacks": [],
+			"name": "Preset 1",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_triggerPreset",
+							"options": {
+								"presetNumber": 1
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:442665927df81050",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_preset_2": {
+			"feedbacks": [],
+			"name": "Preset 2",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_triggerPreset",
+							"options": {
+								"presetNumber": 2
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:dba35b76a2a88d32",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_preset_3": {
+			"feedbacks": [],
+			"name": "Preset 3",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_triggerPreset",
+							"options": {
+								"presetNumber": 3
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:11bc487c5d12c104",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_snapshot": {
+			"feedbacks": [],
+			"name": "Take Snapshot",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_takeSnapshot",
+							"options": {}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:9dc34c253b89625d",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_start_recording": {
+			"feedbacks": [],
+			"name": "Start Recording",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_startRecording",
+							"options": {}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:cccf11931f92e06c",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_stop_recording": {
+			"feedbacks": [],
+			"name": "Stop Recording",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_stopRecording",
+							"options": {}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:f30f3bf45bc208df",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_tracking_fast": {
+			"feedbacks": [],
+			"name": "Tracking Fast",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_setTrackingSpeed",
+							"options": {
+								"mode": "3",
+								"panMode": "0",
+								"panSpeed": 1,
+								"pitchMode": "0",
+								"pitchSpeed": 1
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:6c1a3d13dd61da13",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"tail2_tracking_slow": {
+			"feedbacks": [],
+			"name": "Tracking Slow",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "OBSBOT_TAIL_2_setTrackingSpeed",
+							"options": {
+								"mode": "2",
+								"panMode": "0",
+								"panSpeed": 1,
+								"pitchMode": "0",
+								"pitchSpeed": 1
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:f67715445cd79889",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"zoom_0": {
+			"feedbacks": [],
+			"name": "Zoom 0%",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setZoom",
+							"options": {
+								"zoom": 0
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:9e8fe4bac294ae25",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"zoom_100": {
+			"feedbacks": [],
+			"name": "Zoom 100%",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setZoom",
+							"options": {
+								"zoom": 100
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:36a94d1a19a49286",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"zoom_50": {
+			"feedbacks": [],
+			"name": "Zoom 50%",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setZoom",
+							"options": {
+								"zoom": 50
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:f642d3ea1b63b40d",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"zoom_max": {
+			"feedbacks": [],
+			"name": "Zoom Max",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setZoomMax",
+							"options": {
+								"zoomLevel": 100
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:a8c99c66ee0fabf8",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"zoom_min": {
+			"feedbacks": [],
+			"name": "Zoom Min",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setZoomMin",
+							"options": {
+								"zoomLevel": 0
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:ad5ccc497f7b99e6",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		},
+		"zoom_speed": {
+			"feedbacks": [],
+			"name": "Zoom Speed",
+			"steps": [
+				{
+					"down": [
+						{
+							"actionId": "setZoomSpeed",
+							"options": {
+								"zoomSpeed": 5,
+								"zoomValue": 50
+							}
+						}
+					],
+					"up": []
+				}
+			],
+			"style": {
+				"bgcolor": 0,
+				"color": 16777215,
+				"png64": "sha256:e6b41343742cb480",
+				"pngalignment": "center:center",
+				"show_topbar": false,
+				"size": "14",
+				"text": ""
+			},
+			"type": "simple"
+		}
+	},
+	"structure": [
+		{
+			"definitions": [
+				"zoom_0",
+				"zoom_50",
+				"zoom_100",
+				"zoom_speed",
+				"zoom_max",
+				"zoom_min"
+			],
+			"id": "zoom",
+			"name": "Zoom"
+		},
+		{
+			"definitions": [
+				"gimbal_up",
+				"gimbal_down",
+				"gimbal_left",
+				"gimbal_right",
+				"gimbal_motor_degree",
+				"gimbal_reset"
+			],
+			"id": "gimbal",
+			"name": "Gimbal"
+		},
+		{
+			"definitions": [
+				"mirror_mode_on",
+				"mirror_mode_off"
+			],
+			"id": "other",
+			"name": "Other"
+		},
+		{
+			"definitions": [
+				"autofocus_on",
+				"autofocus_off",
+				"autoexposure_on",
+				"autoexposure_off",
+				"auto_wb_on",
+				"auto_wb_off",
+				"manual_focus_50",
+				"color_temp_5000"
+			],
+			"id": "image",
+			"name": "Image"
+		},
+		{
+			"definitions": [
+				"tail2_ai_single",
+				"tail2_ai_multi",
+				"tail2_tracking_slow",
+				"tail2_tracking_fast",
+				"tail2_only_me_on",
+				"tail2_only_me_off",
+				"tail2_start_recording",
+				"tail2_stop_recording",
+				"tail2_snapshot",
+				"tail2_preset_1",
+				"tail2_preset_2",
+				"tail2_preset_3"
+			],
+			"id": "tail_2",
+			"name": "Tail 2"
+		}
+	],
+	"variables": {
+		"multipleDevices": {
+			"device1_connected": {
+				"name": "Device 1 Connected"
+			},
+			"device1_name": {
+				"name": "Device 1 Name"
+			},
+			"device2_connected": {
+				"name": "Device 2 Connected"
+			},
+			"device2_name": {
+				"name": "Device 2 Name"
+			},
+			"device3_connected": {
+				"name": "Device 3 Connected"
+			},
+			"device3_name": {
+				"name": "Device 3 Name"
+			},
+			"device4_connected": {
+				"name": "Device 4 Connected"
+			},
+			"device4_name": {
+				"name": "Device 4 Name"
+			},
+			"gimbal_pitch": {
+				"name": "Gimbal Pitch"
+			},
+			"gimbal_yaw": {
+				"name": "Gimbal Yaw"
+			},
+			"preset_count": {
+				"name": "Saved Preset Position Count"
+			},
+			"preset1_exists": {
+				"name": "Preset Position 1 Saved"
+			},
+			"preset1_name": {
+				"name": "Preset Position 1 Name"
+			},
+			"preset2_exists": {
+				"name": "Preset Position 2 Saved"
+			},
+			"preset2_name": {
+				"name": "Preset Position 2 Name"
+			},
+			"preset3_exists": {
+				"name": "Preset Position 3 Saved"
+			},
+			"preset3_name": {
+				"name": "Preset Position 3 Name"
+			},
+			"selected_connected": {
+				"name": "Selected Device Connected"
+			},
+			"selected_device": {
+				"name": "Selected Device Number (1 based)"
+			},
+			"selected_index": {
+				"name": "Selected Device Index (0 based)"
+			},
+			"selected_name": {
+				"name": "Selected Device Name"
+			},
+			"selected_state": {
+				"name": "Selected Device Run State"
+			}
+		},
+		"noDevices": {
+			"gimbal_pitch": {
+				"name": "Gimbal Pitch"
+			},
+			"gimbal_yaw": {
+				"name": "Gimbal Yaw"
+			},
+			"preset_count": {
+				"name": "Saved Preset Position Count"
+			},
+			"preset1_exists": {
+				"name": "Preset Position 1 Saved"
+			},
+			"preset1_name": {
+				"name": "Preset Position 1 Name"
+			},
+			"preset2_exists": {
+				"name": "Preset Position 2 Saved"
+			},
+			"preset2_name": {
+				"name": "Preset Position 2 Name"
+			},
+			"preset3_exists": {
+				"name": "Preset Position 3 Saved"
+			},
+			"preset3_name": {
+				"name": "Preset Position 3 Name"
+			}
+		},
+		"oneDevice": {
+			"device_connected": {
+				"name": "Device Connected"
+			},
+			"device_name": {
+				"name": "Device Name"
+			},
+			"gimbal_pitch": {
+				"name": "Gimbal Pitch"
+			},
+			"gimbal_yaw": {
+				"name": "Gimbal Yaw"
+			},
+			"preset_count": {
+				"name": "Saved Preset Position Count"
+			},
+			"preset1_exists": {
+				"name": "Preset Position 1 Saved"
+			},
+			"preset1_name": {
+				"name": "Preset Position 1 Name"
+			},
+			"preset2_exists": {
+				"name": "Preset Position 2 Saved"
+			},
+			"preset2_name": {
+				"name": "Preset Position 2 Name"
+			},
+			"preset3_exists": {
+				"name": "Preset Position 3 Saved"
+			},
+			"preset3_name": {
+				"name": "Preset Position 3 Name"
+			}
+		}
+	}
+}
