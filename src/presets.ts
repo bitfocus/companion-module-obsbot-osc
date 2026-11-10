@@ -5,7 +5,7 @@ import {
 	type CompanionSimplePresetDefinition,
 } from '@companion-module/base'
 import { OBSBOT_ICONS as Icons } from './icons.js'
-import { Tail2, Tail2ADV, type Tail2Variant } from './actions/tail2.js'
+import { Tail2, Tail2ADV, TailAir2, type AiCameraVariant } from './actions/aiCamera.js'
 import type OBSBOTInstance from './main.js'
 import type { OBSBOTTypes } from './main.js'
 import { findModel, type Model } from './models.js'
@@ -249,7 +249,14 @@ function tinySection(): Section {
 	}
 }
 
-function tail2Section({ idPrefix, namePrefix, onlyMe }: Tail2Variant, id: string, presetPrefix: string): Section {
+const Tail2TrackingSpeeds = { slow: '2', fast: '3' }
+
+function aiCameraSection(
+	{ idPrefix, namePrefix, onlyMeAddress }: AiCameraVariant,
+	id: string,
+	presetPrefix: string,
+	trackingSpeeds: { slow: string; fast: string },
+): Section {
 	const aiMode = (aiMode: string) =>
 		act(`${idPrefix}_setAIMode`, { aiMode, autoZoomModeSingle: '0', autoZoomModeMulti: '0' })
 	const tracking = (mode: string) =>
@@ -261,9 +268,17 @@ function tail2Section({ idPrefix, namePrefix, onlyMe }: Tail2Variant, id: string
 		presets: {
 			[`${presetPrefix}_ai_single`]: iconPreset('AI Single-person', Icons.AI_SINGLE, aiMode('0')),
 			[`${presetPrefix}_ai_multi`]: iconPreset('AI Multi-person', Icons.AI_MULTI, aiMode('1')),
-			[`${presetPrefix}_tracking_slow`]: iconPreset('Tracking Slow', Icons.TRACKING_SLOW, tracking('2')),
-			[`${presetPrefix}_tracking_fast`]: iconPreset('Tracking Fast', Icons.TRACKING_FAST, tracking('3')),
-			...(onlyMe
+			[`${presetPrefix}_tracking_slow`]: iconPreset(
+				'Tracking Slow',
+				Icons.TRACKING_SLOW,
+				tracking(trackingSpeeds.slow),
+			),
+			[`${presetPrefix}_tracking_fast`]: iconPreset(
+				'Tracking Fast',
+				Icons.TRACKING_FAST,
+				tracking(trackingSpeeds.fast),
+			),
+			...(onlyMeAddress
 				? {
 						[`${presetPrefix}_only_me_on`]: iconPreset(
 							'Only Me On',
@@ -352,9 +367,11 @@ function modelSections(model: Model): Section[] {
 		case 'tiny':
 			return [tinySection()]
 		case 'tail2':
-			return [tail2Section(Tail2, 'tail_2', 'tail2')]
+			return [aiCameraSection(Tail2, 'tail_2', 'tail2', Tail2TrackingSpeeds)]
 		case 'tail2Adv':
-			return [tail2Section(Tail2ADV, 'tail_2_adv', 'tail2_adv')]
+			return [aiCameraSection(Tail2ADV, 'tail_2_adv', 'tail2_adv', Tail2TrackingSpeeds)]
+		case 'tailAir2':
+			return [aiCameraSection(TailAir2, 'tail_air_2', 'tailair2', { slow: '2', fast: '4' })]
 		case 'tailAir':
 			return [tailAirSection()]
 		case 'centerTail':

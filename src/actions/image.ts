@@ -7,6 +7,7 @@ const ExposureCompensateValues = [-30, -27, -23, -20, -17, -13, -10, -7, -3, 0, 
 
 // The mixed types are as saved in existing configs
 const ShutterSpeeds: (string | number)[] = [
+	'8000',
 	'6400',
 	'5000',
 	'3200',
@@ -43,7 +44,7 @@ const ShutterSpeeds: (string | number)[] = [
 	2.5,
 ]
 
-const IsoValues = ['100', '200', '400', '800', '1600', '3200', '6400']
+const IsoValues = ['100', '200', '400', '800', '1600', '3200', '6400', '12800', '25600']
 
 const IrisValues = [170, 180, 200, 240, 280, 400, 560, 700]
 
@@ -145,6 +146,8 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		logName: 'exposure compensate value',
 	})
 
+	const { fastest, slowest } = model.shutterSpeeds
+
 	actions.setShutterSpeed = valueAction(self, {
 		name: 'Image | Set Shutter Speed',
 		description: 'Set the shutter speed of the camera',
@@ -152,7 +155,10 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		field: dropdownField(
 			'shutterSpeedValue',
 			'Shutter Speed Value',
-			ShutterSpeeds.map((id): DropdownChoice => ({ id, label: `1/${id}` })),
+			ShutterSpeeds.filter((id) => Number(id) <= fastest && Number(id) >= slowest).map((id): DropdownChoice => ({
+				id,
+				label: `1/${id}`,
+			})),
 			{ default: '100' },
 		),
 		logName: 'shutter speed',
@@ -165,7 +171,7 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		field: dropdownField(
 			'isoValue',
 			'ISO Value',
-			IsoValues.map((id) => ({ id, label: id })),
+			IsoValues.filter((id) => Number(id) <= model.isoMax).map((id) => ({ id, label: id })),
 			{ default: '100' },
 		),
 		logName: 'ISO',

@@ -2,7 +2,7 @@ import dns from 'node:dns/promises'
 import net from 'node:net'
 import { InstanceStatus } from '@companion-module/base'
 import type { OSCMessage } from 'osc'
-import { BuildMessage } from './api.js'
+import { BuildMessage, NormalizeReplyAddress } from './api.js'
 import type { ModuleConfig } from './config.js'
 import type OBSBOTInstance from './main.js'
 import { OSCTCPPort } from './tcp.js'
@@ -178,10 +178,12 @@ export class Connection {
 		this.#setStatus(InstanceStatus.Ok)
 
 		try {
-			if (message.address === ConnectedReplyAddress) {
+			const address = NormalizeReplyAddress(config.model, message.address)
+
+			if (address === ConnectedReplyAddress) {
 				this.#onConnectedReply()
 			} else {
-				this.#host.handleReply(message.address, message.args)
+				this.#host.handleReply(address, message.args)
 			}
 		} catch (err) {
 			this.#host.log('error', `Failed to process ${message.address}: ${errorMessage(err)}`)

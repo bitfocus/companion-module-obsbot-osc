@@ -31,6 +31,8 @@ describe('parseReply', () => {
 		expect(parseReply(GIMBAL, [-10, 29], 'OBSBOT_TAIL_2_ADV')).toEqual({ kind: 'gimbal', pitch: -10, yaw: 29 })
 		expect(parseReply(GIMBAL, [10, 20], 'OBSBOT_CENTER_TINY')).toEqual({ kind: 'gimbal', pitch: 20, yaw: 10 })
 		expect(parseReply(GIMBAL, [0, 10, 20], 'OBSBOT_TAIL_AIR')).toEqual({ kind: 'gimbal', pitch: 10, yaw: 20 })
+		// The Tail Air 2 spec's [roll, pitch, yaw]
+		expect(parseReply(GIMBAL, [0, -80, 150], 'OBSBOT_TAIL_AIR_2')).toEqual({ kind: 'gimbal', pitch: -80, yaw: 150 })
 	})
 
 	it('only keeps the first device on hardware', () => {

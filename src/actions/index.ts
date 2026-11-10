@@ -7,7 +7,7 @@ import type { Actions } from './helpers.js'
 import { addImageActions } from './image.js'
 import { addMeetActions } from './meet.js'
 import { addQueryActions } from './queries.js'
-import { addTail2Actions, Tail2, Tail2ADV } from './tail2.js'
+import { addAiCameraActions, Tail2, Tail2ADV, TailAir2 } from './aiCamera.js'
 import { addTailAirActions } from './tailAir.js'
 import { addTinyActions } from './tiny.js'
 import { addZoomActions } from './zoom.js'
@@ -32,10 +32,13 @@ export function UpdateActions(self: OBSBOTInstance): void {
 
 	switch (model.family) {
 		case 'tail2':
-			addTail2Actions(self, actions, Tail2)
+			addAiCameraActions(self, actions, Tail2)
 			break
 		case 'tail2Adv':
-			addTail2Actions(self, actions, Tail2ADV)
+			addAiCameraActions(self, actions, Tail2ADV)
+			break
+		case 'tailAir2':
+			addAiCameraActions(self, actions, TailAir2)
 			break
 		case 'tailAir':
 			addTailAirActions(self, actions)

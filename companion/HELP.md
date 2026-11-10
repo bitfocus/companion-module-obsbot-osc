@@ -2,9 +2,9 @@
 
 This module will communicate with OBSBOT products over OSC. It requires Companion 5.0 or newer.
 
-The OBSBOT OSC standard protocol is based on the touchOSC protocol. It can be applied to the OBSBOT Center App (software), OBSBOT Tail 2 (hardware), OBSBOT Tail 2 ADV (hardware), and OBSBOT Tail Air (hardware). The OSC application on OBSBOT Center is compatible with the OBSBOT Tiny series (Tiny, Tiny 4K, Tiny 2, Tiny 2 Lite, Tiny 3, Tiny 3 Lite, Tiny SE), OBSBOT Meet series (Meet, Meet 4K, Meet 2, Meet SE), and OBSBOT Tail series (Tail Air, Tail 2). However, when using the OSC protocol with OBSBOT Center, the software must be running and have the OSC server enabled.
+The OBSBOT OSC standard protocol is based on the touchOSC protocol. It can be applied to the OBSBOT Center App (software), OBSBOT Tail 2 (hardware), OBSBOT Tail 2 ADV (hardware), OBSBOT Tail Air (hardware), and OBSBOT Tail Air 2 (hardware). The OSC application on OBSBOT Center is compatible with the OBSBOT Tiny series (Tiny, Tiny 4K, Tiny 2, Tiny 2 Lite, Tiny 3, Tiny 3 Lite, Tiny SE), OBSBOT Meet series (Meet, Meet 4K, Meet 2, Meet SE), and OBSBOT Tail series (Tail Air, Tail 2). However, when using the OSC protocol with OBSBOT Center, the software must be running and have the OSC server enabled.
 
-Additionally, the OSC can be independently applied to OBSBOT Tail 2, OBSBOT Tail 2 ADV, and OBSBOT Tail Air.
+Additionally, the OSC can be independently applied to OBSBOT Tail 2, OBSBOT Tail 2 ADV, OBSBOT Tail Air, and OBSBOT Tail Air 2.
 
 Please file any issues you have with the connection on the [Github repo here](https://github.com/bitfocus/companion-module-obsbot-osc/issues)
 
@@ -12,12 +12,12 @@ Please file any issues you have with the connection on the [Github repo here](ht
 
 There are two ways to connect to your OBSBOT camera:
 
-1. Connecting directly via IP to the Tail 2, Tail 2 ADV or Tail Air
+1. Connecting directly via IP to the Tail 2, Tail 2 ADV, Tail Air or Tail Air 2
 2. Connecting via OSC to the OBSBOT Center app (Tail 2, Tail Air, Tiny, Tiny 4K, Tiny 2, Tiny 2 Lite, Tiny 3, Tiny 3 Lite, Tiny SE, Meet, Meet 4K, Meet SE)
 
 ### Direct connection
 
-In order to connect directly to the Tail 2, Tail 2 ADV or Tail Air, find the IP of the device in the OBSBOT Center app and enter it into the Device IP Address field in the configuration for the OBSBOT connection. You can leave the ports at the default.
+In order to connect directly to the Tail 2, Tail 2 ADV, Tail Air or Tail Air 2, find the IP of the device in the OBSBOT Center app and enter it into the Device IP Address field in the configuration for the OBSBOT connection. You can leave the ports at the default.
 
 ### OBSBOT Center Connection
 
@@ -44,7 +44,7 @@ Actions and presets are grouped by name in the Companion interface, and only tho
 - **Zoom**, **Gimbal**, **Image** and **Other**: available on every model, though auto focus depends on the model, and iris is Tail 2 ADV only.
 - **Query**: ask the device for its current state on demand.
 - **Center App**: device selection, sleep and wake, view, PC recording and snapshots, when connected through the Center app.
-- **Model specific**: AI modes, tracking, recording, snapshots and preset positions for Tail 2, Tail 2 ADV, Tail Air, the Center app's Tail series and Tiny series, and virtual background and auto framing for the Meet series.
+- **Model specific**: AI modes, tracking, recording, snapshots and preset positions for Tail 2, Tail 2 ADV, Tail Air, Tail Air 2, the Center app's Tail series and Tiny series, and virtual background and auto framing for the Meet series.
 
 Number fields can also be set from a variable or expression using the expression toggle on the field. Values outside the allowed range are clamped to it.
 

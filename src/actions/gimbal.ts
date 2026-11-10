@@ -5,7 +5,7 @@ import { commandAction, intArgs, numberField, toInt, type Actions } from './help
 const Directions = ['Up', 'Down', 'Left', 'Right'] as const
 
 export function addGimbalActions(self: OBSBOTInstance, actions: Actions, model: Model): void {
-	const { pan, pitch } = model.gimbalLimits
+	const { pan, pitchMin, pitchMax } = model.gimbalLimits
 
 	actions.resetGimbal = commandAction(self, {
 		name: 'Gimbal | Reset Position',
@@ -45,7 +45,7 @@ export function addGimbalActions(self: OBSBOTInstance, actions: Actions, model: 
 		options: [
 			numberField('speed', 'Speed', { default: 0, min: 0, max: 90 }),
 			numberField('pan', 'Pan', { default: 0, min: -pan, max: pan }),
-			numberField('pitch', 'Pitch', { default: 0, min: -pitch, max: pitch }),
+			numberField('pitch', 'Pitch', { default: 0, min: pitchMin, max: pitchMax }),
 		],
 		callback: ({ options }) => {
 			self.log('info', `Setting gimbal motor degree to ${options.pan} ${options.pitch}.`)
@@ -57,16 +57,16 @@ export function addGimbalActions(self: OBSBOTInstance, actions: Actions, model: 
 	}
 
 	if (model.isCenterApp) {
-		const preciseField = (id: string, label: string, limit: number, min = -limit) =>
-			numberField(id, label, { default: 0, min, max: limit, step: 0.1, range: false })
+		const preciseField = (id: string, label: string, min: number, max: number) =>
+			numberField(id, label, { default: 0, min, max, step: 0.1, range: false })
 
 		actions.setGimMotorDegreeEx = {
 			name: 'Gimbal | Set Motor Degree (Precise)',
 			description: 'Set the motor degrees of the gimbal using fractional degrees',
 			options: [
-				preciseField('speed', 'Speed', 90, 0),
-				preciseField('pan', 'Pan', pan),
-				preciseField('pitch', 'Pitch', pitch),
+				preciseField('speed', 'Speed', 0, 90),
+				preciseField('pan', 'Pan', -pan, pan),
+				preciseField('pitch', 'Pitch', pitchMin, pitchMax),
 			],
 			callback: ({ options }) => {
 				self.log('info', `Setting gimbal motor degree to ${options.pan} ${options.pitch}.`)

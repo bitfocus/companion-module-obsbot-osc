@@ -115,15 +115,28 @@ const AddressesWithoutDeviceId: OSCAddress[] = [
 	'/OBSBOT/WebCam/General/PCSnapshot',
 ]
 
+const WebCamGeneralPrefix = '/OBSBOT/WebCam/General/'
+
 export function BuildMessage(
 	{ model, device }: Pick<ModuleConfig, 'model' | 'device'>,
 	address: OSCAddress,
 	args: OSCArgument[],
 ): OSCOutgoingMessage {
-	if (findModel(model)?.isCenterApp && !AddressesWithoutDeviceId.includes(address)) {
+	const capabilities = findModel(model)
+
+	if (capabilities?.isCenterApp && !AddressesWithoutDeviceId.includes(address)) {
 		// Minus 1 because device ID is 1-based in OBSBOT Center and 0-based with OSC
 		return { address, args: [{ type: 'i', value: device - 1 }, ...args] }
 	}
 
-	return { address, args }
+	return { address: replacePrefix(address, WebCamGeneralPrefix, capabilities?.generalPrefix), args }
+}
+
+/** Maps a reply from a model's own General prefix back to the WebCam one the module matches on */
+export function NormalizeReplyAddress(model: ModuleConfig['model'], address: string): string {
+	return replacePrefix(address, findModel(model)?.generalPrefix, WebCamGeneralPrefix)
+}
+
+function replacePrefix(address: string, from: string | undefined, to: string | undefined): string {
+	return from && to && address.startsWith(from) ? to + address.slice(from.length) : address
 }
