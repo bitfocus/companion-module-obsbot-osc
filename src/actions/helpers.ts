@@ -101,7 +101,8 @@ export function triggerPresetAction(self: OBSBOTInstance, namePrefix: string, ad
 	}
 }
 
-type CameraAddressPrefix = '/OBSBOT/Camera/Tail2' | '/OBSBOT/Camera/TailAir' | '/OBSBOT/Camera/Tail'
+type CameraAddressPrefix =
+	'/OBSBOT/Camera/Tail2' | '/OBSBOT/Camera/Tail2ADV' | '/OBSBOT/Camera/TailAir' | '/OBSBOT/Camera/Tail'
 
 /** Recording, snapshot and preset actions, which each Tail variant has at its own address */
 export function addCameraControls(

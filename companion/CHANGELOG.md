@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- OBSBOT Tail 2 ADV support, with its AI, tracking, recording, snapshot and preset position actions, auto focus single and continuous modes, and a new **Image | Set Iris** action.
 - Variables and expressions can be used in action and feedback fields. Number values outside a field's range are clamped to it.
 
 ### Changed

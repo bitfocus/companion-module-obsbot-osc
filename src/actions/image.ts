@@ -45,6 +45,15 @@ const ShutterSpeeds: (string | number)[] = [
 
 const IsoValues = ['100', '200', '400', '800', '1600', '3200', '6400']
 
+const IrisValues = [170, 180, 200, 240, 280, 400, 560, 700]
+
+const AutoFocusModes: DropdownChoice[] = [
+	{ id: '0', label: 'Manual' },
+	// The Tail 2 ADV spec has 1 and 2 the other way round, but the device does this
+	{ id: '1', label: 'Auto Focus Continuous (AF-C)' },
+	{ id: '2', label: 'Auto Focus Single (AF-S)' },
+]
+
 export function addImageActions(self: OBSBOTInstance, actions: Actions, model: Model): void {
 	actions.setMirror = valueAction(self, {
 		name: 'Other | Set Mirror Mode',
@@ -57,7 +66,15 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		logName: 'mirror mode',
 	})
 
-	if (model.autoFocus) {
+	if (model.continuousAutoFocus) {
+		actions.setAutoFocus = valueAction(self, {
+			name: 'Image | Set Auto Focus Mode',
+			description: 'Set the auto focus mode of the camera',
+			address: '/OBSBOT/WebCam/General/SetAutoFocus',
+			field: dropdownField('autoFocus', 'Auto Focus', AutoFocusModes),
+			logName: 'auto focus',
+		})
+	} else if (model.autoFocus) {
 		actions.setAutoFocus = valueAction(self, {
 			name: 'Image | Set Auto Focus On/Off',
 			description: 'Set the auto focus of the camera',
@@ -169,6 +186,21 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		field: numberField('colorTemperature', 'Color Temperature', { default: 5000, min: 2000, max: 10000 }),
 		logName: 'color temperature',
 	})
+
+	if (model.iris) {
+		actions.setIris = valueAction(self, {
+			name: 'Image | Set Iris',
+			description: 'Set the iris (aperture) of the camera. Only takes effect while auto exposure is off.',
+			address: '/OBSBOT/WebCam/General/SetIris',
+			field: dropdownField(
+				'irisValue',
+				'Iris',
+				IrisValues.map((value) => ({ id: String(value), label: `F${(value / 100).toFixed(1)}` })),
+				{ default: '170' },
+			),
+			logName: 'iris',
+		})
+	}
 
 	// At this time these image controls are only Tiny 3 / Tiny 3 Lite capable.
 	if (model.family === 'tiny') {

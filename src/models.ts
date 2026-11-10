@@ -1,16 +1,19 @@
 /** Which set of model specific actions and presets a model gets */
-export type ModelFamily = 'tail2' | 'tailAir' | 'center' | 'tiny' | 'centerTail' | 'meet'
+export type ModelFamily = 'tail2' | 'tail2Adv' | 'tailAir' | 'center' | 'tiny' | 'centerTail' | 'meet'
 
 interface ModelCapabilities {
 	family: ModelFamily
 	label: string
 	/** Commands go through the OBSBOT Center App, and most need a leading device ID */
 	isCenterApp: boolean
-	/** Tail 2 hardware zooms on command, but always reports zoom 0 and FOV -1 */
+	/** Tail 2 and Tail 2 ADV hardware zoom on command, but always report zoom 0 and FOV -1 */
 	reportsZoom: boolean
 	/** The device reports which preset positions are saved */
 	hasPositionPresets: boolean
 	autoFocus: boolean
+	/** Auto focus has single and continuous modes, rather than just on and off */
+	continuousAutoFocus: boolean
+	iris: boolean
 	focusMode: boolean
 	zoomSpeedMax: number
 	gimbalLimits: { pan: number; pitch: number }
@@ -36,11 +39,30 @@ export const Models = [
 		reportsZoom: false,
 		hasPositionPresets: true,
 		autoFocus: true,
+		continuousAutoFocus: false,
+		iris: false,
 		focusMode: false,
 		zoomSpeedMax: 10,
 		gimbalLimits: { pan: 159, pitch: 62 },
 		gimbalReplyOrder: 'pitchYaw',
 		// Tail 2 hardware ignores every Get* query, but answers each Connected with its full state
+		pollQueries: ['/OBSBOT/WebCam/General/Connected'],
+	},
+	{
+		id: 'OBSBOT_TAIL_2_ADV',
+		label: 'OBSBOT Tail 2 ADV',
+		family: 'tail2Adv',
+		isCenterApp: false,
+		reportsZoom: false,
+		hasPositionPresets: true,
+		autoFocus: true,
+		continuousAutoFocus: true,
+		iris: true,
+		focusMode: false,
+		zoomSpeedMax: 10,
+		gimbalLimits: { pan: 159, pitch: 62 },
+		gimbalReplyOrder: 'pitchYaw',
+		// Like Tail 2, it ignores every Get* query but answers each Connected with its full state
 		pollQueries: ['/OBSBOT/WebCam/General/Connected'],
 	},
 	{
@@ -51,6 +73,8 @@ export const Models = [
 		reportsZoom: true,
 		hasPositionPresets: false,
 		autoFocus: true,
+		continuousAutoFocus: false,
+		iris: false,
 		focusMode: false,
 		zoomSpeedMax: 11,
 		gimbalLimits: DefaultGimbalLimits,
@@ -65,6 +89,8 @@ export const Models = [
 		reportsZoom: true,
 		hasPositionPresets: false,
 		autoFocus: true,
+		continuousAutoFocus: false,
+		iris: false,
 		focusMode: true,
 		zoomSpeedMax: 11,
 		gimbalLimits: DefaultGimbalLimits,
@@ -79,6 +105,8 @@ export const Models = [
 		reportsZoom: true,
 		hasPositionPresets: true,
 		autoFocus: true,
+		continuousAutoFocus: false,
+		iris: false,
 		focusMode: false,
 		zoomSpeedMax: 11,
 		gimbalLimits: DefaultGimbalLimits,
@@ -97,6 +125,8 @@ export const Models = [
 		reportsZoom: true,
 		hasPositionPresets: false,
 		autoFocus: false,
+		continuousAutoFocus: false,
+		iris: false,
 		focusMode: true,
 		zoomSpeedMax: 11,
 		gimbalLimits: DefaultGimbalLimits,
@@ -111,6 +141,8 @@ export const Models = [
 		reportsZoom: true,
 		hasPositionPresets: false,
 		autoFocus: false,
+		continuousAutoFocus: false,
+		iris: false,
 		focusMode: true,
 		zoomSpeedMax: 11,
 		gimbalLimits: DefaultGimbalLimits,
@@ -125,6 +157,8 @@ export const Models = [
 		reportsZoom: true,
 		hasPositionPresets: true,
 		autoFocus: true,
+		continuousAutoFocus: false,
+		iris: false,
 		focusMode: false,
 		zoomSpeedMax: 11,
 		gimbalLimits: DefaultGimbalLimits,

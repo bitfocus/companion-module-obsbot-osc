@@ -27,9 +27,40 @@ const AxisModes = [
 
 const CustomSpeedVisible = '$(options:mode) === "5"'
 
-export function addTail2Actions(self: OBSBOTInstance, actions: Actions): void {
-	actions.OBSBOT_TAIL_2_setAIMode = {
-		name: 'Tail 2 | Set AI Mode and Auto Zoom Mode',
+/** Tail 2 and Tail 2 ADV share their AI commands, at their own address */
+export interface Tail2Variant {
+	idPrefix: string
+	namePrefix: string
+	address: '/OBSBOT/Camera/Tail2' | '/OBSBOT/Camera/Tail2ADV'
+	onlyMe: boolean
+	/** Tail 2 ADV ignores a tracking speed sent without the four custom values */
+	alwaysSendCustomSpeeds: boolean
+}
+
+// What Tail 2 ADV was verified to accept alongside a preset speed: both axes manual, at speed 1
+const PlaceholderCustomSpeeds = [0, 1, 0, 1]
+
+export const Tail2: Tail2Variant = {
+	idPrefix: 'OBSBOT_TAIL_2',
+	namePrefix: 'Tail 2',
+	address: '/OBSBOT/Camera/Tail2',
+	onlyMe: true,
+	alwaysSendCustomSpeeds: false,
+}
+
+export const Tail2ADV: Tail2Variant = {
+	idPrefix: 'OBSBOT_TAIL_2_ADV',
+	namePrefix: 'Tail 2 ADV',
+	address: '/OBSBOT/Camera/Tail2ADV',
+	onlyMe: false,
+	alwaysSendCustomSpeeds: true,
+}
+
+export function addTail2Actions(self: OBSBOTInstance, actions: Actions, variant: Tail2Variant): void {
+	const { idPrefix, namePrefix, address } = variant
+
+	actions[`${idPrefix}_setAIMode`] = {
+		name: `${namePrefix} | Set AI Mode and Auto Zoom Mode`,
 		description: 'Set the AI mode and auto zoom mode of the camera',
 		options: [
 			dropdownField(
@@ -53,23 +84,23 @@ export function addTail2Actions(self: OBSBOTInstance, actions: Actions): void {
 		],
 		callback: ({ options }) => {
 			self.log('info', `Setting AI mode to ${options.aiMode}.`)
-			self.sendCommand('/OBSBOT/Camera/Tail2/SetAiMode', [intArg(toInt(options.aiMode))])
+			self.sendCommand(`${address}/SetAiMode`, [intArg(toInt(options.aiMode))])
 
 			const autoZoomMode = options.aiMode === '0' ? options.autoZoomModeSingle : options.autoZoomModeMulti
-			self.sendCommand('/OBSBOT/Camera/Tail2/SetAutoZoom', [intArg(toInt(autoZoomMode))])
+			self.sendCommand(`${address}/SetAutoZoom`, [intArg(toInt(autoZoomMode))])
 		},
 	}
 
-	actions.OBSBOT_TAIL_2_aiModeEnable = valueAction(self, {
-		name: 'Tail 2 | AI Mode On/Off',
+	actions[`${idPrefix}_aiModeEnable`] = valueAction(self, {
+		name: `${namePrefix} | AI Mode On/Off`,
 		description: 'Set the AI mode of the camera',
-		address: '/OBSBOT/Camera/Tail2/SetAiEnable',
+		address: `${address}/SetAiEnable`,
 		field: dropdownField('aiMode', 'AI Mode', OnOff),
 		logName: 'AI Mode',
 	})
 
-	actions.OBSBOT_TAIL_2_setTrackingSpeed = {
-		name: 'Tail 2 | Set Tracking Speed',
+	actions[`${idPrefix}_setTrackingSpeed`] = {
+		name: `${namePrefix} | Set Tracking Speed`,
 		description: 'Set the tracking speed of the camera',
 		options: [
 			dropdownField(
@@ -97,25 +128,25 @@ export function addTail2Actions(self: OBSBOTInstance, actions: Actions): void {
 		],
 		callback: ({ options }) => {
 			self.log('info', `Setting tracking speed to ${options.mode}.`)
-			const custom =
-				options.mode === '5'
-					? [toInt(options.panMode), toInt(options.panSpeed), toInt(options.pitchMode), toInt(options.pitchSpeed)]
-					: []
-			self.sendCommand('/OBSBOT/Camera/Tail2/SetTrackingSpeed', intArgs(toInt(options.mode), ...custom))
+			let custom: number[] = []
+			if (options.mode === '5') {
+				custom = [toInt(options.panMode), toInt(options.panSpeed), toInt(options.pitchMode), toInt(options.pitchSpeed)]
+			} else if (variant.alwaysSendCustomSpeeds) {
+				custom = PlaceholderCustomSpeeds
+			}
+			self.sendCommand(`${address}/SetTrackingSpeed`, intArgs(toInt(options.mode), ...custom))
 		},
 	}
 
-	actions.OBSBOT_TAIL_2_setOnlyMe = valueAction(self, {
-		name: 'Tail 2 | Set Only Me On/Off',
-		description: 'Set the Only Me mode of the camera',
-		address: '/OBSBOT/Camera/Tail2/SetOnlyMe',
-		field: dropdownField('onlyMe', 'Only Me', OnOff),
-		logName: 'Only Me',
-	})
+	if (variant.onlyMe) {
+		actions[`${idPrefix}_setOnlyMe`] = valueAction(self, {
+			name: `${namePrefix} | Set Only Me On/Off`,
+			description: 'Set the Only Me mode of the camera',
+			address: '/OBSBOT/Camera/Tail2/SetOnlyMe',
+			field: dropdownField('onlyMe', 'Only Me', OnOff),
+			logName: 'Only Me',
+		})
+	}
 
-	addCameraControls(self, actions, {
-		idPrefix: 'OBSBOT_TAIL_2',
-		namePrefix: 'Tail 2',
-		address: '/OBSBOT/Camera/Tail2',
-	})
+	addCameraControls(self, actions, { idPrefix, namePrefix, address })
 }

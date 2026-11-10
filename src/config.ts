@@ -20,7 +20,7 @@ export function GetConfigFields(): SomeCompanionConfigField[] {
 			width: 12,
 			label: 'Information',
 			value:
-				'Controls Tail 2 and Tail Air directly, or Tiny, Meet and Tail cameras through the OBSBOT Center App (which must be running with OSC enabled). See the "Help" tab for more information.',
+				'Controls Tail 2, Tail 2 ADV and Tail Air directly, or Tiny, Meet and Tail cameras through the OBSBOT Center App (which must be running with OSC enabled). See the "Help" tab for more information.',
 		},
 		{
 			type: 'textinput',
