@@ -250,6 +250,34 @@ describe('UDP', () => {
 		expect(lastStatus()).toBe(InstanceStatus.Connecting)
 	})
 
+	it('uses /OBSBOT/Camera/General/ for the shared commands and replies of a Tail Air 2', async () => {
+		const { connection, host, sockets, lastStatus } = setup({ model: 'OBSBOT_TAIL_AIR_2', pollinterval: 0 })
+
+		await connection.connect()
+		sockets[0].bound?.()
+		expect(sockets[0].sent.map((message) => message.address)).toEqual(['/OBSBOT/Camera/General/Connected'])
+
+		sockets[0].reply('/OBSBOT/Camera/General/ConnectedResp')
+		expect(lastStatus()).toBe(InstanceStatus.Ok)
+		expect(host.handleReply).not.toHaveBeenCalled()
+
+		sockets[0].reply('/OBSBOT/Camera/General/ZoomInfo', [40, 1])
+		expect(host.handleReply).toHaveBeenCalledWith('/OBSBOT/WebCam/General/ZoomInfo', [40, 1])
+
+		connection.send('/OBSBOT/Camera/TailAir2/SetAiMode', [{ type: 'i', value: 1 }])
+		expect(sockets[0].sent.at(-1)?.address).toBe('/OBSBOT/Camera/TailAir2/SetAiMode')
+	})
+
+	it('leaves /OBSBOT/Camera/General/ replies alone for other models', async () => {
+		const { connection, host, sockets } = setup()
+
+		await connection.connect()
+		sockets[0].bound?.()
+		sockets[0].reply('/OBSBOT/Camera/General/ZoomInfo', [40, 1])
+
+		expect(host.handleReply).toHaveBeenCalledWith('/OBSBOT/Camera/General/ZoomInfo', [40, 1])
+	})
+
 	it('drops malformed packets without failing the connection', async () => {
 		const { connection, host, sockets, lastStatus } = setup({ verbose: true })
 

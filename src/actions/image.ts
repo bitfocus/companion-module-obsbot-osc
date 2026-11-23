@@ -7,6 +7,7 @@ const ExposureCompensateValues = [-30, -27, -23, -20, -17, -13, -10, -7, -3, 0, 
 
 // The mixed types are as saved in existing configs
 const ShutterSpeeds: (string | number)[] = [
+	'8000',
 	'6400',
 	'5000',
 	'3200',
@@ -43,7 +44,16 @@ const ShutterSpeeds: (string | number)[] = [
 	2.5,
 ]
 
-const IsoValues = ['100', '200', '400', '800', '1600', '3200', '6400']
+const IsoValues = ['100', '200', '400', '800', '1600', '3200', '6400', '12800', '25600']
+
+const IrisValues = [170, 180, 200, 240, 280, 400, 560, 700]
+
+const AutoFocusModes: DropdownChoice[] = [
+	{ id: '0', label: 'Manual' },
+	// The Tail 2 ADV spec has 1 and 2 the other way round, but the device does this
+	{ id: '1', label: 'Auto Focus Continuous (AF-C)' },
+	{ id: '2', label: 'Auto Focus Single (AF-S)' },
+]
 
 export function addImageActions(self: OBSBOTInstance, actions: Actions, model: Model): void {
 	actions.setMirror = valueAction(self, {
@@ -57,7 +67,15 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		logName: 'mirror mode',
 	})
 
-	if (model.autoFocus) {
+	if (model.continuousAutoFocus) {
+		actions.setAutoFocus = valueAction(self, {
+			name: 'Image | Set Auto Focus Mode',
+			description: 'Set the auto focus mode of the camera',
+			address: '/OBSBOT/WebCam/General/SetAutoFocus',
+			field: dropdownField('autoFocus', 'Auto Focus', AutoFocusModes),
+			logName: 'auto focus',
+		})
+	} else if (model.autoFocus) {
 		actions.setAutoFocus = valueAction(self, {
 			name: 'Image | Set Auto Focus On/Off',
 			description: 'Set the auto focus of the camera',
@@ -128,6 +146,8 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		logName: 'exposure compensate value',
 	})
 
+	const { fastest, slowest } = model.shutterSpeeds
+
 	actions.setShutterSpeed = valueAction(self, {
 		name: 'Image | Set Shutter Speed',
 		description: 'Set the shutter speed of the camera',
@@ -135,7 +155,10 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		field: dropdownField(
 			'shutterSpeedValue',
 			'Shutter Speed Value',
-			ShutterSpeeds.map((id): DropdownChoice => ({ id, label: `1/${id}` })),
+			ShutterSpeeds.filter((id) => Number(id) <= fastest && Number(id) >= slowest).map((id): DropdownChoice => ({
+				id,
+				label: `1/${id}`,
+			})),
 			{ default: '100' },
 		),
 		logName: 'shutter speed',
@@ -148,7 +171,7 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		field: dropdownField(
 			'isoValue',
 			'ISO Value',
-			IsoValues.map((id) => ({ id, label: id })),
+			IsoValues.filter((id) => Number(id) <= model.isoMax).map((id) => ({ id, label: id })),
 			{ default: '100' },
 		),
 		logName: 'ISO',
@@ -169,6 +192,21 @@ export function addImageActions(self: OBSBOTInstance, actions: Actions, model: M
 		field: numberField('colorTemperature', 'Color Temperature', { default: 5000, min: 2000, max: 10000 }),
 		logName: 'color temperature',
 	})
+
+	if (model.iris) {
+		actions.setIris = valueAction(self, {
+			name: 'Image | Set Iris',
+			description: 'Set the iris (aperture) of the camera. Only takes effect while auto exposure is off.',
+			address: '/OBSBOT/WebCam/General/SetIris',
+			field: dropdownField(
+				'irisValue',
+				'Iris',
+				IrisValues.map((value) => ({ id: String(value), label: `F${(value / 100).toFixed(1)}` })),
+				{ default: '170' },
+			),
+			logName: 'iris',
+		})
+	}
 
 	// At this time these image controls are only Tiny 3 / Tiny 3 Lite capable.
 	if (model.family === 'tiny') {

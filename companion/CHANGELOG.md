@@ -5,10 +5,12 @@ All notable changes to this module are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.3.0] - 2026-11-22
 
 ### Added
 
+- OBSBOT Tail 2 ADV support, with its AI, tracking, recording, snapshot and preset position actions, auto focus single and continuous modes, and a new **Image | Set Iris** action.
+- OBSBOT Tail Air 2 support, with its AI mode and auto zoom, tracking, recording, snapshot and preset position actions.
 - Variables and expressions can be used in action and feedback fields. Number values outside a field's range are clamped to it.
 
 ### Changed

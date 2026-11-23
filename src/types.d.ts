@@ -30,7 +30,9 @@ type OSCArgument = {
 
 /**
  * Every OSC address defined by the OBSBOT specs in docs/, covering both the
- * commands the module sends and the replies it receives.
+ * commands the module sends and the replies it receives. Tail Air 2's
+ * /OBSBOT/Camera/General/ addresses are written as their /OBSBOT/WebCam/General/
+ * equivalents, and mapped per model in BuildMessage and NormalizeReplyAddress.
  */
 type OSCAddress =
 	| '/OBSBOT/Camera/Tail/SetAiMode'
@@ -51,11 +53,24 @@ type OSCAddress =
 	| '/OBSBOT/Camera/Tail2/SetTrackingSpeed'
 	| '/OBSBOT/Camera/Tail2/Snapshot'
 	| '/OBSBOT/Camera/Tail2/TriggerPreset'
+	| '/OBSBOT/Camera/Tail2ADV/SetAiEnable'
+	| '/OBSBOT/Camera/Tail2ADV/SetAiMode'
+	| '/OBSBOT/Camera/Tail2ADV/SetAutoZoom'
+	| '/OBSBOT/Camera/Tail2ADV/SetRecording'
+	| '/OBSBOT/Camera/Tail2ADV/SetTrackingSpeed'
+	| '/OBSBOT/Camera/Tail2ADV/Snapshot'
+	| '/OBSBOT/Camera/Tail2ADV/TriggerPreset'
 	| '/OBSBOT/Camera/TailAir/SetAiMode'
 	| '/OBSBOT/Camera/TailAir/SetRecording'
 	| '/OBSBOT/Camera/TailAir/SetTrackingSpeed'
 	| '/OBSBOT/Camera/TailAir/Snapshot'
 	| '/OBSBOT/Camera/TailAir/TriggerPreset'
+	| '/OBSBOT/Camera/TailAir2/SetAiMode'
+	| '/OBSBOT/Camera/TailAir2/SetAutoZoom'
+	| '/OBSBOT/Camera/TailAir2/SetRecording'
+	| '/OBSBOT/Camera/TailAir2/SetTrackingSpeed'
+	| '/OBSBOT/Camera/TailAir2/Snapshot'
+	| '/OBSBOT/Camera/TailAir2/TriggerPreset'
 	| '/OBSBOT/WebCam/General/Connected'
 	| '/OBSBOT/WebCam/General/ConnectedResp'
 	| '/OBSBOT/WebCam/General/DeviceInfo'
@@ -81,6 +96,7 @@ type OSCAddress =
 	| '/OBSBOT/WebCam/General/SetGimbalUp'
 	| '/OBSBOT/WebCam/General/SetHighfpsRecording'
 	| '/OBSBOT/WebCam/General/SetISO'
+	| '/OBSBOT/WebCam/General/SetIris'
 	| '/OBSBOT/WebCam/General/SetManualFocus'
 	| '/OBSBOT/WebCam/General/SetMirror'
 	| '/OBSBOT/WebCam/General/SetPCRecording'

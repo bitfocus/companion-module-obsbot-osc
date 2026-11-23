@@ -20,14 +20,19 @@ describe('parseReply', () => {
 		expect(parseReply(DEVICE_INFO, [0, ...deviceInfoArgs], 'OBSBOT_CENTER')).toMatchObject({ selectedDeviceIndex: 1 })
 	})
 
-	it('ignores Tail 2 zoom reports, which are always wrong', () => {
+	it('ignores Tail 2 and Tail 2 ADV zoom reports, which are always wrong', () => {
 		expect(parseReply(ZOOM, [0, -1], 'OBSBOT_TAIL_2')).toBeUndefined()
+		expect(parseReply(ZOOM, [0, -1], 'OBSBOT_TAIL_2_ADV')).toBeUndefined()
 	})
 
 	it('reads gimbal values in the order each device sends them', () => {
 		expect(parseReply(GIMBAL, [10, 20], 'OBSBOT_TAIL_2')).toEqual({ kind: 'gimbal', pitch: 10, yaw: 20 })
+		// As sent by a Tail 2 ADV moved to pan 30, pitch -10
+		expect(parseReply(GIMBAL, [-10, 29], 'OBSBOT_TAIL_2_ADV')).toEqual({ kind: 'gimbal', pitch: -10, yaw: 29 })
 		expect(parseReply(GIMBAL, [10, 20], 'OBSBOT_CENTER_TINY')).toEqual({ kind: 'gimbal', pitch: 20, yaw: 10 })
 		expect(parseReply(GIMBAL, [0, 10, 20], 'OBSBOT_TAIL_AIR')).toEqual({ kind: 'gimbal', pitch: 10, yaw: 20 })
+		// The Tail Air 2 spec's [roll, pitch, yaw]
+		expect(parseReply(GIMBAL, [0, -80, 150], 'OBSBOT_TAIL_AIR_2')).toEqual({ kind: 'gimbal', pitch: -80, yaw: 150 })
 	})
 
 	it('only keeps the first device on hardware', () => {
